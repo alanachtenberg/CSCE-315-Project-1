@@ -5,19 +5,24 @@
 
 #include "Table.h"
 #include <vector>
+#include <string>
 
-class Databse
+using namespace std;
+
+class Database
 {
+private:
+	vector<Table> Tables;
 public:
 	Database();
 	~Database();
 
-	vector<Table> Tables;
+	
 
 	// Query Functions
 	void Select(string view_name, string in_table_name, int row_index);
-	void Project(string view_name, string in_table_name, vector<string> attributes);
-	void Rename(string view_name, string in_table_name, vector<string> attributes);
+	void Project(string view_name, string in_table_name, Attribute attributes);
+	void Rename(string view_name, string in_table_name, Attribute attributes);
 	void Set_union(string view_name, string table1_name, string table2_name);
 	void Set_difference(string view_name, string table1_name, string table2_name);
 	void Cross_product(string view_name, string table1_name, string table2_name);
@@ -35,10 +40,11 @@ public:
 	void Remove(string table_name, int row_index);
 
 	// Utility Functions
-	int get_relation_index(string table_name);
-	int get_view_index(string table_name);
-	int get_attribute_index(TableType type, int table_index, string attribute_name);
-	void update_view_name(string new_name, string old_name);
+	int Get_relation_index(string table_name);
+	int Get_table_index(string table_name);
+	//int Get_attribute(TableType type, int table_index, string attribute_name);
+	void Update_table_name(string new_name, string old_name);
+	Table Get_table(string table_name);
 };
 
 #endif

@@ -8,12 +8,14 @@
 
 class Table
 {
+private:
+	string Name;
+	vector<Attribute> Attributes;
 public:
 	Table();
 	~Table();
 
-	string Name;
-	vector<Attribute> Attributes;
+	
 };
 
 #endif
