@@ -65,6 +65,15 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="DBParser.cpp" />
+    <ClCompile Include="main.cpp" />
+    <ClCompile Include="Token.cpp" />
+    <ClCompile Include="Token_Stream.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="DBParser.h" />
+    <ClInclude Include="Token.h" />
+    <ClInclude Include="Token_Stream.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

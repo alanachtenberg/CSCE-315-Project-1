@@ -1,0 +1,8 @@
+class DBParser {
+public:
+	
+
+private:
+
+
+};
