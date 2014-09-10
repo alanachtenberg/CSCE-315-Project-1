@@ -25,6 +25,7 @@ private:
 
 public:
 
+	Token()									:type(_null),	value(0),	name("") { }
 	Token(Token_Type type)					:type(type),	value(0),	name("") { }
 	Token(Token_Type type, double val)		:type(type),	value(val),	name("") { }
 	Token(Token_Type type, std::string s)	:type(type),	value(0),	name(s) { }
