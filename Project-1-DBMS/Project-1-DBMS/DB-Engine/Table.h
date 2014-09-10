@@ -12,6 +12,7 @@ public:
 	Table();
 	~Table();
 
+	string Name;
 	vector<Attribute> Attributes;
 };
 
