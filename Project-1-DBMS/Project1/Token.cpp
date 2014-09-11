@@ -7,7 +7,7 @@ std::string Token_Type_Name[] = {
 	"_and", "_or",
 	"_create", "_insert", "_select", "_show", "_rename",
 	"_into", "_table", "_values", "_from", "_primary", "_key",
-	"_relation", "_write", "_close",
+	"_relation", "_write", "_open", "_close",
 	"_integer", "_varchar", "_char", "_float", "_identifier",
 	"_exit_program", "_null"
 };

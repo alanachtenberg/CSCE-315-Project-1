@@ -1,3 +1,6 @@
+#ifndef TOKEN_STREAM_H
+#define TOKEN_STREAM_H
+
 #include "Token.h"
 #include <vector>
 #include <sstream>
@@ -26,6 +29,9 @@ public:
 
 	std::vector<Token> tokenize();
 	Token get();
+	void push_back(Token t);
+
+	//TODO: make multi-item buffer
 	void unget(Token t) { 
 		buffer = t; 
 		full = true; 
@@ -33,3 +39,5 @@ public:
 
 	void ignore(Token_Type);
 };
+
+#endif

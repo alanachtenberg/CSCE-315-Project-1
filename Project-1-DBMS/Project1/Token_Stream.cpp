@@ -81,6 +81,7 @@ Token Token_stream::get() {
 
 			else if (s == "relation")	curr_token = Token(_relation);
 			else if (s == "write")		curr_token = Token(_write);
+			else if (s == "open")		curr_token = Token(_open);
 			else if (s == "close")		curr_token = Token(_close);
 
 			else if (s == "integer")	curr_token = Token(_integer);
@@ -104,12 +105,16 @@ Token Token_stream::get() {
 	}
 }
 
+void Token_stream::push_back(Token t) {
+
+}
+
 vector<Token> Token_stream::tokenize() {
 
 	Token t = get();
 
 	while (true) {
-		if (t.get_type() == _semicolon) {
+		if (t.get_type() == _exit_program) {
 			break;
 		}
 		t = get();
