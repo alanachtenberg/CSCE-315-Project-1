@@ -9,9 +9,16 @@ Attribute::Attribute(){
 	}
 }
 
-Attribute::Attribute(string name, vector<string> data){
+Attribute::Attribute(string name, string vartype, vector<string> data){
 	Name = name;
+	VarType = vartype;
 	Data = data;
+}
+
+Attribute::Attribute(Attribute& attribute){
+	Name = attribute.Name;
+	VarType = attribute.VarType;
+	Data = attribute.Data;
 }
 
 string Attribute::Get_name(){

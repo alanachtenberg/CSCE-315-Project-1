@@ -10,16 +10,18 @@ using namespace std;
 
 class Attribute{
 	private:
-		const string ENDLIST = "ENDLIST";
+		const string ENDLIST = "ENDLIST"; //used to simplify Read function
 
 		string Name;
 		string VarType;
 		vector<string> Data;
 	public:
-
+		//Constructors
 		Attribute();
-		Attribute(string Name, vector<string> Data);
+		Attribute(string name, string vartype, vector<string> data);
+		Attribute(Attribute& attribute);
 
+		//Getters and Setters
 		string	Get_name();
 		void  Set_name(string name);
 
@@ -32,7 +34,6 @@ class Attribute{
 		//Read and Write
 		istream& Read(istream& is);
 		ostream& Write(ostream& os);
-
 
 };
 
