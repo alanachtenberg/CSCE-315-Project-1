@@ -55,8 +55,8 @@ istream& Attribute::Read(istream& is){
 	getline(is, VarType, '\n');
 	Data = vector<string>();
 	while (1){
-		getline(is, temp, ';');
-		if (temp == ENDLIST)
+		getline(is, temp, ';');//assumer there is always at least one value stored
+		if (temp == ENDLIST+"")
 			break;
 		Data.push_back(temp);
 	}
@@ -67,6 +67,6 @@ ostream& Attribute::Write(ostream& os){
 	os << VarType << endl;
 	for (int i = 0; i < Data.size(); ++i)
 		os << Data[i]<< ";";
-	os << ENDLIST << ";";
+	os << ENDLIST << ";\n";
 	return os;
 }

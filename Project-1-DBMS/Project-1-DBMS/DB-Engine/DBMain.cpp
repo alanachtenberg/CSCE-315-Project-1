@@ -2,18 +2,24 @@
 
 #include <stdio.h>
 #include <iostream>
-#include "Attribute.h"
 #include <fstream>
+#include "Table.h"
 using namespace std;
 int main(){
 	ofstream out;
 	out.open("sample.txt");
 	cout << "Hello DB Engine\n";
-	Attribute myattribute = Attribute();
-	myattribute.Write(out);
+
+	vector<Attribute> myattributes;
+	Attribute attribute = Attribute();
+	myattributes.push_back(attribute);
+	myattributes.push_back(attribute);
+	Table mytable = Table();
+	mytable.Set_attributes(myattributes);
+	mytable.Write(out);
 	out.close();
 	ifstream in;
 	in.open("sample.txt");
-	myattribute.Read(in);
+	mytable.Read(in);
 	return 0;
 }

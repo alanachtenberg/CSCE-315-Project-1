@@ -4,20 +4,20 @@
 #define Table_H
 
 #include "Attribute.h"
-#include <vector>
 
 class Table
 {
 private:
+	const string ENDTABLE = "ENDTABLE";
 	string Name;
 	vector<Attribute> Attributes;
 public:
 	//Constructors
 	Table();
 	Table(string name, vector<Attribute> attributes);
-	Table(Table& table);
-
-	~Table();
+	Table(const Table& table);
+	//Copy Assignment
+	Table& operator = (const Table& table);
 
 	//Getters, Setters
 	string Get_name();
@@ -25,6 +25,9 @@ public:
 	vector<Attribute> Get_Attributes();
 	void Set_attributes(vector<Attribute> attributes);
 
+	//Read and Write functions
+	istream& Read(istream& is);
+	ostream& Write(ostream& os);
 };
 
 #endif
