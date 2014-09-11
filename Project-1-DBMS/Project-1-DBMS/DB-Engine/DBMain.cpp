@@ -21,5 +21,8 @@ int main(){
 	ifstream in;
 	in.open("sample.txt");
 	mytable.Read(in);
+	cout << "input anything to exit";
+	string dummy;
+	cin >> dummy;
 	return 0;
 }

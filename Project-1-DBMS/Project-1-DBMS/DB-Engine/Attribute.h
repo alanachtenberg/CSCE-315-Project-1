@@ -11,7 +11,6 @@ using namespace std;
 class Attribute{
 	private:
 		const string ENDLIST = "ENDLIST"; //used to simplify Read function
-
 		string Name;
 		string VarType;
 		vector<string> Data;
@@ -32,6 +31,9 @@ class Attribute{
 
 		vector<string> Get_data();
 		void Set_data( vector<string> data);
+
+		string Get_value(int index);
+		int Get_size();
 
 		//Read and Write
 		istream& Read(istream& is);

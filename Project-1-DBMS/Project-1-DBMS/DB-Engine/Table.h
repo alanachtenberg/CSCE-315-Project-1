@@ -25,9 +25,21 @@ public:
 	vector<Attribute> Get_Attributes();
 	void Set_attributes(vector<Attribute> attributes);
 
+	//Utility functions
+	int Get_width();
+	int Get_max_height();
+
+	vector<string> Get_row(int index);
+	vector<string> Get_column(int index);
 	//Read and Write functions
 	istream& Read(istream& is);
 	ostream& Write(ostream& os);
 };
+
+//Input operator
+istream& operator >> (istream& is, Table& t);
+
+//Output operator
+ostream& operator << (ostream& os, Table& t);
 
 #endif

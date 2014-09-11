@@ -47,6 +47,16 @@ vector<string> Attribute::Get_data(){
 void Attribute::Set_data(vector<string> data){
 	Data = data;
 }
+string Attribute::Get_value(int index){
+	if (index<0 || index>Data.size())
+		cerr << "can not get attribute value, index out of range" << endl;
+	else
+		return Data[index];
+	return "default";
+}
+int Attribute::Get_size(){
+	return Data.size();
+}
 
 //Read and Write
 istream& Attribute::Read(istream& is){
@@ -56,7 +66,7 @@ istream& Attribute::Read(istream& is){
 	Data = vector<string>();
 	while (1){
 		getline(is, temp, ';');//assumer there is always at least one value stored
-		if (temp == ENDLIST+"")
+		if (temp == ENDLIST)
 			break;
 		Data.push_back(temp);
 	}

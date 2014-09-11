@@ -1,5 +1,5 @@
 #include "Table.h"
-
+#include <algorithm>
 
 Table::Table()
 {
@@ -37,6 +37,40 @@ void Table::Set_attributes(vector<Attribute> attributes){
 	Attributes = attributes;
 }
 
+int Table::Get_width(){
+	return Attributes.size();
+}
+int Table::Get_max_height(){
+	int max_height = 0;
+	for (int i = 0; i < Attributes.size(); ++i)
+		max(max_height, Attributes[i].Get_size());
+	return max_height;
+}
+
+vector<string> Table::Get_row(int index){
+	if (index<0 || index>Get_max_height()){
+		cerr << "cannot get row, index out of range"<<endl;
+		return vector<string>();
+	}
+	else
+	{
+		vector<string> new_vector = vector<string>();
+		for (int i = 0; i < Get_width(); ++i)
+			new_vector.push_back(Attributes[i].Get_data()[index]);
+		return new_vector;
+	}
+}
+vector<string> Table::Get_column(int index){
+	if (index<0 || index>Get_width()){
+		cerr << "cannot get column, index out of range" << endl;
+		return vector<string>();
+	}
+	else
+	{
+		return Attributes[index].Get_data();
+	}
+}
+
 istream& Table::Read(istream& is){
 	string temp_string;
 	Attribute temp;
@@ -61,5 +95,17 @@ ostream& Table::Write(ostream& os){
 		Attributes[i].Write(os);
 	}
 	os << ENDTABLE;
+	return os;
+}
+
+//Input operator
+istream& operator >> (istream& is, Table& t){
+	t.Read(is);
+	return is;
+}
+
+//Output operator
+ostream& operator << (ostream& os, Table& t){
+	t.Write(os);
 	return os;
 }
