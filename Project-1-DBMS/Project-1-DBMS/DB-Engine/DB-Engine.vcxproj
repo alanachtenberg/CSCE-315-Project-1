@@ -74,6 +74,9 @@
     <ClCompile Include="DBMain.cpp" />
     <ClCompile Include="Table.cpp" />
   </ItemGroup>
+  <ItemGroup>
+    <Text Include="sample.txt" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
