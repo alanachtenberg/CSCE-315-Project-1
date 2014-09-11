@@ -19,7 +19,9 @@ class Attribute{
 		//Constructors
 		Attribute();
 		Attribute(string name, string vartype, vector<string> data);
-		Attribute(Attribute& attribute);
+		Attribute(const Attribute& attribute);
+		//Copy Assignment operator
+		Attribute& operator = (const Attribute& attribute);
 
 		//Getters and Setters
 		string	Get_name();

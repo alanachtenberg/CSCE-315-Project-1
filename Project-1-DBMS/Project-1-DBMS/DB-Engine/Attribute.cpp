@@ -15,10 +15,14 @@ Attribute::Attribute(string name, string vartype, vector<string> data){
 	Data = data;
 }
 
-Attribute::Attribute(Attribute& attribute){
+Attribute::Attribute(const Attribute& attribute){
 	Name = attribute.Name;
 	VarType = attribute.VarType;
 	Data = attribute.Data;
+}
+
+Attribute& Attribute::operator = (const Attribute& attribute){
+	return *this;
 }
 
 string Attribute::Get_name(){
