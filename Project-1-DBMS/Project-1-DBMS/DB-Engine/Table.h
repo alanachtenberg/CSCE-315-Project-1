@@ -37,6 +37,9 @@ public:
 	//Read and Write functions
 	istream& Read(istream& is);
 	ostream& Write(ostream& os);
+
+	//Print function
+	ostream& Pretty_print(ostream& os);
 };
 
 //Input operator

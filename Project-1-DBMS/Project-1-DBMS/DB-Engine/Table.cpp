@@ -1,5 +1,6 @@
 #include "Table.h"
 #include <algorithm>
+#include <iomanip>
 
 Table::Table()
 {
@@ -46,7 +47,8 @@ int Table::Get_width(){
 int Table::Get_max_height(){
 	int max_height = 0;
 	for (int i = 0; i < Attributes.size(); ++i)
-		max(max_height, Attributes[i].Get_size());
+		if (Attributes[i].Get_size()>max_height)
+			max_height = Attributes[i].Get_size();
 	return max_height;
 }
 
@@ -77,7 +79,7 @@ vector<string> Table::Get_column(int index){
 istream& Table::Read(istream& is){
 	string temp_string;
 	Attribute temp;
-	getline(is, Name, '\n');
+	getline(is, Name,'\n');
 	Attributes = vector<Attribute>();
 	while (1){
 		temp.Read(is);// assume there is always at least one attribute to read
@@ -87,7 +89,7 @@ istream& Table::Read(istream& is){
 			break;
 		else//putback the string so we can read it for the next attribute
 			for (int i = 0; i < temp_string.size(); ++i)
-				is.putback(temp_string.c_str()[temp_string.size()-i]);//put the characters back in the correct order, ie. from back to front
+				is.putback(temp_string.c_str()[temp_string.size()-i-1]);//added minus one to account for null terminator//put the characters back in the correct order, ie. from back to front
 	}
 	return is;
 }
@@ -101,6 +103,21 @@ ostream& Table::Write(ostream& os){
 	return os;
 }
 
+ostream& Table::Pretty_print(ostream& os){
+	os << Name << endl << endl;
+	for (int i = 0; i < Get_width(); ++i){
+		os << Attributes[i].Get_name() << right << setw(20);
+	}
+	os << endl<<endl;
+	for (int j = 0; j < Get_max_height(); ++j){
+		vector<string> values = Get_row(j);
+		for (int k = 0; k < Get_width(); ++k){
+			os << values[k]<< right<<setw(20);
+		}
+		os << endl;
+	}
+	return os;
+}
 
 
 //Input operator

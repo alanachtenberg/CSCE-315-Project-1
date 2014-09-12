@@ -17,11 +17,11 @@ int main(){
 	Table mytable = Table();
 	mytable.Set_attributes(myattributes);
 	mytable.Write(out);
-	out << mytable;
 	out.close();
 	ifstream in;
 	in.open("sample.txt");
 	mytable.Read(in);
+	mytable.Pretty_print(cout);
 	cout << "input anything to exit";
 	string dummy;
 	cin >> dummy;
