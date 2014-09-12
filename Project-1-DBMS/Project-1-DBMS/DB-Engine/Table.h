@@ -11,13 +11,13 @@ private:
 	const string ENDTABLE = "ENDTABLE";
 	string Name;
 	vector<Attribute> Attributes;
-
+	vector<Attribute> Key;
 public:
 	//Constructors
 	Table();
 	Table(string name, vector<Attribute> attributes);
 	Table(string table_name, vector<Attribute> attributes, vector<Attribute> key);
-	Table(string table_name);
+	
 	Table(const Table& table);
 	//Copy Assignment
 	Table& operator = (const Table& table);
@@ -25,7 +25,7 @@ public:
 	//Getters, Setters
 	string Get_name();
 	void Set_name(string name);
-	vector<Attribute> Get_Attributes();
+	vector<Attribute> Get_attributes();
 	void Set_attributes(vector<Attribute> attributes);
 
 	//Utility functions

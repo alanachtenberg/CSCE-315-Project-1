@@ -8,11 +8,6 @@ Table::Table()
 	Key = vector<Attribute>();
 }
 
-Table::Table(string table_name, vector<Attribute> attributes){
-	Name = table_name;
-	Attributes = attributes;
-}
-
 Table::Table(string table_name, vector<Attribute> attributes, vector<Attribute> key){
 	Name = table_name;
 	Attributes = attributes;
@@ -21,7 +16,8 @@ Table::Table(string table_name, vector<Attribute> attributes, vector<Attribute> 
 
 Table::Table(const Table& table){
 	Name = table.Name;
-	Attributes = vector<Attribute>();
+	Attributes = table.Attributes;
+	Key = table.Key;
 }
 
 Table& Table:: operator = (const Table& table){
@@ -36,7 +32,7 @@ void Table::Set_name(string name){
 	Name = name;
 }
 
-vector<Attribute> Table::Get_Attributes(){
+vector<Attribute> Table::Get_attributes(){
 	return Attributes;
 }
 
@@ -104,6 +100,8 @@ ostream& Table::Write(ostream& os){
 	os << ENDTABLE;
 	return os;
 }
+
+
 
 //Input operator
 istream& operator >> (istream& is, Table& t){
