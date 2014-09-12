@@ -5,16 +5,23 @@ Table::Table()
 {
 	Name = "DefaultTableName";
 	Attributes = vector<Attribute>();
+	Key = vector<Attribute>();
 }
 
-Table::Table(string name, vector<Attribute> attributes){
-	Name = name;
+Table::Table(string table_name, vector<Attribute> attributes){
+	Name = table_name;
 	Attributes = attributes;
+}
+
+Table::Table(string table_name, vector<Attribute> attributes, vector<Attribute> key){
+	Name = table_name;
+	Attributes = attributes;
+	Key = key;
 }
 
 Table::Table(const Table& table){
 	Name = table.Name;
-	Attributes = table.Attributes;
+	Attributes = vector<Attribute>();
 }
 
 Table& Table:: operator = (const Table& table){

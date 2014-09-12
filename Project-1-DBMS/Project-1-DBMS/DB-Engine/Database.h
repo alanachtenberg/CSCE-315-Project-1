@@ -6,6 +6,8 @@
 #include "Table.h"
 #include <vector>
 #include <string>
+#include <iostream>    
+#include <iomanip>
 
 using namespace std;
 
@@ -33,8 +35,8 @@ public:
 	void Write(string table_name);
 	void Open(string file_name);
 	void Show(string table_name);
-	void Create(string table_name, vector<string> attributes, vector<string> attribute_types, vector<string> keys);
-	void Update(string relation_name, vector<string> attribute, vector<string> data, int row_index);
+	void Create(string table_name, vector<string> attribute_types, vector<string> keys){
+	void Update(string table_name, vector<string> attribute, vector<string> data, int row_index);
 	void Insert_tuple(string relation_name, vector<string> tuple);
 	void Insert_view(string relation_name, string view_name);
 	void Remove(string table_name, int row_index);
@@ -45,6 +47,7 @@ public:
 	//int Get_attribute(TableType type, int table_index, string attribute_name);
 	void Update_table_name(string new_name, string old_name);
 	Table Get_table(string table_name);
+	void Print_table(Table table_name);
 };
 
 #endif
