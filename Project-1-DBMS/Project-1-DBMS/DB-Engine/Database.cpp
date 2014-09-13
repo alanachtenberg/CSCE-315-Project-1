@@ -56,8 +56,10 @@ void Database::Show(string table_name){
 		}
 	}
 }
-void Database::Create(string table_name, vector<Attribute> attribute_types, vector<Attribute> keys){
-	Table new_table(table_name, attribute_types, keys);
+void Database::Create(string table_name,vector<string> attribute_names, vector<string> attribute_types, vector<string> keys){
+	Table new_table=Table(table_name,attribute_names, attribute_types, keys);
+	//TODO need to implement protection for multiple tables of the same name
+	Tables.push_back(new_table);
 }
 void Database::Update(string relation_name, vector<string> attribute, vector<string> data, int row_index){
 

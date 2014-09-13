@@ -6,19 +6,27 @@ Table::Table()
 {
 	Name = "DefaultTableName";
 	Attributes = vector<Attribute>();
-	Key = vector<Attribute>();
+	Keys = vector<string>();
 }
 
-Table::Table(string table_name, vector<Attribute> attributes, vector<Attribute> key){
+Table::Table(string table_name, vector<string> attribute_names, vector<string> var_types, vector<string> key_names)
+{
 	Name = table_name;
-	Attributes = attributes;
-	Key = key;
+	if (attribute_names.size() != var_types.size() || key_names.size() < 1){
+		cerr << "Cannot constuct table, must have at least 1 key name, and # of attributes and variable types must be equal\n";
+		return;
+	}
+	for (int i = 0; i < attribute_names.size(); ++i){
+		Attribute new_attribute = Attribute(attribute_names[i], var_types[i], vector<string>());
+		Attributes.push_back(new_attribute);
+	}
+	Keys = key_names;
 }
 
 Table::Table(const Table& table){
 	Name = table.Name;
 	Attributes = table.Attributes;
-	Key = table.Key;
+	Keys = table.Keys;
 }
 
 Table& Table:: operator = (const Table& table){
@@ -61,7 +69,7 @@ vector<string> Table::Get_row(int index){
 	{
 		vector<string> new_vector = vector<string>();
 		for (int i = 0; i < Get_width(); ++i)
-			new_vector.push_back(Attributes[i].Get_data()[index]);
+			new_vector.push_back(Attributes[i][index]);
 		return new_vector;
 	}
 }
@@ -119,7 +127,7 @@ ostream& Table::Pretty_print(ostream& os){
 	return os;
 }
 
-Attribute Table::operator [](int i){
+Attribute Table::operator [](int i) const{//use of const prevents operator from modifying Table or calling non const functions
 	if (i<0 || i>Attributes.size()){
 		cerr << "error out of range access of Attributes\n";
 			return Attribute();
@@ -130,13 +138,13 @@ Attribute Table::operator [](int i){
 }
 
 //Input operator
-istream& operator >> (istream& is, Table& t){
+istream& operator >>  (istream& is, Table& t){
 	t.Read(is);
 	return is;
 }
 
 //Output operator
-ostream& operator << (ostream& os, Table& t){
+ostream& operator <<  (ostream& os, Table& t){
 	t.Write(os);
 	return os;
 }
