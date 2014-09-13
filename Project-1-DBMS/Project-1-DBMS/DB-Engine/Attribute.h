@@ -38,6 +38,10 @@ class Attribute{
 		//Read and Write
 		istream& Read(istream& is);
 		ostream& Write(ostream& os);
+
+		string operator [](int i);
 };
+
+
 
 #endif

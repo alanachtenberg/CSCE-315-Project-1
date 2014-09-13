@@ -40,6 +40,8 @@ public:
 
 	//Print function
 	ostream& Pretty_print(ostream& os);
+
+	Attribute operator [] (int i);
 };
 
 //Input operator

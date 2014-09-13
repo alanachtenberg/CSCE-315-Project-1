@@ -80,3 +80,14 @@ ostream& Attribute::Write(ostream& os){
 	os << ENDLIST << ";\n";
 	return os;
 }
+
+string Attribute::operator[](int i){
+	if (i<0 || i>Data.size()){
+		cerr << "Out of range access of data\n";
+		return "Default";
+	}
+	else{
+		return Data[i];
+	}
+
+}

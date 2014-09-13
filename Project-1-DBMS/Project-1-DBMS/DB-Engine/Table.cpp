@@ -89,7 +89,7 @@ istream& Table::Read(istream& is){
 			break;
 		else//putback the string so we can read it for the next attribute
 			for (int i = 0; i < temp_string.size(); ++i)
-				is.putback(temp_string.c_str()[temp_string.size()-i-1]);//added minus one to account for null terminator//put the characters back in the correct order, ie. from back to front
+				is.putback(temp_string.c_str()[temp_string.size()-i-1]);// minus one to account for null terminator//put the characters back in the correct order, ie. from back to front
 	}
 	return is;
 }
@@ -119,6 +119,15 @@ ostream& Table::Pretty_print(ostream& os){
 	return os;
 }
 
+Attribute Table::operator [](int i){
+	if (i<0 || i>Attributes.size()){
+		cerr << "error out of range access of Attributes\n";
+			return Attribute();
+	}
+	else{
+		return Attributes[i];
+	}
+}
 
 //Input operator
 istream& operator >> (istream& is, Table& t){
