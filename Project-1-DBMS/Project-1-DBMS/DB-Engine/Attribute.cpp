@@ -25,7 +25,7 @@ Attribute& Attribute::operator = (const Attribute& attribute){
 	return *this;
 }
 
-string Attribute::Get_name(){
+string Attribute::Get_name() const{
 	return Name;
 }
 
@@ -33,7 +33,7 @@ void Attribute::Set_name(string name){
 	Name = name;
 }
 
-string  Attribute::Get_vartype(){
+string  Attribute::Get_vartype() const{
 	return VarType;
 }
 
@@ -41,20 +41,20 @@ void  Attribute::Set_vartype(string vartype){
 	VarType = vartype;
 }
 
-vector<string> Attribute::Get_data(){
+vector<string> Attribute::Get_data() const{
 	return Data;
 }
 void Attribute::Set_data(vector<string> data){
 	Data = data;
 }
-string Attribute::Get_value(int index){
+string Attribute::Get_value(int index) const{
 	if (index<0 || index>Data.size())
 		cerr << "can not get attribute value, index out of range" << endl;
 	else
 		return Data[index];
 	return "default";
 }
-int Attribute::Get_size(){
+int Attribute::Get_size() const{
 	return Data.size();
 }
 

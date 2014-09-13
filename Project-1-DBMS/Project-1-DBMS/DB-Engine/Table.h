@@ -22,14 +22,14 @@ public:
 	Table& operator = (const Table& table);
 
 	//Getters, Setters
-	string Get_name();
+	string Get_name() const;
 	void Set_name(string name);
-	vector<Attribute> Get_attributes();
+	vector<Attribute> Get_attributes() const;
 	void Set_attributes(vector<Attribute> attributes);
 
 	//Utility functions
-	int Get_width();
-	int Get_max_height();
+	int Get_width() const;
+	int Get_max_height() const;
 
 	//Gets row of table by creating a new vector and added each individual attribute value
 	vector<string> Get_row(int index);
@@ -46,6 +46,10 @@ public:
 	
 	//operator that returns the ith Attribute in Attributes vector
 	Attribute operator [] (int i) const;
+
+	//operator that returns the attribute with name matching attribute_name
+	Attribute operator [] (string attribute_name) const;
+
 };
 
 //Input operator

@@ -39,15 +39,18 @@ public:
 	void Update(string table_name, vector<string> attribute, vector<string> data, int row_index);
 	void Insert_tuple(string relation_name, vector<string> tuple);
 	void Insert_view(string relation_name, string view_name);
-	void Remove(string table_name, int row_index);
+	void Delete(string table_name, int row_index);//renamed remove to delete to match project requirements
 
 	// Utility Functions
-	int Get_relation_index(string table_name);
 	int Get_table_index(string table_name);
 	//int Get_attribute(TableType type, int table_index, string attribute_name);
 	void Update_table_name(string new_name, string old_name);
-	Table Get_table(string table_name);
-	void Print_table(Table table_name);
+	Table Get_table(string table_name) const;
+	void Print_table(string table_name);
+
+	//access operators one with int index or with string table name
+	Table operator[](int i) const;
+	Table operator[](string table_name) const;
 };
 
 #endif

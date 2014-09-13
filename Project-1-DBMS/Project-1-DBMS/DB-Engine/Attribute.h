@@ -23,17 +23,17 @@ class Attribute{
 		Attribute& operator = (const Attribute& attribute);
 
 		//Getters and Setters
-		string	Get_name();
+		string	Get_name() const;
 		void  Set_name(string name);
 
-		string  Get_vartype();
+		string  Get_vartype() const;
 		void  Set_vartype(string vartype);
 
-		vector<string> Get_data();
+		vector<string> Get_data() const;
 		void Set_data( vector<string> data);
 
-		string Get_value(int index);
-		int Get_size();
+		string Get_value(int index) const;
+		int Get_size() const;
 
 		//Read and Write
 		istream& Read(istream& is);

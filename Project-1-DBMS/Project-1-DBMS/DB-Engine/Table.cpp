@@ -33,7 +33,7 @@ Table& Table:: operator = (const Table& table){
 	return *this;
 }
 
-string Table::Get_name(){
+string Table::Get_name()const{
 	return Name;
 }
 
@@ -41,7 +41,7 @@ void Table::Set_name(string name){
 	Name = name;
 }
 
-vector<Attribute> Table::Get_attributes(){
+vector<Attribute> Table::Get_attributes() const{
 	return Attributes;
 }
 
@@ -49,10 +49,10 @@ void Table::Set_attributes(vector<Attribute> attributes){
 	Attributes = attributes;
 }
 
-int Table::Get_width(){
+int Table::Get_width() const{
 	return Attributes.size();
 }
-int Table::Get_max_height(){
+int Table::Get_max_height() const{
 	int max_height = 0;
 	for (int i = 0; i < Attributes.size(); ++i)
 		if (Attributes[i].Get_size()>max_height)
@@ -136,6 +136,16 @@ Attribute Table::operator [](int i) const{//use of const prevents operator from 
 		return Attributes[i];
 	}
 }
+
+Attribute Table::operator [](string attribute_name) const{
+	for (int i = 0; i < Attributes.size(); ++i){//linear search for attribute with matching name
+		if (Attributes[i].Get_name() == attribute_name)
+			return Attributes[i];
+	}
+	cerr << "error access unsuccessful, [" << attribute_name << "]\n";
+	return Attribute();// return default value and inform of error
+}
+
 
 //Input operator
 istream& operator >>  (istream& is, Table& t){

@@ -49,12 +49,7 @@ void Database::Open(string file_name){
 
 }
 void Database::Show(string table_name){
-	for (int i = 0; i < Tables.size(); i++){
-		if (Tables[i].Get_name() == table_name){
-			Print_table(Tables[i]); //need to overload 
-			break;
-		}
-	}
+	Get_table(table_name).Pretty_print(cout); //Pretty print, prints things nicer in the console
 }
 void Database::Create(string table_name,vector<string> attribute_names, vector<string> attribute_types, vector<string> keys){
 	Table new_table=Table(table_name,attribute_names, attribute_types, keys);
@@ -70,33 +65,50 @@ void Database::Insert_tuple(string relation_name, vector<string> tuple){
 void Database::Insert_view(string relation_name, string view_name){
 
 }
-void Database::Remove(string table_name, int row_index){
+void Database::Delete(string table_name, int row_index){//renamed remove to delete to match project requirements
 
 }
 
 // Utility Functions
-int Database::Get_relation_index(string table_name){
-	return 0;
-}
-int Database::Get_table_index(string table_name){
-	return 0;
-}
+//no need for get_table_index(int), when you can Get_table(string)
+//int Database::Get_table_index(string table_name){
+//	for (int i = 0; i < Tables.size(); ++i)
+//		if (table_name == Tables[i].Get_name())
+//			return i;
+//	cerr << "Table index not found\n";
+//	return -1;
+//}
 /*int Database::Get_attribute(TableType type, int table_index, string attribute_name){
 
 };*/
 void Database::Update_table_name(string new_name, string old_name){
-
+	bool found = false;
+	for (int i = 0; i < Tables.size(); ++i)
+		if (old_name == Tables[i].Get_name()){
+			Tables[i].Set_name(new_name);
+			found = true;
+		}
+	if (!found)
+		cerr << "Matching table not renaming therefore impossible\n";
 }
-Table Database::Get_table(string table_name){
+Table Database::Get_table(string table_name) const{
 	for (int i = 0; i < Tables.size(); i++){
 		if (Tables[i].Get_name() == table_name){
-			return Tables[i]; //need to overload //removed break because return ends function already
+			return Tables[i];
 		}
 	}
-	cerr << "Table NOT FOUND";
+	cerr << "Table NOT FOUND\n";
 	return Table();//IF Table not found return default
 }
 
-void Database::Print_table(Table table_name){ //we need to overload the table operator
-	cout << table_name;
+Table Database::operator[](int i) const{
+	if (i<0 || i>Tables.size()){
+		cerr << "can not access Table, index out of range\n";
+		return Table();
+	}
+	return Tables[i];
+}
+
+Table Database::operator[](string table_name) const{
+	return Get_table(table_name);
 }
