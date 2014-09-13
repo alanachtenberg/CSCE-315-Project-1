@@ -33,7 +33,7 @@ public:
 	void Close(string table_name);
 	void Exit();
 	void Write(string table_name);
-	void Open(string file_name);
+	void Open(string table_name);
 	void Show(string table_name);
 	void Create(string table_name,vector<string> attribute_names, vector<string> attribute_types, vector<string> keys);
 	void Update(string table_name, vector<string> attribute, vector<string> data, int row_index);
@@ -42,11 +42,8 @@ public:
 	void Delete(string table_name, int row_index);//renamed remove to delete to match project requirements
 
 	// Utility Functions
-	int Get_table_index(string table_name);
-	//int Get_attribute(TableType type, int table_index, string attribute_name);
 	void Update_table_name(string new_name, string old_name);
 	Table Get_table(string table_name) const;
-	void Print_table(string table_name);
 
 	//access operators one with int index or with string table name
 	Table operator[](int i) const;

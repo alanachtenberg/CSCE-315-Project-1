@@ -1,6 +1,6 @@
 #include "Database.h"
-
-
+#include <fstream>
+#include <iterator>
 
 Database::Database()
 {
@@ -35,18 +35,30 @@ void Cross_product(string view_name, string table1_name, string table2_name){
 // Command Functions
 
 void Database::Close(string table_name){
-	
+	for (int i = 0; i<Tables.size();++i)
+		if (table_name == Tables[i].Get_name()){
+			Tables.erase(Tables.begin() + i);//Deletes index i begin() returns iterator
+			break;//make sure to quit iterating because we change tables vec
+		}
 }
 void Database::Exit(){
 
 }
 void Database::Write(string table_name){
-	//Table new_table(table_name);
-	//Tables.push_back(new_table);
-
+	Table my_table=Get_table(table_name);
+	ofstream out = ofstream((table_name+".db").c_str(), std::ofstream::out | std::ofstream::trunc);//trunc flag means content already in file will be deleted
+	out << my_table;//Writes table to output stream
 }
-void Database::Open(string file_name){
-
+void Database::Open(string table_name){
+	ifstream in = ifstream((table_name + ".db").c_str());
+	if (!in.is_open())
+		cerr << "could not open file" << table_name + ".db"<<endl;
+	else{
+		Table new_table = Table();
+		new_table.Read(in);
+		//TODO need to implement protection against duplicate tables of same name
+		Tables.push_back(new_table);
+	}
 }
 void Database::Show(string table_name){
 	Get_table(table_name).Pretty_print(cout); //Pretty print, prints things nicer in the console
