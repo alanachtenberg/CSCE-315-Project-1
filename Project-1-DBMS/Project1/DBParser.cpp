@@ -6,7 +6,7 @@ bool DBParser::program() {
 
 //unfinished
 bool DBParser::query() {
-
+	return false; //just to let me build for now
 }
 
 bool DBParser::command() {
@@ -185,17 +185,17 @@ bool DBParser::create_cmd() {
 
 //unfinished
 bool DBParser::update_cmd() {
-
+	return false;
 }
 
 //unfinished
 bool DBParser::insert_cmd() {
-
+	return false;
 }
 
 //unfinished
 bool DBParser::delete_cmd() {
-
+	return false;
 }
 
 //Data structures
@@ -295,7 +295,3 @@ bool DBParser::typed_attribute_list() {
 }
 
 //unfinished
-bool DBParser::typed_attribute_list() {
-
-	return false;
-}

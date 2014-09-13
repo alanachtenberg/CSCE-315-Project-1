@@ -38,7 +38,6 @@ class Attribute{
 		//Read and Write
 		istream& Read(istream& is);
 		ostream& Write(ostream& os);
-
 };
 
 #endif
