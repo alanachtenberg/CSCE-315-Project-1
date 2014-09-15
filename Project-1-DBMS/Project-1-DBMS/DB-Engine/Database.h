@@ -36,7 +36,7 @@ public:
 
 	// Query Functions
 	Table Select(string view_name, string in_table_name, string attribute_name, Token_Type comparison, string value);
-	void Project(string view_name, string in_table_name, Attribute attributes);
+	void Project(string view_name, string in_table_name, vector<string> attributes);
 	void Rename(string view_name, string in_table_name, Attribute attributes);
 	void Set_union(string view_name, string table1_name, string table2_name);
 	void Set_difference(string view_name, string table1_name, string table2_name);
