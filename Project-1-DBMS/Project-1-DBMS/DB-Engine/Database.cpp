@@ -43,6 +43,7 @@ void Database::Project(string view_name, string in_table_name, vector<string> at
 	new_table.Set_name(view_name);
 	new_table.Set_attributes(projected);
 }
+
 void Rename(string new_name, string old_name, Table table){
 	int num_attr;
 	num_attr = table.Get_width();       // Number of columns in table
