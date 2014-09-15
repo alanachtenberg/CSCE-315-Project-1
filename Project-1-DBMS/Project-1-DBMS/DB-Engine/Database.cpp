@@ -41,7 +41,9 @@ Table Database::Project(string view_name, string in_table_name, vector<string> a
 	new_table.Set_attributes(projected);
 	return new_table;
 }
-Table Database::Rename(string new_name, string old_name, Table table){
+Table Database::Rename(string new_name, string old_name, string in_table){
+	Table table = Get_table(in_table);
+	
 	int num_attr;
 	num_attr = table.Get_width();       // Number of columns in table
 	bool check = false;
@@ -56,6 +58,7 @@ Table Database::Rename(string new_name, string old_name, Table table){
 	if (!check){
 		cerr << "Error during Rename (could not find existing name)" << endl;
 	}
+	return table;
 }
 
 Table Database::Set_union(string view_name, string table1_name, string table2_name){
@@ -85,6 +88,7 @@ Table Database::Set_union(string view_name, string table1_name, string table2_na
 		if (!found)
 			new_table.Insert_row(row);
 	}
+	return new_table;
 }
 Table Database::Set_difference(string view_name, string table1_name, string table2_name){
 
@@ -106,14 +110,13 @@ Table Database::Set_difference(string view_name, string table1_name, string tabl
 	}
 	
 	for (int i = 0; i < table2.Get_max_height(); ++i){
-		bool found = false;
+		int new_table_height = new_table.Get_max_height();
 		vector<string> row = table2.Get_row(i);
-		for (int j = 0; j < new_table.Get_max_height(); ++j)
+		for (int j = 0; j < new_table_height; ++j)
 			if (row == new_table.Get_row(j))
-				found = true;
-		if (!found)
-			new_table.Insert_row(row);
+				new_table.Delete_row(j);
 	}
+	return new_table;
 }
 Table Database::Cross_product(string view_name, string table1_name, string table2_name){
 	Table my_table1 = Table(Get_table(table1_name));
