@@ -10,17 +10,36 @@ Database::~Database()
 {
 }
 
-
+vector<Table> Database::get_Tables(){
+	return Tables;
+}
 // Query Functions
-void Select(string view_name, string in_table_name, int row_index){
-
+//need someone to computer comparisons before they are sent to the select function
+//ie. some seperate operator functions we can pass into the select function
+void Database::Select(string view_name, string in_table_name, string attribute_name/*, condition function*/){
+	vector<string> temp_view_attributes;
+	temp_view_attributes.push_back(attribute_name);
+	//Table Temp_view_table(view_name, temp_view_attributes);
+	/*if ()
+	
+	else
+		throw runtime_error("Select: no such table name exists");
+		*/
 }
 void Project(string view_name, string in_table_name, Attribute attributes){
 
 }
-void Rename(string view_name, string in_table_name, Attribute attributes){
 
-}
+//work in progress, using only attributes [0] before we pass in multiple attributes to rename
+/*void Rename(string view_name, string in_table_name, Attribute attributes){
+	for (int i = 0; i < get_Tables.size(); i++){
+		for (int j = 0; j < get_Tables[i].Attributes.size(); j++){
+			if (get_Tables[i][j].Get_name() == attributes[0].Get_name()){
+				attributes[0].Set
+			}
+		}
+	}
+}*/
 void Set_union(string view_name, string table1_name, string table2_name){
 
 }
@@ -134,6 +153,9 @@ void Database::Delete(string table_name, string attribute_name ,Token_Type compa
 /*int Database::Get_attribute(TableType type, int table_index, string attribute_name){
 
 };*/
+//returns Tables vector
+
+
 void Database::Update_table_name(string new_name, string old_name){
 	bool found = false;
 	for (int i = 0; i < Tables.size(); ++i)

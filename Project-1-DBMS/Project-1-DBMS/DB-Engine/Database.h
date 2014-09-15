@@ -31,10 +31,11 @@ public:
 	Database();
 	~Database();
 
-	
+	//returns Tables vector
+	vector<Table> get_Tables();
 
 	// Query Functions
-	void Select(string view_name, string in_table_name, int row_index);
+	void Select(string view_name, string in_table_name, string attribute_name);
 	void Project(string view_name, string in_table_name, Attribute attributes);
 	void Rename(string view_name, string in_table_name, Attribute attributes);
 	void Set_union(string view_name, string table1_name, string table2_name);
@@ -54,6 +55,8 @@ public:
 	void Delete(string table_name, string attribute_name, Token_Type comparison, string value);//renamed remove to delete to match project requirements
 
 	// Utility Functions
+	
+	
 
 	//renames table with old_name to new_name
 	void Update_table_name(string new_name, string old_name);
