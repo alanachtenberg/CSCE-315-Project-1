@@ -68,8 +68,20 @@ void Database::Create(string table_name,vector<string> attribute_names, vector<s
 	//TODO need to implement protection for multiple tables of the same name
 	Tables.push_back(new_table);
 }
-void Database::Update(string relation_name, vector<string> attribute, vector<string> data, int row_index){
+void Database::Update(string table_name, vector<string> old_attributes, vector<string> new_values, string attribute_name, Token_Type comparison, string value){
+	if (old_attributes.size() != new_values.size())
+		cerr << "cant update, attribute list size does not match # of new values" << endl;
+	else{
+		Table my_table = Get_table(table_name);
+		Attribute comparison_attribute = my_table[attribute_name];
 
+		vector<int> row_indicies = Compare(comparison_attribute.Get_data(), comparison, value);
+
+		for (int i = 0; i < row_indicies.size(); ++i)
+			for (int j = 0; j < old_attributes.size(); ++j)
+				my_table[old_attributes[j]][row_indicies[i]]=new_values[j]; //old_attibutes[j] is attribute name, row_indicies[i] is the index of data to replace
+
+	}
 }
 void Database::Insert_tuple(string relation_name, vector<string> tuple){
 
@@ -111,7 +123,7 @@ void Database::Update_table_name(string new_name, string old_name){
 			found = true;
 		}
 	if (!found)
-		cerr << "Matching table not renaming therefore impossible\n";
+		cerr << "Matching table not found, renaming therefore impossible\n";
 }
 Table Database::Get_table(string table_name) const{
 	for (int i = 0; i < Tables.size(); i++){
@@ -123,7 +135,7 @@ Table Database::Get_table(string table_name) const{
 	return Table();//IF Table not found return default
 }
 
-//returns vector of ints=i where, values[i] comparison value evaluates to true
+//returns vector of row index where, (values[i] comparison value) evaluates to true
 vector<int> Database::Compare(vector<string> values, Token_Type comparison, string value){
 	vector<int> hits = vector<int>();//vector of indicies that return true for comparison
 	for (int i = 0; i < values.size(); ++i){	
