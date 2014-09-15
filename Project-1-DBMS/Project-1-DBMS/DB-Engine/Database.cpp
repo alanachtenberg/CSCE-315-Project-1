@@ -18,9 +18,6 @@ vector<Table> Database::get_Tables(){
 //ie. some seperate operator functions we can pass into the select function
 Table Database::Select(string view_name, string in_table_name, string attribute_name, Token_Type comparison, string value){
 	
-
-
-
 	Table my_table = Get_table(in_table_name);
 	Table new_table = Table(my_table);
 	new_table.Clear_attribute_data();
@@ -32,7 +29,7 @@ Table Database::Select(string view_name, string in_table_name, string attribute_
 	}
 	return new_table;
 }
-void Database::Project(string view_name, string in_table_name, vector<string> attributes){
+Table Database::Project(string view_name, string in_table_name, vector<string> attributes){
 	Table my_table = Get_table(in_table_name);
 	vector<Attribute> projected;
 	for (int i = 0; i < attributes.size(); i++){
@@ -42,8 +39,9 @@ void Database::Project(string view_name, string in_table_name, vector<string> at
 	Table new_table;
 	new_table.Set_name(view_name);
 	new_table.Set_attributes(projected);
+	return new_table;
 }
-void Database::Rename(string new_name, string old_name, Table table){
+Table Database::Rename(string new_name, string old_name, Table table){
 	int num_attr;
 	num_attr = table.Get_width();       // Number of columns in table
 	bool check = false;
@@ -60,7 +58,7 @@ void Database::Rename(string new_name, string old_name, Table table){
 	}
 }
 
-void Database::Set_union(string view_name, string table1_name, string table2_name){
+Table Database::Set_union(string view_name, string table1_name, string table2_name){
 
 	Table new_table = Get_table(table1_name);//new table includes table 1 values
 	Table table2 = Get_table(table2_name);
@@ -88,7 +86,7 @@ void Database::Set_union(string view_name, string table1_name, string table2_nam
 			new_table.Insert_row(row);
 	}
 }
-void Database::Set_difference(string view_name, string table1_name, string table2_name){
+Table Database::Set_difference(string view_name, string table1_name, string table2_name){
 
 	Table new_table = Get_table(table1_name); //new table includes table 1 values
 	Table table2 = Get_table(table2_name);
@@ -117,7 +115,11 @@ void Database::Set_difference(string view_name, string table1_name, string table
 			new_table.Insert_row(row);
 	}
 }
-void Database::Cross_product(string view_name, string table1_name, string table2_name){
+Table Database::Cross_product(string view_name, string table1_name, string table2_name){
+	Table my_table1 = Table(Get_table(table1_name));
+	Table my_table2 = Table(Get_table(table2_name));
+	Table new_table;
+
 
 }
 
