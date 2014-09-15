@@ -18,9 +18,6 @@ vector<Table> Database::get_Tables(){
 //ie. some seperate operator functions we can pass into the select function
 Table Database::Select(string view_name, string in_table_name, string attribute_name, Token_Type comparison, string value){
 	
-
-
-
 	Table my_table = Get_table(in_table_name);
 	Table new_table = Table(my_table);
 	new_table.Clear_attribute_data();
@@ -32,43 +29,21 @@ Table Database::Select(string view_name, string in_table_name, string attribute_
 	}
 	return new_table;
 }
-void Project(string view_name, string in_table_name, Attribute attributes){
 
-}
-void Rename(string new_name, string old_name, Table table){
-	int num_attr;
-	num_attr = table.Get_width();       // Number of columns in table
-	bool check = false;
+void Database::Project(string view_name, string in_table_name, vector<string> attributes){
+	Table my_table = Get_table(in_table_name);
+	vector<Attribute> projected;
+	for (int i = 0; i < attributes.size(); i++){
+		projected.push_back(my_table[attributes[i]]);
 
-	for (int i = 0; i < num_attr; ++i){
-		if (table[i].Get_name() == old_name){
-			cout << "Old name found" << endl;
-			table[i].Set_name(new_name);
-			check = true;
-		}
 	}
-	if (check != true){
-		cerr << "Error during Rename (could not find existing name)" << endl;
-	}
+	Table new_table;
+	new_table.Set_name(view_name);
+	new_table.Set_attributes(projected);
+
 }
 
 void Database::Set_union(string view_name, string table1_name, string table2_name){
-
-	Table new_table = Get_table(table1_name);//new table includes table 1 values
-	Table table2 = Get_table(table2_name);
-
-	// Check to see if each relation has same number of attributes
-	int num_attr1, num_attr2;
-	num_attr1 = new_table.Get_width();
-	num_attr2 = table2.Get_width();
-	if (num_attr1 != num_attr2)
-		cerr << "Error during set union (different number of attributes)" << endl;
-
-	// Check to make sure the attributes are the same in each table
-	for (int i = 0; i < num_attr1; ++i){
-		if (new_table[i].Get_name() != table2[i].Get_name())
-			cerr << " Error during set union (attributes do not match)" << endl;
-	}
 
 	for (int i = 0; i < table2.Get_max_height(); ++i){
 		bool found = false;
@@ -80,10 +55,13 @@ void Database::Set_union(string view_name, string table1_name, string table2_nam
 			new_table.Insert_row(row);
 	}
 }
-void Set_difference(string view_name, string table1_name, string table2_name){
+void Database::Set_difference(string view_name, string table1_name, string table2_name){
 
 }
-void Cross_product(string view_name, string table1_name, string table2_name){
+void Database::Cross_product(string view_name, string table1_name, string table2_name){
+	Table my_table1 = Get_table(table1_name);
+	Table my_table2 = Get_table(table2_name);
+
 
 }
 
@@ -250,6 +228,8 @@ vector<int> Database::Compare(vector<string> values, Token_Type comparison, stri
 	}
 	return hits;
 }
+
+//bool Compare_tuples()
 
 Table Database::operator[](int i) const{
 	if (i<0 || i>Tables.size()){
