@@ -32,8 +32,16 @@ Table Database::Select(string view_name, string in_table_name, string attribute_
 	}
 	return new_table;
 }
-void Project(string view_name, string in_table_name, Attribute attributes){
+void Database::Project(string view_name, string in_table_name, vector<string> attributes){
+	Table my_table = Get_table(in_table_name);
+	vector<Attribute> projected;
+	for (int i = 0; i < attributes.size(); i++){
+		projected.push_back(my_table[attributes[i]]);
 
+	}
+	Table new_table;
+	new_table.Set_name(view_name);
+	new_table.Set_attributes(projected);
 }
 void Rename(string new_name, string old_name, Table table){
 	int num_attr;
