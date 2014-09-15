@@ -43,16 +43,7 @@ void Database::Project(string view_name, string in_table_name, vector<string> at
 	
 }
 
-//work in progress, using only attributes [0] before we pass in multiple attributes to rename
-/*void Rename(string view_name, string in_table_name, Attribute attributes){
-	for (int i = 0; i < get_Tables.size(); i++){
-		for (int j = 0; j < get_Tables[i].Attributes.size(); j++){
-			if (get_Tables[i][j].Get_name() == attributes[0].Get_name()){
-				attributes[0].Set
-			}
-		}
-	}
-}*/
+
 void Database::Set_union(string view_name, string table1_name, string table2_name){
 
 }
