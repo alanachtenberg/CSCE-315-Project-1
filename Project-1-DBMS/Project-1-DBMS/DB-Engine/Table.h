@@ -33,6 +33,8 @@ public:
 
 	//Gets row of table by creating a new vector and added each individual attribute value
 	vector<string> Get_row(int index);
+	void Set_row(int row_index, vector<string> values);
+	void Delete_row(int row_index);
 	
 	//gets column by calling Get_data on appropriate attribute
 	vector<string> Get_column(int index);

@@ -1,7 +1,6 @@
 #include "Database.h"
 #include <fstream>
 #include <iterator>
-
 Database::Database()
 {
 }
@@ -42,7 +41,8 @@ void Database::Close(string table_name){
 		}
 }
 void Database::Exit(){
-
+	cout << "Closing DBMS" << endl;
+	std::exit(0); 
 }
 void Database::Write(string table_name){
 	Table my_table=Get_table(table_name);
@@ -77,9 +77,19 @@ void Database::Insert_tuple(string relation_name, vector<string> tuple){
 void Database::Insert_view(string relation_name, string view_name){
 
 }
-void Database::Delete(string table_name, int row_index){//renamed remove to delete to match project requirements
 
+//can only handle a single comparison for now, need to be able to handle Where x==a&&y==b
+void Database::Delete(string table_name, string attribute_name ,Token_Type comparison, string value){//renamed remove to delete to match project requirements
+	Table my_table = Get_table(table_name);
+	Attribute my_attribute = my_table[attribute_name];
+
+	vector<int> row_indicies=Compare(my_attribute.Get_data(), comparison, value);//Gets a vector of rows that match comparison
+
+	for (int i = 0; i < row_indicies.size(); ++i)
+		my_table.Delete_row(row_indicies[i]);
 }
+
+
 
 // Utility Functions
 //no need for get_table_index(int), when you can Get_table(string)
@@ -111,6 +121,44 @@ Table Database::Get_table(string table_name) const{
 	}
 	cerr << "Table NOT FOUND\n";
 	return Table();//IF Table not found return default
+}
+
+//returns vector of ints=i where, values[i] comparison value evaluates to true
+vector<int> Database::Compare(vector<string> values, Token_Type comparison, string value){
+	vector<int> hits = vector<int>();//vector of indicies that return true for comparison
+	for (int i = 0; i < values.size(); ++i){	
+		switch (comparison)//
+		{
+		case Token_Type::_equals:
+			if (values[i] == value)
+				hits.push_back(i);
+			break;
+		case Token_Type::_not_eq:
+			if (values[i] != value)
+				hits.push_back(i);
+			break;
+		case Token_Type::_less:
+			if (values[i] < value)
+				hits.push_back(i);
+			break;
+		case Token_Type::_less_eq:
+			if (values[i] <= value)
+				hits.push_back(i);
+			break;
+		case Token_Type::_greater:
+			if (values[i] > value)
+				hits.push_back(i);
+			break;
+		case Token_Type::_greater_eq:
+			if (values[i] >= value)
+				hits.push_back(i);
+			break;
+		default:
+			cerr << "error comparison type unknown"<<endl;
+				break;
+		}
+	}
+	return hits;
 }
 
 Table Database::operator[](int i) const{

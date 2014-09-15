@@ -11,6 +11,18 @@
 
 using namespace std;
 
+enum Token_Type {//TEMP borrowing from Token.h
+	_number, _lpar, _rpar, _plus, _minus, _multiply, _divide, _mod, _assign, _semicolon,
+	_quotation, _comma,
+	_equals, _not_eq, _less, _less_eq, _greater, _greater_eq,
+	_and, _or,
+	_create, _insert, _select, _show, _rename,
+	_into, _table, _values, _from, _primary, _key,
+	_relation, _write, _open, _close,
+	_integer, _varchar, _char, _float, _identifier,
+	_exit_program, _null
+};
+
 class Database
 {
 private:
@@ -39,11 +51,19 @@ public:
 	void Update(string table_name, vector<string> attribute, vector<string> data, int row_index);
 	void Insert_tuple(string relation_name, vector<string> tuple);
 	void Insert_view(string relation_name, string view_name);
-	void Delete(string table_name, int row_index);//renamed remove to delete to match project requirements
+	void Delete(string table_name, string attribute_name, Token_Type comparison, string value);//renamed remove to delete to match project requirements
 
 	// Utility Functions
+
+	//renames table with old_name to new_name
 	void Update_table_name(string new_name, string old_name);
+
+	//returns table by table name
 	Table Get_table(string table_name) const;
+
+	//returns vector of ints=i where, values[i] comparison value evaluates to true
+	//can only handle a single comparison for now, need to be able to handle more complex comparisons like x==a&&y==b
+	vector<int> Compare(vector<string> values, Token_Type comparison, string value);
 
 	//access operators one with int index or with string table name
 	Table operator[](int i) const;

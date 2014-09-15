@@ -73,6 +73,33 @@ vector<string> Table::Get_row(int index){
 		return new_vector;
 	}
 }
+
+void Table::Set_row(int row_index, vector<string> values){
+	if (row_index<0 || row_index>Get_max_height())
+		cerr << "cannot set row, index out of range" << endl;
+	else// using else prevents action in case of error
+	{
+		if (values.size() != Attributes.size())
+			cerr << "cannot set row, values vector does not match size of attributes vector" << endl;
+		else
+		{
+			for (int i = 0; i < values.size(); ++i)
+				Attributes[i][row_index] = values[i];//Attributes[i] gets column, [row_index] gets data within column
+		}
+	}
+}
+void Table::Delete_row(int row_index){
+	if (row_index<0 || row_index>Get_max_height())
+		cerr << "cannot delete row, index out of range" << endl;
+	else
+	{
+		for (int i = 0; i < Get_width(); ++i){
+			vector<string> values=Attributes[i].Get_data();
+			values.erase(values.begin() + row_index);//deletes data at row_index in vector
+		}
+	}
+}
+
 vector<string> Table::Get_column(int index){
 	if (index<0 || index>Get_width()){
 		cerr << "cannot get column, index out of range" << endl;
