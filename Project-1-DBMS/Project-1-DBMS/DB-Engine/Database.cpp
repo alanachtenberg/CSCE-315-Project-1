@@ -116,11 +116,41 @@ Table Database::Set_difference(string view_name, string table1_name, string tabl
 	}
 }
 Table Database::Cross_product(string view_name, string table1_name, string table2_name){
-	Table my_table1 = Table(Get_table(table1_name));
-	Table my_table2 = Table(Get_table(table2_name));
-	Table new_table;
+	//set up temporary data structures
+	Table my_table1 = Get_table(table1_name);
+	Table my_table2 = Get_table(table2_name);
+	int my_table1_height = my_table1.Get_max_height();
+	int my_table2_height = my_table2.Get_max_height();
+	int my_table1_width = my_table1.Get_width();
+	int my_table2_width = my_table2.Get_width();
+	vector<Attribute> new_attributes;
+	
+	//setting up new_table
+	for (int i = 0; i < my_table1_width; i++){
+		new_attributes.push_back(my_table1[i]);
+	}
+	for (int i = 0; i < my_table2_width; i++){
+		new_attributes.push_back(my_table2[i]);
+	}
+	for (int i = 0; i < new_attributes.size(); i++){
+		new_attributes[i].Clear_data();
+	}
 
+	Table new_table = Table(view_name, new_attributes);
 
+	//go through each row of my_table1, concatenate them with each row of my_table2
+	for (int i = 0; i < my_table1_height; i++){
+		vector<string>	row1 = my_table1.Get_row(i);
+		for (int j = 0; j < my_table2_height; ++j){
+			vector<string> row2 = my_table2.Get_row(j);
+			vector<string> new_row=row1;
+			for (int k = 0; k < row2.size(); ++k)
+				new_row.push_back(row2[k]);
+			new_table.Insert_row(new_row);
+		}
+
+		
+	}
 }
 
 // Command Functions
