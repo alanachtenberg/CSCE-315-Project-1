@@ -88,6 +88,17 @@ void Table::Set_row(int row_index, vector<string> values){
 		}
 	}
 }
+
+void Table::Insert_row(vector<string> values){
+	if (values.size() != Attributes.size())
+		cerr << "cannot insert row, values vector does not match size of attributes vector" << endl;
+	else
+	{
+		for (int i = 0; i < values.size(); ++i)
+			Attributes[i].Insert_value(values[i]);
+	}
+}
+
 void Table::Delete_row(int row_index){
 	if (row_index<0 || row_index>Get_max_height())
 		cerr << "cannot delete row, index out of range" << endl;
@@ -154,7 +165,7 @@ ostream& Table::Pretty_print(ostream& os){
 	return os;
 }
 
-Attribute Table::operator [](int i) const{//use of const prevents operator from modifying Table or calling non const functions
+Attribute& Table::operator [](int i){//use of const prevents operator from modifying Table or calling non const functions
 	if (i<0 || i>Attributes.size()){
 		cerr << "error out of range access of Attributes\n";
 			return Attribute();
@@ -164,7 +175,7 @@ Attribute Table::operator [](int i) const{//use of const prevents operator from 
 	}
 }
 
-Attribute Table::operator [](string attribute_name) const{
+Attribute& Table::operator [](string attribute_name){
 	for (int i = 0; i < Attributes.size(); ++i){//linear search for attribute with matching name
 		if (Attributes[i].Get_name() == attribute_name)
 			return Attributes[i];

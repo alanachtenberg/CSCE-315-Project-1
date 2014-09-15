@@ -68,6 +68,7 @@ void Database::Create(string table_name,vector<string> attribute_names, vector<s
 	//TODO need to implement protection for multiple tables of the same name
 	Tables.push_back(new_table);
 }
+
 void Database::Update(string table_name, vector<string> old_attributes, vector<string> new_values, string attribute_name, Token_Type comparison, string value){
 	if (old_attributes.size() != new_values.size())
 		cerr << "cant update, attribute list size does not match # of new values" << endl;
@@ -83,10 +84,28 @@ void Database::Update(string table_name, vector<string> old_attributes, vector<s
 
 	}
 }
-void Database::Insert_tuple(string relation_name, vector<string> tuple){
+void Database::Insert(string table_name, vector<string> tuple){
+	Table my_table = Get_table(table_name);
+	if (my_table.Get_width() != tuple.size())
+		cerr << "Cant insert Tuple, size of tuple does not match table" << endl;
+	else
+	{
+		for (int i = 0; i < my_table.Get_width(); ++i)
+			my_table.Insert_row(tuple);
+	}
 
 }
-void Database::Insert_view(string relation_name, string view_name){
+void Database::Insert(string dest_table, string source_table){
+	Table dest = Get_table(dest_table);
+	Table source = Get_table(source_table);
+	if (dest.Get_width() != source.Get_width())
+		cerr << "Can not insert from source table to dest table, table width does not match" << endl;
+	else
+	{
+		for (int i = 0; i < source.Get_max_height(); ++i)
+			dest.Insert_row(source.Get_row(i));
+	}
+
 
 }
 

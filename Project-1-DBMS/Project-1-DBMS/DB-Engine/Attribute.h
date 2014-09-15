@@ -33,13 +33,16 @@ class Attribute{
 		void Set_data( vector<string> data);
 
 		string Get_value(int index) const;
+		void Set_value(int index, string value);
+		void Insert_value(string value);
+
 		int Get_size() const;
 
 		//Read and Write
 		istream& Read(istream& is);
 		ostream& Write(ostream& os);
 
-		string operator [](int i);
+		string& operator [](int i);
 };
 
 

@@ -34,6 +34,7 @@ public:
 	//Gets row of table by creating a new vector and added each individual attribute value
 	vector<string> Get_row(int index);
 	void Set_row(int row_index, vector<string> values);
+	void Insert_row(vector<string> values);
 	void Delete_row(int row_index);
 	
 	//gets column by calling Get_data on appropriate attribute
@@ -47,10 +48,10 @@ public:
 	ostream& Pretty_print(ostream& os);
 	
 	//operator that returns the ith Attribute in Attributes vector
-	Attribute operator [] (int i) const;
+	Attribute& operator [] (int i);
 
 	//operator that returns the attribute with name matching attribute_name
-	Attribute operator [] (string attribute_name) const;
+	Attribute& operator [] (string attribute_name);
 
 };
 

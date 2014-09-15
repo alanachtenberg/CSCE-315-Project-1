@@ -54,6 +54,18 @@ string Attribute::Get_value(int index) const{
 		return Data[index];
 	return "default";
 }
+
+void Attribute::Set_value(int index, string value){
+	if (index<0 || index>Data.size())
+		cerr << "can not set attribute value, index out of range" << endl;
+	else
+		Data[index] = value;
+}
+void Attribute::Insert_value(string value){
+	Data.push_back(value);
+}
+
+
 int Attribute::Get_size() const{
 	return Data.size();
 }
@@ -81,10 +93,10 @@ ostream& Attribute::Write(ostream& os){
 	return os;
 }
 
-string Attribute::operator[](int i){
+string& Attribute::operator[](int i){
 	if (i<0 || i>Data.size()){
 		cerr << "Out of range access of data\n";
-		return "Default";
+		return string("Default");
 	}
 	else{
 		return Data[i];
