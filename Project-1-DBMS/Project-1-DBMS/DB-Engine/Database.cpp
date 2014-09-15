@@ -88,10 +88,10 @@ void Database::Set_union(string view_name, string table1_name, string table2_nam
 			new_table.Insert_row(row);
 	}
 }
-void Set_difference(string view_name, string table1_name, string table2_name){
+void Database::Set_difference(string view_name, string table1_name, string table2_name){
 
 }
-void Cross_product(string view_name, string table1_name, string table2_name){
+void Database::Cross_product(string view_name, string table1_name, string table2_name){
 
 }
 
