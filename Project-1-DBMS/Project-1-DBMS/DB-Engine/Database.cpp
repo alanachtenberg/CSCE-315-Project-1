@@ -40,9 +40,25 @@ void Database::Project(string view_name, string in_table_name, vector<string> at
 	Table new_table;
 	new_table.Set_name(view_name);
 	new_table.Set_attributes(projected);
-	
-}
 
+}
+void Rename(string new_name, string old_name, Table table){
+	int num_attr;
+	num_attr = table.Get_width();       // Number of columns in table
+	bool check = false;
+
+	for (int i = 0; i < num_attr; ++i){
+		if (table[i].Get_name() == old_name){
+			cout << "Old name found" << endl;
+			table[i].Set_name(new_name);
+			check = true;
+		}
+			}
+	if (check != true){
+		cerr << "Error during Rename (could not find existing name)" << endl;
+		}
+	}
+}
 
 void Database::Set_union(string view_name, string table1_name, string table2_name){
 
