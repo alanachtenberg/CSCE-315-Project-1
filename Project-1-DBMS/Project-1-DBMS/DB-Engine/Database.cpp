@@ -52,8 +52,33 @@ void Rename(string new_name, string old_name, Table table){
 	}
 }
 
-void Set_union(string view_name, string table1_name, string table2_name){
+void Database::Set_union(string view_name, string table1_name, string table2_name){
 
+	Table new_table = Get_table(table1_name);//new table includes table 1 values
+	Table table2 = Get_table(table2_name);
+
+	// Check to see if each relation has same number of attributes
+	int num_attr1, num_attr2;
+	num_attr1 = new_table.Get_width();
+	num_attr2 = table2.Get_width();
+	if (num_attr1 != num_attr2)
+		cerr << "Error during set union (different number of attributes)" << endl;
+
+	// Check to make sure the attributes are the same in each table
+	for (int i = 0; i < num_attr1; ++i){
+		if (new_table[i].Get_name() != table2[i].Get_name())
+			cerr << " Error during set union (attributes do not match)" << endl;
+	}
+
+	for (int i = 0; i < table2.Get_max_height(); ++i){
+		bool found = false;
+		vector<string> row = table2.Get_row(i);
+		for (int j = 0; j < new_table.Get_max_height(); ++j)
+			if (row == new_table.Get_row(j))
+				found = true;
+		if (!found)
+			new_table.Insert_row(row);
+	}
 }
 void Set_difference(string view_name, string table1_name, string table2_name){
 
