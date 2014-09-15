@@ -35,17 +35,23 @@ Table Database::Select(string view_name, string in_table_name, string attribute_
 void Project(string view_name, string in_table_name, Attribute attributes){
 
 }
+void Rename(string new_name, string old_name, Table table){
+	int num_attr;
+	num_attr = table.Get_width();       // Number of columns in table
+	bool check = false;
 
-//work in progress, using only attributes [0] before we pass in multiple attributes to rename
-/*void Rename(string view_name, string in_table_name, Attribute attributes){
-	for (int i = 0; i < get_Tables.size(); i++){
-		for (int j = 0; j < get_Tables[i].Attributes.size(); j++){
-			if (get_Tables[i][j].Get_name() == attributes[0].Get_name()){
-				attributes[0].Set
-			}
+	for (int i = 0; i < num_attr; ++i){
+		if (table[i].Get_name() == old_name){
+			cout << "Old name found" << endl;
+			table[i].Set_name(new_name);
+			check = true;
 		}
 	}
-}*/
+	if (check != true){
+		cerr << "Error during Rename (could not find existing name)" << endl;
+	}
+}
+
 void Set_union(string view_name, string table1_name, string table2_name){
 
 }
