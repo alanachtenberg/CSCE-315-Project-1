@@ -49,6 +49,12 @@ void Table::Set_attributes(vector<Attribute> attributes){
 	Attributes = attributes;
 }
 
+void Table::Clear_attribute_data(){
+	for (int i = 0; i < Get_width(); i++){
+		Attributes[i].Clear_data();
+	}
+}
+
 int Table::Get_width() const{
 	return Attributes.size();
 }

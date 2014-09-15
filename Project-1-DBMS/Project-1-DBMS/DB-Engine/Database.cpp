@@ -16,15 +16,21 @@ vector<Table> Database::get_Tables(){
 // Query Functions
 //need someone to computer comparisons before they are sent to the select function
 //ie. some seperate operator functions we can pass into the select function
-void Database::Select(string view_name, string in_table_name, string attribute_name/*, condition function*/){
-	vector<string> temp_view_attributes;
-	temp_view_attributes.push_back(attribute_name);
-	//Table Temp_view_table(view_name, temp_view_attributes);
-	/*if ()
+Table Database::Select(string view_name, string in_table_name, string attribute_name, Token_Type comparison, string value){
 	
-	else
-		throw runtime_error("Select: no such table name exists");
-		*/
+
+
+
+	Table my_table = Get_table(in_table_name);
+	Table new_table = Table(my_table);
+	new_table.Clear_attribute_data();
+
+	Attribute my_attribute = my_table[attribute_name];
+	vector<int> row_indicies = Compare(my_attribute.Get_data(), comparison, value);//Gets a vector of rows that match comparison
+	for (unsigned int i = 0; i < row_indicies.size(); i++){
+		new_table.Insert_row(my_table.Get_row(row_indicies[i]));
+	}
+	return new_table;
 }
 void Project(string view_name, string in_table_name, Attribute attributes){
 

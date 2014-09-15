@@ -21,14 +21,16 @@ class Attribute{
 		Attribute(const Attribute& attribute);
 		//Copy Assignment operator
 		Attribute& operator = (const Attribute& attribute);
-
+		
 		//Getters and Setters
+		
 		string	Get_name() const;
 		void  Set_name(string name);
 
 		string  Get_vartype() const;
 		void  Set_vartype(string vartype);
-
+		
+		void Clear_data();
 		vector<string> Get_data() const;
 		void Set_data( vector<string> data);
 

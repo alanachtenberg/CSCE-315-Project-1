@@ -26,7 +26,7 @@ public:
 	void Set_name(string name);
 	vector<Attribute> Get_attributes() const;
 	void Set_attributes(vector<Attribute> attributes);
-
+	void Clear_attribute_data();
 	//Utility functions
 	int Get_width() const;
 	int Get_max_height() const;

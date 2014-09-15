@@ -35,7 +35,7 @@ public:
 	vector<Table> get_Tables();
 
 	// Query Functions
-	void Select(string view_name, string in_table_name, string attribute_name);
+	Table Select(string view_name, string in_table_name, string attribute_name, Token_Type comparison, string value);
 	void Project(string view_name, string in_table_name, Attribute attributes);
 	void Rename(string view_name, string in_table_name, Attribute attributes);
 	void Set_union(string view_name, string table1_name, string table2_name);

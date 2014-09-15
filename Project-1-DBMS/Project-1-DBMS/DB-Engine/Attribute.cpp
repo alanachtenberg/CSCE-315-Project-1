@@ -41,6 +41,10 @@ void  Attribute::Set_vartype(string vartype){
 	VarType = vartype;
 }
 
+void Attribute::Clear_data(){
+	Data.clear();
+}
+
 vector<string> Attribute::Get_data() const{
 	return Data;
 }
