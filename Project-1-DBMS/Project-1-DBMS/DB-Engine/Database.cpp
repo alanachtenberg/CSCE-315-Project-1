@@ -151,9 +151,8 @@ Table Database::Cross_product(string view_name, string table1_name, string table
 				new_row.push_back(row2[k]);
 			new_table.Insert_row(new_row);
 		}
-
-		
 	}
+	return new_table;
 }
 
 // Command Functions
