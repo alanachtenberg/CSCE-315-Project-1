@@ -89,6 +89,7 @@ Table Database::Set_union(string view_name, string table1_name, string table2_na
 		if (!found)
 			new_table.Insert_row(row);
 	}
+	new_table.Set_name(view_name);//names new table
 	return new_table;
 }
 Table Database::Set_difference(string view_name, string table1_name, string table2_name){
@@ -130,7 +131,7 @@ Table Database::Set_difference(string view_name, string table1_name, string tabl
 		if (!found)
 			new_table.Insert_row(row);
 	}
-	
+	new_table.Set_name(view_name);//names new table
 	return new_table;
 }
 Table Database::Cross_product(string view_name, string table1_name, string table2_name){
