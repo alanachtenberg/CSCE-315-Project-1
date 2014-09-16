@@ -11,8 +11,27 @@ int main(){
 	db.Insert("People", vector < string > {"alan", "21", "broke cs student"});
 	db.Insert("People", vector < string > {"jacob", "21", "Napa flats"});
 	db.Insert("People", vector < string > {"robby", "21", "Hockey baller"});
-	db.Insert("People", vector < string > {"casey", "21", "not broke cs student"});
+	db.Insert("People", vector < string > {"casey", "21", "notbroke cs student"});
+
 	db.Show("People");
 	db.Write("People");
+	db.Close("People");
+	db.Show("People");
+	db.Open("People");
+	db.Insert("People", vector < string > {"new entry", "18", "professional fish"});
+	db.Show("People");
+	
+	db.Create("cs_students", vector<string>{ "name", "age", "occupation" }, vector<string>{ "VARCHAR(10)", "INTEGER", "VARCHAR(64)" }, vector<string>{"name"});
+	db.Insert("cs_students", db.Select("selection", "People", "age", Token_Type::_equals, "21"));
+
+	db.Show("cs_students");
+
+	db.Delete("cs_students", "name", Token_Type::_not_eq, "blank");//deletes all entries where name!="blank"
+	db.Show("cs_students");
+
+	db.Insert("cs_students",db.Select("selection","People","name",Token_Type::_equals,"alan"));
+	db.Insert("cs_students", db.Select("selection", "People", "name", Token_Type::_equals, "casey"));
+	db.Show("cs_students");
+
 	return 0;
 }

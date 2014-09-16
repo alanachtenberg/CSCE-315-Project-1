@@ -116,6 +116,7 @@ void Table::Delete_row(int row_index){
 		for (int i = 0; i < Get_width(); ++i){
 			vector<string> values=Attributes[i].Get_data();
 			values.erase(values.begin() + row_index);//deletes data at row_index in vector
+			Attributes[i].Set_data(values); //writes back new vector
 		}
 	}
 }
@@ -171,6 +172,7 @@ ostream& Table::Pretty_print(ostream& os){
 		}
 		os << endl;
 	}
+	os << endl;
 	return os;
 }
 

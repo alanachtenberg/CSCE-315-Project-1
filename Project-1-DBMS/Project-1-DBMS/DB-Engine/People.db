@@ -1,11 +1,11 @@
 People
 name
 VARCHAR(10)
-ENDLIST;
+alan;jacob;robby;casey;ENDLIST;
 age
 INTEGER
-ENDLIST;
+21;21;21;21;ENDLIST;
 occupation
 VARCHAR(64)
-ENDLIST;
+broke cs student;Napa flats;Hockey baller;notbroke cs student;ENDLIST;
 ENDTABLE

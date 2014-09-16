@@ -193,7 +193,11 @@ void Database::Open(string table_name){
 }
 //For showing table in database
 void Database::Show(string table_name){
-	Get_table(table_name).Pretty_print(cout); //Pretty print, prints things nicer in the console
+	Table my_table = Get_table(table_name);
+	if (my_table.Get_name() != "DefaultTableName")//check to see if get_table succeded
+		my_table.Pretty_print(cout); //Pretty print, prints things nicer in the console
+	else
+		cout << table_name << " is not open in database\n";
 }
 //For showing any table
 void Database::Show(Table table){
@@ -230,9 +234,8 @@ void Database::Insert(string table_name, vector<string> tuple){
 	}
 	Set_table(my_table);//Updates tables vec
 }
-void Database::Insert(string dest_table, string source_table){
+void Database::Insert(string dest_table, Table source){
 	Table dest = Get_table(dest_table);
-	Table source = Get_table(source_table);
 	if (dest.Get_width() != source.Get_width())
 		cerr << "Can not insert from source table to dest table, table width does not match" << endl;
 	else
@@ -241,6 +244,7 @@ void Database::Insert(string dest_table, string source_table){
 			dest.Insert_row(source.Get_row(i));
 	}
 
+	Set_table(dest);//Updates tables vec
 
 }
 
@@ -252,7 +256,9 @@ void Database::Delete(string table_name, string attribute_name ,Token_Type compa
 	vector<int> row_indicies=Compare(my_attribute.Get_data(), comparison, value);//Gets a vector of rows that match comparison
 
 	for (int i = 0; i < row_indicies.size(); ++i)
-		my_table.Delete_row(row_indicies[i]);
+		my_table.Delete_row(row_indicies[i]-i);//minus i because every time you delete a row there is one less in the vector
+	//ex. delete 2 4 6 becomes delete 2, delete 3, delete 4
+	Set_table(my_table);//update tables vec
 }
 
 
