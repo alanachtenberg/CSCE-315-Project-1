@@ -27,6 +27,7 @@ Table Database::Select(string view_name, string in_table_name, string attribute_
 	for (unsigned int i = 0; i < row_indicies.size(); i++){
 		new_table.Insert_row(my_table.Get_row(row_indicies[i]));
 	}
+	new_table.Set_name(view_name);
 	return new_table;
 }
 Table Database::Project(string view_name, string in_table_name, vector<string> attributes){
