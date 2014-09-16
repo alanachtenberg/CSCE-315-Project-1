@@ -1,5 +1,6 @@
 #include "DBParser.h"
 #include <iostream>
+#include <fstream>
 
 using namespace std;
 
@@ -9,6 +10,35 @@ bool DBParser::execute_query(string query) {
 	bool valid = program();
 	delete ts;
 	return valid;
+}
+
+void DBParser::execute_file(string filename) {
+	ifstream ifs(filename);
+	string line;
+	int valid = 0, invalid = 0, line_no = 0;
+
+	while (getline(ifs, line)) {
+		line_no++;
+		if (line.size() > 0) {
+			try {
+				bool works = execute_query(line);
+
+
+				if (works) {
+					valid++;
+				}
+				else {
+					cout << "syntax error on line " << line_no << ":\n" << line << "\n\n";
+					invalid++;
+				}
+			}
+			catch (...) {
+				invalid++;
+				cerr << "syntax error\n";
+			}
+		}
+	}
+	cout << "\n" << valid << " valid entries\n" << invalid << " invalid entries\n";
 }
 
 //entry point 
@@ -86,22 +116,8 @@ bool DBParser::selection() {
 				Token rpar_token = ts->get();
 				if (rpar_token.get_type() == _rpar) {
 					return atomic_expr();
-				}
-				else {
-					ts->unget(rpar_token);
-					ts->unget(lpar_token);
-					ts->unget(select_token);
-					return false;
-				}
-			}
-			else {
-				return false;
-			}
-		}
-		else {
-			ts->unget(lpar_token);
-			ts->unget(select_token);
-			return false;
+				}				
+			}	
 		}
 	}
 	else {
@@ -137,28 +153,14 @@ bool DBParser::projection() {
 bool DBParser::rename() {
 	Token rename_token = ts->get();
 	if (rename_token.get_type() == _rename) {
-		Token lpar_token = ts->get();
-		if (lpar_token.get_type() == _lpar) {
+		if (ts->get().get_type() == _lpar) {
 			if (attribute_list()) {
-				Token rpar_token = ts->get();
-				if (rpar_token.get_type() == _rpar) {
-					return atomic_expr();
+				if (ts->get().get_type() == _rpar) {
+					if (atomic_expr()) {
+						return true;
+					}
 				}
-				else {
-					ts->unget(rpar_token);
-					ts->unget(lpar_token);
-					ts->unget(rename_token);
-					return false;
-				}
-			}
-			else {
-				return false;
-			}
-		}
-		else {
-			ts->unget(lpar_token);
-			ts->unget(rename_token);
-			return false;
+			}			
 		}
 	}
 	else {
@@ -204,14 +206,12 @@ bool DBParser::difference() {
 //product ::= atomic_expr * atomic_expr 
 bool DBParser::product() {
 	if (atomic_expr()) {
-		Token multiply_token = ts->get();
-		if (multiply_token.get_type() == _multiply) {
-			return atomic_expr();
+		if (ts->get().get_type() == _multiply) {
+			if (atomic_expr()) {
+				return true;
+			}
 		}
-		else {
-			ts->unget(multiply_token);
-			return false;
-		}
+		return false;
 	}
 	else {
 		return false;
@@ -483,7 +483,56 @@ bool DBParser::update_cmd() {
 
 //insert_cmd :: = INSERT INTO relation_name VALUES FROM(literal {, literal }) | INSERT INTO relation_name VALUES FROM RELATION expr
 bool DBParser::insert_cmd() {
-	return false;
+	Token insert_token = ts->get();
+	if (insert_token.get_type() == _insert) {
+		if (ts->get().get_type() == _into) {
+			if (relation_name()) {
+				if (ts->get().get_type() == _values) {
+					if (ts->get().get_type() == _from) {
+																		
+						//VALUES FROM(literal {, literal })
+						Token lpar_token = ts->get();
+						if (lpar_token.get_type() == _lpar) {
+
+							if (literal()) {
+								while (true) {
+									Token comma_token = ts->get();
+									if (comma_token.get_type() == _comma) {
+										if (literal()) continue;
+										else {
+											ts->unget(comma_token);
+											return false;
+										}
+									}
+									else {
+										ts->unget(comma_token);
+										
+										if (ts->get().get_type() == _rpar) {
+											return true;
+										}
+									}
+								}
+							}
+						}
+
+						//VALUES FROM RELATION expr
+						else if (lpar_token.get_type() == _relation) {
+							if (expr()) {
+								return true;
+							}							
+						}
+
+					}
+				}
+			}
+		}
+
+		return false;
+	}
+	else {
+		ts->unget(insert_token);
+		return false;
+	}
 }
 
 //delete_cmd ::= DELETE FROM relation_name WHERE condition

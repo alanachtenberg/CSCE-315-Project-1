@@ -9,6 +9,7 @@ public:
 	DBParser() {};
 
 	bool execute_query(std::string query);
+	void execute_file(std::string filename);
 	
 
 private:
