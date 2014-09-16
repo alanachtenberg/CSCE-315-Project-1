@@ -6,7 +6,7 @@
 
 using namespace std;
 
-int test_case = 1;
+int test_case = 2;
 
 void test_tokenizer() {
 	ifstream ifs("test.txt");
@@ -14,32 +14,34 @@ void test_tokenizer() {
 	int valid = 0, invalid = 0;
 
 	while (getline(ifs, line)) {
-		try {
-			Token_stream ts(line);
+		if (line.size() > 0) {
+			try {
+				Token_stream ts(line);
 
-			Token token = ts.get();
-			cout << line << "\n";
-			cout << token.get_type_name() << " ";
-
-			while (true) {
-				if (token.get_type() == _semicolon) {
-					break;
-				}
-				token = ts.get();
+				Token token = ts.get();
+				cout << line << "\n";
 				cout << token.get_type_name() << " ";
-				if (token.get_type() == _varchar) {
-					cout << token.get_value() << " ";
-				}
-				cout << "\n";
-			}
-			cout << "\n\n";
 
-		}
-		catch (const exception& e) {
-			cerr << "Exception: " << e.what() << "\n";
-		}
-		catch (...) {
-			cerr << "Something went horribly wrong and you are a horrible person\n";
+				while (true) {
+					if (token.get_type() == _semicolon) {
+						break;
+					}
+					token = ts.get();
+					cout << token.get_type_name() << " ";
+					if (token.get_type() == _varchar) {
+						cout << token.get_value() << " ";
+					}
+					cout << "\n";
+				}
+				cout << "\n\n";
+
+			}
+			catch (const exception& e) {
+				cerr << "Exception: " << e.what() << "\n";
+			}
+			catch (...) {
+				cerr << "Something went horribly wrong and you are a horrible person\n";
+			}
 		}
 	} 
 }

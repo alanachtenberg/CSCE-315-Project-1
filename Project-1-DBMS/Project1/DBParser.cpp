@@ -63,30 +63,29 @@ bool DBParser::query() {
 			if (expr()) {
 				return true;
 			}
-			else return false;
 		}
 		else {
 			ts->unget(assignment_token);
-			return false;
 		}
 	}
-	else return false;
+
+	return false;
 }
 
 //command ::= (open-cmd | close-cmd | write-cmd | exit-cmd | show-cmd | create-cmd | update-cmd | insert-cmd | delete-cmd);
 bool DBParser::command() {
 	bool value;
 
-	if (open_cmd()) { value = true; }
-	else if (close_cmd()) { value = true; }
-	else if (write_cmd()) { value = true; }
-	else if (exit_cmd()) { value = true; }
-	else if (show_cmd()) { value = true; }
-	else if (create_cmd()) { value = true; }
-	else if (update_cmd()) { value = true; }
-	else if (insert_cmd()) { value = true; }
-	else if (delete_cmd()) { value = true; }
-	else value = false;
+		 if (open_cmd())	value = true; 
+	else if (close_cmd())	value = true; 
+	else if (write_cmd())	value = true; 
+	else if (exit_cmd())	value = true; 
+	else if (show_cmd())	value = true; 
+	else if (create_cmd())	value = true; 
+	else if (update_cmd())	value = true; 
+	else if (insert_cmd())	value = true; 
+	else if (delete_cmd())	value = true; 
+	else					value = false;
 	
 	if (value) {
 		Token semicolon_token = ts->get();
@@ -110,27 +109,27 @@ bool DBParser::command() {
 bool DBParser::selection() {
 	Token select_token = ts->get();
 	if (select_token.get_type() == _select) {
-		Token lpar_token = ts->get();
-		if (lpar_token.get_type() == _lpar) {
+		if (ts->get().get_type() == _lpar) {
 			if (condition()) {
-				Token rpar_token = ts->get();
-				if (rpar_token.get_type() == _rpar) {
-					return atomic_expr();
-				}				
-			}	
+				if (ts->get().get_type() == _rpar) {
+					if (atomic_expr()) {
+						return true;
+					}
+				}
+			}
 		}
 	}
 	else {
 		ts->unget(select_token);
-		return false;
 	}
+
+	return false;
 }
 
 //projection ::= project (attribute_list) atomic_expr
 bool DBParser::projection() {
 	Token project_token = ts->get();
 	if (project_token.get_type() == _project) {
-
 		if (ts->get().get_type() == _lpar) {
 			if (attribute_list()) {
 				if (ts->get().get_type() == _rpar) {
@@ -140,13 +139,12 @@ bool DBParser::projection() {
 				}
 			}			
 		}
-		return false;
-
 	}
 	else {
 		ts->unget(project_token);
-		return false;
 	}
+
+	return false;
 }
 
 //renaming ::= rename (attribute_list) atomic_expr
@@ -165,57 +163,9 @@ bool DBParser::rename() {
 	}
 	else {
 		ts->unget(rename_token);
-		return false;
 	}
-}
 
-//union ::= atomic_expr + atomic_expr
-bool DBParser::set_union() {
-	if (atomic_expr()) {
-		Token plus_token = ts->get();
-		if (plus_token.get_type() == _plus) {
-			return atomic_expr();
-		}
-		else {
-			ts->unget(plus_token);
-			return false;
-		}
-	}
-	else {
-		return false;
-	}
-}
-
-//difference ::= atomic_expr - atomic_expr
-bool DBParser::difference() {
-	if (atomic_expr()) {
-		Token minus_token = ts->get();
-		if (minus_token.get_type() == _minus) {
-			return atomic_expr();
-		}
-		else {
-			ts->unget(minus_token);
-			return false;
-		}
-	}
-	else {
-		return false;
-	}
-}
-
-//product ::= atomic_expr * atomic_expr 
-bool DBParser::product() {
-	if (atomic_expr()) {
-		if (ts->get().get_type() == _multiply) {
-			if (atomic_expr()) {
-				return true;
-			}
-		}
-		return false;
-	}
-	else {
-		return false;
-	}
+	return false;
 }
 
 //condition ::= conjunction {|| conjunction}
@@ -236,9 +186,8 @@ bool DBParser::condition() {
 			}
 		}
 	}
-	else {
-		return false;
-	}
+	
+	return false;
 }
 
 //conjunction ::= comparison {&& comparison}
@@ -259,9 +208,8 @@ bool DBParser::conjunction() {
 			}
 		}
 	}
-	else {
-		return false;
-	}
+	
+	return false;
 }
 
 //comparison ::= operand op operand | (condition)
@@ -271,10 +219,6 @@ bool DBParser::comparison() {
 			if (operand()) {
 				return true;
 			}
-			else return false;
-		}
-		else {
-			return false;
 		}
 	}
 	else {
@@ -284,19 +228,14 @@ bool DBParser::comparison() {
 				Token rpar_token = ts->get();
 				if (rpar_token.get_type() == _rpar) {
 					return true;
-				}
-				else {
-					ts->unget(rpar_token);
-					ts->unget(lpar_token);
-					return false;
-				}
+				}	
 			}
 		}
 		else {
 			ts->unget(lpar_token);
-			return false;
 		}
 	}
+
 	return false;
 }
 
@@ -326,9 +265,8 @@ bool DBParser::op() {
 bool DBParser::operand() {
 	if (attribute_name())
 		return true;
-	else if (literal()) {
+	else if (literal()) 
 		return true;
-	}
 	else return false;
 }
 
@@ -340,36 +278,45 @@ bool DBParser::operand() {
 bool DBParser::open_cmd() {
 	Token open_token = ts->get();
 	if (open_token.get_type() == _open) {
-		return relation_name();
+		if (relation_name()) {
+			return true;
+		}
 	}
 	else {
 		ts->unget(open_token);
-		return false;
 	}
+
+	return false;
 }
 
 //close_cmd ::== CLOSE relation_name 
 bool DBParser::close_cmd() {
 	Token close_token = ts->get();
 	if (close_token.get_type() == _close) {
-		return relation_name();
+		if (relation_name()) {
+			return true;
+		}
 	}
 	else {
 		ts->unget(close_token);
-		return false;
 	}
+
+	return false;
 }
 
 //write_cmd ::== WRITE relation_name 
 bool DBParser::write_cmd() {
 	Token write_token = ts->get();
 	if (write_token.get_type() == _write) {
-		return relation_name();
+		if (relation_name()) {
+			return true;
+		}
 	}
 	else {
 		ts->unget(write_token);
-		return false;
 	}
+
+	return false;
 }
 
 //exit_cmd ::== EXIT 
@@ -380,8 +327,9 @@ bool DBParser::exit_cmd() {
 	}
 	else {
 		ts->unget(exit_token);
-		return false;
 	}
+
+	return false;
 }
 
 //show-cmd ::== SHOW atomic_expr 
@@ -391,12 +339,12 @@ bool DBParser::show_cmd() {
 		if (atomic_expr()) {
 			return true;
 		}
-		else return false;
 	}
 	else {
 		ts->unget(show_token);
-		return false;
 	}
+
+	return false;
 }
 
 //create-cmd ::= CREATE TABLE relation_name (typed_attribute_list) PRIMARY KEY (attribute_list)
@@ -428,12 +376,12 @@ bool DBParser::create_cmd() {
 				}
 			}
 		}
-		return false;
 	}
 	else {
 		ts->unget(create_token);
-		return false;
 	}
+
+	return false;
 }
 
 //update_cmd ::= UPDATE relation_name SET attribute_name = literal { , attribute_name = literal } WHERE condition 
@@ -473,12 +421,12 @@ bool DBParser::update_cmd() {
 				}
 			}
 		}
-		return false;
 	}
 	else {
 		ts->unget(update_token);
-		return false;
 	}
+
+	return false;
 }
 
 //insert_cmd :: = INSERT INTO relation_name VALUES FROM(literal {, literal }) | INSERT INTO relation_name VALUES FROM RELATION expr
@@ -501,7 +449,7 @@ bool DBParser::insert_cmd() {
 										if (literal()) continue;
 										else {
 											ts->unget(comma_token);
-											return false;
+											break;
 										}
 									}
 									else {
@@ -527,55 +475,33 @@ bool DBParser::insert_cmd() {
 			}
 		}
 
-		return false;
 	}
 	else {
 		ts->unget(insert_token);
-		return false;
 	}
+
+	return false;
 }
 
 //delete_cmd ::= DELETE FROM relation_name WHERE condition
 bool DBParser::delete_cmd() {
 	Token delete_token = ts->get();
 	if (delete_token.get_type() == _delete) {
-		Token from_token = ts->get();
-		if (from_token.get_type() == _from) {
+		if (ts->get().get_type() == _from) {
 			if (relation_name()) {
-				Token where_token = ts->get();
-				if (where_token.get_type() == _where) {
+				if (ts->get().get_type() == _where) {
 					if (condition()) {
 						return true;
 					}
-					else {
-						ts->unget(where_token);
-						ts->unget(from_token);
-						ts->unget(delete_token);
-						return false;
-					}
-				}
-				else {
-					ts->unget(from_token);
-					ts->unget(delete_token);
-					return false;
 				}
 			}
-			else {
-				ts->unget(from_token);
-				ts->unget(delete_token);
-				return false;
-			}
-		}
-		else {
-			ts->unget(from_token);
-			ts->unget(delete_token);
-			return false;
 		}
 	}
 	else {
 		ts->unget(delete_token);
-		return false;
 	}
+
+	return false;
 }
 
 //Data structures
@@ -589,28 +515,49 @@ bool DBParser::relation_name() {
 	}
 	else {
 		ts->unget(relation_name_token);
-		return false;
 	}
+
+	return false;
 }
 
+//union ::= atomic_expr + atomic_expr
+//difference ::= atomic_expr - atomic_expr
+//product ::= atomic_expr * atomic_expr 
 //expr ::= atomic-expr | selection | projection | renaming | union | difference | product
 bool DBParser::expr() {
-	if (atomic_expr())
-		return true;
-	else if (selection())
+	if (selection())
 		return true;
 	else if (projection())
 		return true;
 	else if (rename())
 		return true;
-	else if (set_union())
-		return true;
-	else if (difference())
-		return true;
-	else if (product())
-		return true;
-	else 
+	else if (atomic_expr()) {
+		Token expr_token = ts->get();
+		if (expr_token.get_type() == _plus) {
+			if (atomic_expr()) {
+				return true;
+			}
+			else return false;
+		}
+		else if (expr_token.get_type() == _minus) {
+			if (atomic_expr()) {
+				return true;
+			}
+			else return false;
+		}
+		else if (expr_token.get_type() == _multiply) {
+			if (atomic_expr()) {
+				return true;
+			}
+			else return false;
+		}
+		else {
+			return true;
+		}
+	}
+	else {
 		return false;
+	}
 }
 
 //atomic_expr ::= relation_name | (expr)
@@ -622,20 +569,17 @@ bool DBParser::atomic_expr() {
 			if (rpar_token.get_type() == _rpar) {
 				return true;
 			}
-			else {
-				ts->unget(rpar_token);
-				ts->unget(lpar_token);
-				return false;
-			}
 		}
-		else {
-			ts->unget(lpar_token);
-			return false;
-		}
+		return false;
 	}
 	else {
 		ts->unget(lpar_token);
-		return relation_name();
+		if (relation_name()) {
+			return true;
+		}
+		else {
+			return false;
+		}
 	}
 }
 
@@ -654,18 +598,15 @@ bool DBParser::attribute_name() {
 //type ::= VARCHAR(integer) | INTEGER
 bool DBParser::type() {
 	Token type_token = ts->get();
-	if (type_token.get_type() == _int_type) {
+	switch(type_token.get_type()) {
+	case _int_type:
 		return true;
-	}
-	else if (type_token.get_type() == _float_type) {
+	case _float_type:
 		return true;
-	}
-	else if (type_token.get_type() == _varchar) {
+	case _varchar:
 		return true;
-	}
-	else {
+	default:
 		ts->unget(type_token);
-
 		return false;
 	}
 }
@@ -711,9 +652,8 @@ bool DBParser::attribute_list() {
 			}
 		}
 	}
-	else {
-		return false;
-	}
+	
+	return false;
 }
 
 //literal ::= "identifier" | integer | float
