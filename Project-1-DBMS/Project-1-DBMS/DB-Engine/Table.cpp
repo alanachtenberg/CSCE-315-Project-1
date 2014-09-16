@@ -160,7 +160,8 @@ ostream& Table::Write(ostream& os){
 }
 
 ostream& Table::Pretty_print(ostream& os){
-	os << Name << endl << endl;
+	os << "------------------";
+	os << Name << "------------------" << endl << endl;
 	for (int i = 0; i < Get_width(); ++i){
 		os << Attributes[i].Get_name() << right << setw(20);
 	}
@@ -172,7 +173,7 @@ ostream& Table::Pretty_print(ostream& os){
 		}
 		os << endl;
 	}
-	os << endl;
+	os << "------------------------------------" << endl;
 	return os;
 }
 

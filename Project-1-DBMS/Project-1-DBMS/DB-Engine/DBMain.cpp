@@ -33,5 +33,9 @@ int main(){
 	db.Insert("cs_students", db.Select("selection", "People", "name", Token_Type::_equals, "casey"));
 	db.Show("cs_students");
 
+	db.Show(db.Set_union("all", "cs_students", "People"));
+	db.Show(db.Set_difference("some", "cs_students", "People"));
+	db.Show(db.Set_difference("some", "People", "cs_students"));
+
 	return 0;
 }

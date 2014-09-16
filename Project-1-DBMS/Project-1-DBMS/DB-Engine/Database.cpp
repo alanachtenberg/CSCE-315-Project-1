@@ -92,30 +92,44 @@ Table Database::Set_union(string view_name, string table1_name, string table2_na
 }
 Table Database::Set_difference(string view_name, string table1_name, string table2_name){
 
-	Table new_table = Get_table(table1_name); //new table includes table 1 values
+	Table table1 = Get_table(table1_name); //new table includes table 1 values
 	Table table2 = Get_table(table2_name);
 
 	// Checking to make sure Union Compatable
 	// Check to see if each relation has same number of attributes
 	int num_attr1, num_attr2;
-	num_attr1 = new_table.Get_width();
+	num_attr1 = table1.Get_width();
 	num_attr2 = table2.Get_width();
 	if (num_attr1 != num_attr2)
 		cerr << "Error during set difference (different number of attributes)" << endl;
 
 	// Check to make sure the attributes are the same in each table
 	for (int i = 0; i < num_attr1; ++i){
-		if (new_table[i].Get_name() != table2[i].Get_name())
+		if (table1[i].Get_name() != table2[i].Get_name())
 			cerr << " Error during set difference (attributes do not match)" << endl;
 	}
 	
-	for (int i = 0; i < table2.Get_max_height(); ++i){
-		int new_table_height = new_table.Get_max_height();
+	/*for (int i = 0; i < table2.Get_max_height(); ++i){
 		vector<string> row = table2.Get_row(i);
-		for (int j = 0; j < new_table_height; ++j)
+		for (int j = 0; j < new_table.Get_max_height(); ++j)
 			if (row == new_table.Get_row(j))
-				new_table.Delete_row(j);
+				new_table.Delete_row(j); //CAUSES PROBLEMS WITH MULTIPLE DELETES simpler to just pushback into new vector values that dont match
+	}*/
+
+	Table new_table = Table(table1);//gets copy of table1 including attribute names
+	new_table.Clear_attribute_data();//clears old data
+
+	for (int i = 0; i < table1.Get_max_height(); ++i){
+		vector<string> row = table1.Get_row(i);
+		bool found = false;
+		for (int j = 0; j < table2.Get_max_height(); ++j){
+			if (row == table2.Get_row(j))
+				found = true;
+		}
+		if (!found)
+			new_table.Insert_row(row);
 	}
+	
 	return new_table;
 }
 Table Database::Cross_product(string view_name, string table1_name, string table2_name){
