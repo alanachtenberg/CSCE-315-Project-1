@@ -21,24 +21,32 @@ class Attribute{
 		Attribute(const Attribute& attribute);
 		//Copy Assignment operator
 		Attribute& operator = (const Attribute& attribute);
-
+		
 		//Getters and Setters
-		string	Get_name();
+		
+		string	Get_name() const;
 		void  Set_name(string name);
 
-		string  Get_vartype();
+		string  Get_vartype() const;
 		void  Set_vartype(string vartype);
-
-		vector<string> Get_data();
+		
+		void Clear_data();
+		vector<string> Get_data() const;
 		void Set_data( vector<string> data);
 
-		string Get_value(int index);
-		int Get_size();
+		string Get_value(int index) const;
+		void Set_value(int index, string value);
+		void Insert_value(string value);
+
+		int Get_size() const;
 
 		//Read and Write
 		istream& Read(istream& is);
 		ostream& Write(ostream& os);
 
+		string& operator [](int i);
 };
+
+
 
 #endif

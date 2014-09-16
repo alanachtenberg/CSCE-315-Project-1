@@ -22,10 +22,13 @@ Attribute::Attribute(const Attribute& attribute){
 }
 
 Attribute& Attribute::operator = (const Attribute& attribute){
+	Name = attribute.Name;
+	VarType = attribute.VarType;
+	Data = attribute.Data;
 	return *this;
 }
 
-string Attribute::Get_name(){
+string Attribute::Get_name() const{
 	return Name;
 }
 
@@ -33,7 +36,7 @@ void Attribute::Set_name(string name){
 	Name = name;
 }
 
-string  Attribute::Get_vartype(){
+string  Attribute::Get_vartype() const{
 	return VarType;
 }
 
@@ -41,20 +44,36 @@ void  Attribute::Set_vartype(string vartype){
 	VarType = vartype;
 }
 
-vector<string> Attribute::Get_data(){
+void Attribute::Clear_data(){
+	Data.clear();
+}
+
+vector<string> Attribute::Get_data() const{
 	return Data;
 }
 void Attribute::Set_data(vector<string> data){
 	Data = data;
 }
-string Attribute::Get_value(int index){
+string Attribute::Get_value(int index) const{
 	if (index<0 || index>Data.size())
 		cerr << "can not get attribute value, index out of range" << endl;
 	else
 		return Data[index];
 	return "default";
 }
-int Attribute::Get_size(){
+
+void Attribute::Set_value(int index, string value){
+	if (index<0 || index>Data.size())
+		cerr << "can not set attribute value, index out of range" << endl;
+	else
+		Data[index] = value;
+}
+void Attribute::Insert_value(string value){
+	Data.push_back(value);
+}
+
+
+int Attribute::Get_size() const{
 	return Data.size();
 }
 
@@ -79,4 +98,15 @@ ostream& Attribute::Write(ostream& os){
 		os << Data[i]<< ";";
 	os << ENDLIST << ";\n";
 	return os;
+}
+
+string& Attribute::operator[](int i){
+	if (i<0 || i>Data.size()){
+		cerr << "Out of range access of data\n";
+		return string("Default");
+	}
+	else{
+		return Data[i];
+	}
+
 }

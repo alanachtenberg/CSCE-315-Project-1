@@ -1,0 +1,11 @@
+People
+name
+VARCHAR(10)
+alan;jacob;robby;casey;ENDLIST;
+age
+INTEGER
+21;21;21;21;ENDLIST;
+occupation
+VARCHAR(64)
+broke cs student;Napa flats;Hockey baller;notbroke cs student;ENDLIST;
+ENDTABLE

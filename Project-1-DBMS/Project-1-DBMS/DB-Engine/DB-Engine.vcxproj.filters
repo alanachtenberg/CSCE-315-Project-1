@@ -40,8 +40,8 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <Text Include="sample.txt">
+    <None Include="People.db">
       <Filter>Resource Files</Filter>
-    </Text>
+    </None>
   </ItemGroup>
 </Project>
