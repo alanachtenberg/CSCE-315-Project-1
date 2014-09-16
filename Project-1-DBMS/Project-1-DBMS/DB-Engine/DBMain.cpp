@@ -11,18 +11,19 @@ int main(){
 	db.Insert("People", vector < string > {"alan", "21", "broke cs student"});
 	db.Insert("People", vector < string > {"jacob", "21", "Napa flats"});
 	db.Insert("People", vector < string > {"robby", "21", "Hockey baller"});
-	db.Insert("People", vector < string > {"casey", "21", "notbroke cs student"});
+	db.Insert("People", vector < string > {"casey", "21", "notbroke cs student"});//testing insert
 
-	db.Show("People");
-	db.Write("People");
+	db.Show("People");//testing insert and show
+	db.Write("People");//testing write
 	db.Close("People");
-	db.Show("People");
+	db.Show("People");//testing close
+	
 	db.Open("People");
 	db.Insert("People", vector < string > {"new entry", "18", "professional fish"});
-	db.Show("People");
+	db.Show("People"); //testing open
 	
 	db.Create("cs_students", vector<string>{ "name", "age", "occupation" }, vector<string>{ "VARCHAR(10)", "INTEGER", "VARCHAR(64)" }, vector<string>{"name"});
-	db.Insert("cs_students", db.Select("selection", "People", "age", Token_Type::_equals, "21"));
+	db.Insert("cs_students", db.Select("selection", "People", "age", Token_Type::_equals, "21"));//Inserts all tuples where age is 21
 
 	db.Show("cs_students");
 
@@ -33,9 +34,21 @@ int main(){
 	db.Insert("cs_students", db.Select("selection", "People", "name", Token_Type::_equals, "casey"));
 	db.Show("cs_students");
 
-	db.Show(db.Set_union("all", "cs_students", "People"));
-	db.Show(db.Set_difference("some", "cs_students", "People"));
-	db.Show(db.Set_difference("some", "People", "cs_students"));
+	db.Show(db.Set_union("all", "cs_students", "People")); //Testing union
+	db.Show(db.Set_difference("some", "cs_students", "People"));// Testing difference cs_students - people, should be empty
+	db.Show(db.Set_difference("some", "People", "cs_students"));//Testing difference people - cs_students, should be smaller
+
+	db.Rename("first_name", "name", "People");//updates attribute "name" to "first_name"
+	db.Show("People");
+
+	db.Show(db.Project("People_projection", "People", vector < string > {"first_name", "occupation"}));//Testing Projection
+
+
+	db.Create("Pets", vector<string>{ "name", "breed"}, vector<string>{ "VARCHAR(20)", "VARCHAR(20)" }, vector<string>{"name"});
+	db.Insert("Pets", vector < string > {"derpy", "dog"});
+	db.Insert("Pets", vector < string > {"chirpy", "bird"});
+
+	db.Show(db.Cross_product("People*Pets", "People", "Pets"));//Testing Cross Product
 
 	return 0;
 }

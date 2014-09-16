@@ -58,6 +58,7 @@ Table Database::Rename(string new_name, string old_name, string in_table){
 	if (!check){
 		cerr << "Error during Rename (could not find existing name)" << endl;
 	}
+	Set_table(table);//updates table vector, not sure if this is correct implementation of grammar
 	return table;
 }
 
@@ -191,7 +192,14 @@ void Database::Write(string table_name){
 }
 
 void Database::Write(Table table){
-	Tables.push_back(table);//add to database tables
+	bool found = false;
+	for (int i = 0; i < Tables.size(); ++i)
+		if (Tables[i].Get_name() == table.Get_name()){
+		Tables[i] = table;
+		found = true;
+		}
+	if (!found)
+		Tables.push_back(table);//add to database tables
 	Write(table.Get_name());
 }
 void Database::Open(string table_name){
@@ -202,7 +210,10 @@ void Database::Open(string table_name){
 		Table new_table = Table();
 		new_table.Read(in);
 		//TODO need to implement protection against duplicate tables of same name
-		Tables.push_back(new_table);
+		if (Get_table(new_table.Get_name()).Get_name() == "DefaultTableName")
+			Tables.push_back(new_table);
+		else
+			cout << "Table already open\n";
 	}
 }
 //For showing table in database
