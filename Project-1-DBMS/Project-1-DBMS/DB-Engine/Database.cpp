@@ -246,7 +246,7 @@ void Database::Update(string table_name, vector<string> old_attributes, vector<s
 		for (int i = 0; i < row_indicies.size(); ++i)
 			for (int j = 0; j < old_attributes.size(); ++j)
 				my_table[old_attributes[j]][row_indicies[i]]=new_values[j]; //old_attibutes[j] is attribute name, row_indicies[i] is the index of data to replace
-
+		Set_table(my_table);//updates Tables vec
 	}
 }
 void Database::Insert(string table_name, vector<string> tuple){
