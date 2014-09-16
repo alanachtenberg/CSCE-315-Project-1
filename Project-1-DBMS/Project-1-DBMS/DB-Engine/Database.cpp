@@ -113,6 +113,11 @@ void Database::Write(string table_name){
 	ofstream out = ofstream((table_name+".db").c_str(), std::ofstream::out | std::ofstream::trunc);//trunc flag means content already in file will be deleted
 	out << my_table;//Writes table to output stream
 }
+
+void Database::Write(Table table){
+	Tables.push_back(table);//add to database tables
+	Write(table.Get_name());
+}
 void Database::Open(string table_name){
 	ifstream in = ifstream((table_name + ".db").c_str());
 	if (!in.is_open())
@@ -124,8 +129,13 @@ void Database::Open(string table_name){
 		Tables.push_back(new_table);
 	}
 }
+//For showing table in database
 void Database::Show(string table_name){
 	Get_table(table_name).Pretty_print(cout); //Pretty print, prints things nicer in the console
+}
+//For showing any table
+void Database::Show(Table table){
+	table.Pretty_print(cout);
 }
 void Database::Create(string table_name,vector<string> attribute_names, vector<string> attribute_types, vector<string> keys){
 	Table new_table=Table(table_name,attribute_names, attribute_types, keys);
@@ -154,10 +164,9 @@ void Database::Insert(string table_name, vector<string> tuple){
 		cerr << "Cant insert Tuple, size of tuple does not match table" << endl;
 	else
 	{
-		for (int i = 0; i < my_table.Get_width(); ++i)
-			my_table.Insert_row(tuple);
+		my_table.Insert_row(tuple);
 	}
-
+	Set_table(my_table);//Updates tables vec
 }
 void Database::Insert(string dest_table, string source_table){
 	Table dest = Get_table(dest_table);
@@ -217,10 +226,20 @@ Table Database::Get_table(string table_name) const{
 			return Tables[i];
 		}
 	}
-	cerr << "Table NOT FOUND\n";
+	cerr << "Table get, NOT FOUND\n";
 	return Table();//IF Table not found return default
 }
-
+void Database::Set_table(Table& table){
+	bool found = false;
+	for (int i = 0; i < Tables.size(); i++){
+		if (Tables[i].Get_name() == table.Get_name()){
+			Tables[i] = table;
+			found = true;
+		}
+	}
+	if (!found)
+		cerr << "Table set, NOT FOUND\n";
+}
 //returns vector of row index where, (values[i] comparison value) evaluates to true
 vector<int> Database::Compare(vector<string> values, Token_Type comparison, string value){
 	vector<int> hits = vector<int>();//vector of indicies that return true for comparison

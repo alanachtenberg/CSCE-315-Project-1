@@ -3,27 +3,16 @@
 #include <stdio.h>
 #include <iostream>
 #include <fstream>
-#include "Table.h"
+#include "Database.h"
 using namespace std;
 int main(){
-	ofstream out;
-	out.open("sample.txt");
-	cout << "Hello DB Engine\n";
-
-	vector<Attribute> myattributes;
-	Attribute attribute = Attribute();
-	myattributes.push_back(attribute);
-	myattributes.push_back(attribute);
-	Table mytable = Table();
-	mytable.Set_attributes(myattributes);
-	mytable.Write(out);
-	out.close();
-	ifstream in;
-	in.open("sample.txt");
-	mytable.Read(in);
-	//mytable.Pretty_print(cout);
-	cout << "input anything to exit";
-	string dummy;
-	cin >> dummy;
+	Database db = Database();
+	db.Create("People", vector<string>{ "name", "age", "occupation" }, vector<string>{ "VARCHAR(10)", "INTEGER", "VARCHAR(64)" }, vector<string>{"name"});
+	db.Insert("People", vector < string > {"alan", "21", "broke cs student"});
+	db.Insert("People", vector < string > {"jacob", "21", "Napa flats"});
+	db.Insert("People", vector < string > {"robby", "21", "Hockey baller"});
+	db.Insert("People", vector < string > {"casey", "21", "not broke cs student"});
+	db.Show("People");
+	db.Write("People");
 	return 0;
 }

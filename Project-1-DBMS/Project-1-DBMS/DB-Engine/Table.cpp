@@ -30,6 +30,9 @@ Table::Table(const Table& table){
 }
 
 Table& Table:: operator = (const Table& table){
+	Name = table.Name;
+	Attributes = table.Attributes;
+	Keys = table.Keys;
 	return *this;
 }
 

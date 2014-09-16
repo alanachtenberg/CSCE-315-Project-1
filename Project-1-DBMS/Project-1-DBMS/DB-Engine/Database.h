@@ -46,8 +46,11 @@ public:
 	void Close(string table_name);
 	void Exit();
 	void Write(string table_name);
+	//
+	void Write(Table table);
 	void Open(string table_name);
 	void Show(string table_name);
+	void Show(Table table);
 	void Create(string table_name,vector<string> attribute_names, vector<string> attribute_types, vector<string> keys);
 	void Update(string table_name, vector<string> old_attributes, vector<string> new_values, string attribute_name, Token_Type comparison, string value);
 	void Insert(string table_name, vector<string> tuple);
@@ -63,7 +66,7 @@ public:
 
 	//returns table by table name
 	Table Get_table(string table_name) const;
-
+	void  Set_table(Table& table);
 	//returns vector of ints=i where, values[i] comparison value evaluates to true
 	//can only handle a single comparison for now, need to be able to handle more complex comparisons like x==a&&y==b
 	vector<int> Compare(vector<string> values, Token_Type comparison, string value);

@@ -22,6 +22,9 @@ Attribute::Attribute(const Attribute& attribute){
 }
 
 Attribute& Attribute::operator = (const Attribute& attribute){
+	Name = attribute.Name;
+	VarType = attribute.VarType;
+	Data = attribute.Data;
 	return *this;
 }
 

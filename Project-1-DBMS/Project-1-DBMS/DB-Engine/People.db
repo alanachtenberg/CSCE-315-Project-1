@@ -1,0 +1,11 @@
+People
+name
+VARCHAR(10)
+ENDLIST;
+age
+INTEGER
+ENDLIST;
+occupation
+VARCHAR(64)
+ENDLIST;
+ENDTABLE
