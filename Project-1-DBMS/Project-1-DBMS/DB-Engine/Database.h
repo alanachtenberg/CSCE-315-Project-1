@@ -36,11 +36,11 @@ public:
 
 	// Query Functions
 	Table Select(string view_name, string in_table_name, string attribute_name, Token_Type comparison, string value);
-	void Project(string view_name, string in_table_name, vector<string> attributes);
-	void Rename(string view_name, string in_table_name, Attribute attributes);
-	void Set_union(string view_name, string table1_name, string table2_name);
-	void Set_difference(string view_name, string table1_name, string table2_name);
-	void Cross_product(string view_name, string table1_name, string table2_name);
+	Table Project(string view_name, string in_table_name, vector<string> attributes);
+	Table Rename(string new_name, string old_name, string in_table);
+	Table Set_union(string view_name, string table1_name, string table2_name);
+	Table Set_difference(string view_name, string table1_name, string table2_name);
+	Table Cross_product(string view_name, string table1_name, string table2_name);
 
 	// Command Functions
 	void Close(string table_name);
