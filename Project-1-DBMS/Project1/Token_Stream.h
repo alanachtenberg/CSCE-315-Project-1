@@ -3,6 +3,7 @@
 
 #include "Token.h"
 #include <vector>
+#include <stack>
 #include <sstream>
 
 inline bool isspecial(char ch) {
@@ -19,22 +20,25 @@ inline bool isspecial(char ch) {
 
 class Token_stream {
 private:
-	std::istream& input_stream;
+	std::istream* input_stream;
 	std::vector<Token> tokens;
-	bool full;
-	Token buffer;
+	std::stack<Token> unget_tokens;
 
 public:
-	Token_stream(std::istream& input) :input_stream(input), full(0), buffer(_null) { }
+	Token_stream(std::string input) { 
+		input_stream = new std::istringstream(input);
+	}
+
+	Token_stream(std::istream *input) :input_stream(input) { }
+
+	~Token_stream() {
+		delete input_stream;
+	}
 
 	std::vector<Token> tokenize();
 	Token get();
-	void push_back(Token t);
-
-	//TODO: make multi-item buffer
 	void unget(Token t) { 
-		buffer = t; 
-		full = true; 
+		unget_tokens.push(t);
 	}
 
 	void ignore(Token_Type);
