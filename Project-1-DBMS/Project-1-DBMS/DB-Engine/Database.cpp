@@ -139,7 +139,9 @@ Table Database::Cross_product(string view_name, string table1_name, string table
 		new_attributes[i].Clear_data();
 	}
 
-	Table new_table = Table(view_name, new_attributes);
+	Table new_table;
+	new_table.Set_attributes(new_attributes);
+	new_table.Set_name(view_name);
 
 	//go through each row of my_table1, concatenate them with each row of my_table2
 	for (int i = 0; i < my_table1_height; i++){
