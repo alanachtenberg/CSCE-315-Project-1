@@ -30,10 +30,7 @@ bool DBParser::query() {
 	if (relation_name()) {
 		Token assignment_token = ts->get();
 		if (assignment_token.get_type() == _assign) {
-			cout << " valid assign token\n\n";
-
-			bool value = expr();
-			if (value) {
+			if (expr()) {
 				return true;
 			}
 			else return false;
@@ -117,29 +114,18 @@ bool DBParser::selection() {
 bool DBParser::projection() {
 	Token project_token = ts->get();
 	if (project_token.get_type() == _project) {
-		Token lpar_token = ts->get();
-		if (lpar_token.get_type() == _lpar) {
+
+		if (ts->get().get_type() == _lpar) {
 			if (attribute_list()) {
-				Token rpar_token = ts->get();
-				if (rpar_token.get_type() == _rpar) {
-					return atomic_expr();
+				if (ts->get().get_type() == _rpar) {
+					if (atomic_expr()){
+						return true;
+					}
 				}
-				else {
-					ts->unget(rpar_token);
-					ts->unget(lpar_token);
-					ts->unget(project_token);
-					return false;
-				}
-			}
-			else {
-				return false;
-			}
+			}			
 		}
-		else {
-			ts->unget(lpar_token);
-			ts->unget(project_token);
-			return false;
-		}
+		return false;
+
 	}
 	else {
 		ts->unget(project_token);
@@ -497,7 +483,7 @@ bool DBParser::update_cmd() {
 
 //insert_cmd :: = INSERT INTO relation_name VALUES FROM(literal {, literal }) | INSERT INTO relation_name VALUES FROM RELATION expr
 bool DBParser::insert_cmd() {
-	return true;
+	return false;
 }
 
 //delete_cmd ::= DELETE FROM relation_name WHERE condition
@@ -547,7 +533,6 @@ bool DBParser::delete_cmd() {
 //------------------------------------------------------------------------------
 
 //relation_name ::= identifier
-//identifier ::= alpha { ( alpha | digit ) } (read in as single token)
 bool DBParser::relation_name() {
 	Token relation_name_token = ts->get();
 	if (relation_name_token.get_type() == _identifier) {
@@ -645,7 +630,6 @@ bool DBParser::typed_attribute_list() {
 				if (comma_token.get_type() == _comma) {
 					if (attribute_name() && type()) continue;
 					else {
-						ts->unget(comma_token);
 						return false;
 					}
 				}
@@ -656,9 +640,8 @@ bool DBParser::typed_attribute_list() {
 			}
 		}
 	}
-	else {
-		return false;
-	}
+
+	return false;
 }
 
 //attribute_list ::= attribute_name {, attribute_name} 

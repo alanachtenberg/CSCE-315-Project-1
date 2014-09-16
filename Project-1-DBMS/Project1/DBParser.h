@@ -40,7 +40,7 @@ private:
 	bool exit_cmd(); //done
 	bool show_cmd(); //done
 	bool create_cmd(); //done
-	bool update_cmd();
+	bool update_cmd(); //done
 	bool insert_cmd();
 	bool delete_cmd(); //done
 

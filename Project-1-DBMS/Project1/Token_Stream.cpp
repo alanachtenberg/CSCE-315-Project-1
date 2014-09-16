@@ -5,6 +5,7 @@
 using namespace std;
 
 //TODO: add support for literals as string, int, or double
+//TODO: change multi-word combinations (i.e. VALUES FROM) to be a single token 
 
 
 //Each character input is turned into a token, using Token_stream::get
@@ -32,6 +33,54 @@ Token Token_stream::get() {
 		case ';': curr_token = Token(_semicolon); break;
 		case ',': curr_token = Token(_comma); break;
 		case '"': curr_token = Token(_quotation); break;
+		case '<':
+			input_stream->get(ch);
+			if (ch == '-') {
+				curr_token = Token(_assign);
+			}
+			else if (ch == '=') {
+				curr_token = Token(_less_eq);
+			}
+			else {
+				curr_token = Token(_less);
+			}
+			break;
+		case '>':
+			input_stream->get(ch);
+			if (ch == '=') {
+				curr_token = Token(_greater_eq);
+			}
+			else {
+				curr_token = Token(_greater);
+			}
+			break;
+		case '=':
+			input_stream->get(ch);
+			if (ch == '=') {
+				curr_token = Token(_equals);
+			}
+			else {
+				curr_token = Token(_assign_eq);
+			}
+			break;
+		case '!':
+			input_stream->get(ch);
+			if (ch == '=') {
+				curr_token = Token(_not_eq);
+			}
+			break;
+		case '&':
+			input_stream->get(ch);
+			if (ch == '&') {
+				curr_token = Token(_and);
+			}
+			break;
+		case '|':
+			input_stream->get(ch);
+			if (ch == '|') {
+				curr_token = Token(_or);
+			}
+			break;
 		case '.':
 		case '0':
 		case '1':
@@ -65,29 +114,17 @@ Token Token_stream::get() {
 			break;
 		}
 		default:
-			if (isalpha(ch) || isspecial(ch)) {
+			if (isalpha(ch)) {
 				s = "";
 				s += ch;
-				while (input_stream->get(ch) && (isalpha(ch) || isspecial(ch))) {
+				while (input_stream->get(ch) && (isalpha(ch) || ch == '_')) {
 					s += ch;
 				}
 				input_stream->unget();
 				transform(s.begin(), s.end(), s.begin(), ::tolower); //convert string to lowercase
 
-				//multi-character and ambiguous operators
-				if (s == "=")				curr_token = Token(_assign_eq);
-				else if (s == "<-")			curr_token = Token(_assign);
-				else if (s == "==")			curr_token = Token(_equals);
-				else if (s == "!=")			curr_token = Token(_not_eq);
-				else if (s == "<")			curr_token = Token(_less);
-				else if (s == "<=")			curr_token = Token(_less_eq);
-				else if (s == ">")			curr_token = Token(_greater);
-				else if (s == ">=")			curr_token = Token(_greater_eq);
-				else if (s == "&&")			curr_token = Token(_and);
-				else if (s == "||")			curr_token = Token(_or);
-
 				//reserved words
-				else if (s == "create")		curr_token = Token(_create);
+				if (s == "create")		curr_token = Token(_create);
 				else if (s == "insert")		curr_token = Token(_insert);
 				else if (s == "select")		curr_token = Token(_select);
 				else if (s == "project")	curr_token = Token(_project);
@@ -126,8 +163,7 @@ Token Token_stream::get() {
 				else if (s == "float")		curr_token = Token(_float_type);
 
 				else if (s == "exit")		curr_token = Token(_exit_program);
-				else if (!isspecial(*s.substr(0, 1).c_str()))
-					curr_token = Token(_identifier, s);
+				else						curr_token = Token(_identifier, s);
 				break;
 			}
 		}

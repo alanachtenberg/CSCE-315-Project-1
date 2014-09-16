@@ -6,18 +6,6 @@
 #include <stack>
 #include <sstream>
 
-inline bool isspecial(char ch) {
-	return (
-		   ch == '_'
-		|| ch == '='
-		|| ch == '!'
-		|| ch == '&'
-		|| ch == '|'
-		|| ch == '>'
-		|| ch == '<'
-		|| ch == '-');
-}
-
 class Token_stream {
 private:
 	std::istream* input_stream;
