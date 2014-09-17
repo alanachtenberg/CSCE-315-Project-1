@@ -9,7 +9,7 @@ using namespace std;
 int test_case = 2;
 
 void test_tokenizer() {
-	ifstream ifs("test.txt");
+	ifstream ifs("test2.txt");
 	string line;
 	int valid = 0, invalid = 0;
 
@@ -48,7 +48,7 @@ void test_tokenizer() {
 
 void test_parser() {
 	DBParser parser;
-	parser.execute_file("test.txt");
+	parser.execute_file("test2.txt");
 }
 
 int main(){

@@ -112,7 +112,9 @@ bool DBParser::selection() {
 		if (ts->get().get_type() == _lpar) {
 			if (condition()) {
 				if (ts->get().get_type() == _rpar) {
-					if (atomic_expr()) {
+					if (atomic_expr())
+					{
+
 						return true;
 					}
 				}
@@ -552,6 +554,7 @@ bool DBParser::expr() {
 			else return false;
 		}
 		else {
+			ts->unget(expr_token);
 			return true;
 		}
 	}
@@ -564,7 +567,7 @@ bool DBParser::expr() {
 bool DBParser::atomic_expr() {
 	Token lpar_token = ts->get();
 	if (lpar_token.get_type() == _lpar) {
-		if (expr()) {
+		if (expr()) { 
 			Token rpar_token = ts->get();
 			if (rpar_token.get_type() == _rpar) {
 				return true;

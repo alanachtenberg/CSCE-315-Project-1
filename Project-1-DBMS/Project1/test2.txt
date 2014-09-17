@@ -1,0 +1,12 @@
+CREATE TABLE animals (name VARCHAR(20), kind VARCHAR(8), years INTEGER) PRIMARY KEY (name, kind);
+CREATE TABLE people (name VARCHAR(20), kind VARCHAR(8), years INTEGER) PRIMARY KEY (name, kind);
+
+selection <- select(name > c) (select (name < f) people);
+
+
+SHOW answer;
+
+WRITE animals;
+CLOSE animals;
+
+EXIT;
