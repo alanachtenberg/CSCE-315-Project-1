@@ -421,6 +421,20 @@ void Database::Insert(string dest_table, Table source){
 
 }
 
+void Database::Insert(Table dest_table, Table source){
+	Table dest = Table(dest_table);
+	if (dest.Get_width() != source.Get_width())
+		cerr << "Can not insert from source table to dest table, table width does not match" << endl;
+	else
+	{
+		for (int i = 0; i < source.Get_max_height(); ++i)
+			dest.Insert_row(source.Get_row(i));
+	}
+
+	Set_table(dest);//Updates tables vec
+
+}
+
 //can only handle a single comparison for now, need to be able to handle Where x==a&&y==b
 void Database::Delete(string table_name, string attribute_name ,Token_Type comparison, string value){//renamed remove to delete to match project requirements
 	Table my_table = Get_table(table_name);
@@ -434,7 +448,17 @@ void Database::Delete(string table_name, string attribute_name ,Token_Type compa
 	Set_table(my_table);//update tables vec
 }
 
+void Database::Delete(Table table_name, Attribute attribute_name, Token_Type comparison, string value){
+	Table my_table = Table(table_name);
+	Attribute my_attribute = attribute_name;
 
+	vector<int> row_indicies = Compare(my_attribute.Get_data(), comparison, value);//Gets a vector of rows that match comparison
+
+	for (int i = 0; i < row_indicies.size(); ++i)
+		my_table.Delete_row(row_indicies[i] - i);//minus i because every time you delete a row there is one less in the vector
+	//ex. delete 2 4 6 becomes delete 2, delete 3, delete 4
+	Set_table(my_table);//update tables vec
+}
 
 // Utility Functions
 //no need for get_table_index(int), when you can Get_table(string)

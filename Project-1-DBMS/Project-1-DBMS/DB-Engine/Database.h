@@ -60,8 +60,9 @@ public:
 	void Update(string table_name, vector<string> old_attributes, vector<string> new_values, string attribute_name, Token_Type comparison, string value);
 	void Insert(string table_name, vector<string> tuple);
 	void Insert(string dest_table, Table source);//Insert FROM source_table INTO dest_table
+	void Insert(Table dest_table, Table source);
 	void Delete(string table_name, string attribute_name, Token_Type comparison, string value);//renamed remove to delete to match project requirements
-
+	void Delete(Table table_name, Attribute attribute_name, Token_Type comparison, string value);
 	// Utility Functions
 	
 	
