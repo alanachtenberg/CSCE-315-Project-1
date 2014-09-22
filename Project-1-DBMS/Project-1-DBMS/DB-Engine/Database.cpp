@@ -30,6 +30,22 @@ Table Database::Select(string view_name, string in_table_name, string attribute_
 	new_table.Set_name(view_name);
 	return new_table;
 }
+
+Table Database::Select(string view_name, Table in_table_name, string attribute_name, Token_Type comparison, string value){
+
+	Table my_table = Table(in_table_name);
+	Table new_table = Table(my_table);
+	new_table.Clear_attribute_data();
+
+	Attribute my_attribute = my_table[attribute_name];
+	vector<int> row_indicies = Compare(my_attribute.Get_data(), comparison, value);//Gets a vector of rows that match comparison
+	for (unsigned int i = 0; i < row_indicies.size(); i++){
+		new_table.Insert_row(my_table.Get_row(row_indicies[i]));
+	}
+	new_table.Set_name(view_name);
+	return new_table;
+}
+
 Table Database::Project(string view_name, string in_table_name, vector<string> attributes){
 	Table my_table = Get_table(in_table_name);
 	vector<Attribute> projected;
@@ -42,6 +58,20 @@ Table Database::Project(string view_name, string in_table_name, vector<string> a
 	new_table.Set_attributes(projected);
 	return new_table;
 }
+
+Table Database::Project(string view_name, Table in_table_name, vector<string> attributes){
+	Table my_table = Table(in_table_name);
+	vector<Attribute> projected;
+	for (int i = 0; i < attributes.size(); i++){
+		projected.push_back(my_table[attributes[i]]);
+
+	}
+	Table new_table;
+	new_table.Set_name(view_name);
+	new_table.Set_attributes(projected);
+	return new_table;
+}
+
 Table Database::Rename(string new_name, string old_name, string in_table){
 	Table table = Get_table(in_table);
 	
@@ -93,6 +123,38 @@ Table Database::Set_union(string view_name, string table1_name, string table2_na
 	new_table.Set_name(view_name);//names new table
 	return new_table;
 }
+
+Table Database::Set_union(string view_name, Table table1_name, Table table2_name){
+
+	Table new_table = Table(table1_name);//new table includes table 1 values
+	Table table2 = Table(table2_name);
+
+	// Check to see if each relation has same number of attributes
+	int num_attr1, num_attr2;
+	num_attr1 = new_table.Get_width();
+	num_attr2 = table2.Get_width();
+	if (num_attr1 != num_attr2)
+		cerr << "Error during set union (different number of attributes)" << endl;
+
+	// Check to make sure the attributes are the same in each table
+	for (int i = 0; i < num_attr1; ++i){
+		if (new_table[i].Get_name() != table2[i].Get_name())
+			cerr << " Error during set union (attributes do not match)" << endl;
+	}
+
+	for (int i = 0; i < table2.Get_max_height(); ++i){
+		bool found = false;
+		vector<string> row = table2.Get_row(i);
+		for (int j = 0; j < new_table.Get_max_height(); ++j)
+			if (row == new_table.Get_row(j))
+				found = true;
+		if (!found)
+			new_table.Insert_row(row);
+	}
+	new_table.Set_name(view_name);//names new table
+	return new_table;
+}
+
 Table Database::Set_difference(string view_name, string table1_name, string table2_name){
 
 	Table table1 = Get_table(table1_name); //new table includes table 1 values
@@ -135,6 +197,50 @@ Table Database::Set_difference(string view_name, string table1_name, string tabl
 	new_table.Set_name(view_name);//names new table
 	return new_table;
 }
+
+Table Database::Set_difference(string view_name, Table table1_name, Table table2_name){
+
+	Table table1 = Table(table1_name); //new table includes table 1 values
+	Table table2 = Table(table2_name);
+
+	// Checking to make sure Union Compatable
+	// Check to see if each relation has same number of attributes
+	int num_attr1, num_attr2;
+	num_attr1 = table1.Get_width();
+	num_attr2 = table2.Get_width();
+	if (num_attr1 != num_attr2)
+		cerr << "Error during set difference (different number of attributes)" << endl;
+
+	// Check to make sure the attributes are the same in each table
+	for (int i = 0; i < num_attr1; ++i){
+		if (table1[i].Get_name() != table2[i].Get_name())
+			cerr << " Error during set difference (attributes do not match)" << endl;
+	}
+
+	/*for (int i = 0; i < table2.Get_max_height(); ++i){
+	vector<string> row = table2.Get_row(i);
+	for (int j = 0; j < new_table.Get_max_height(); ++j)
+	if (row == new_table.Get_row(j))
+	new_table.Delete_row(j); //CAUSES PROBLEMS WITH MULTIPLE DELETES simpler to just pushback into new vector values that dont match
+	}*/
+
+	Table new_table = Table(table1);//gets copy of table1 including attribute names
+	new_table.Clear_attribute_data();//clears old data
+
+	for (int i = 0; i < table1.Get_max_height(); ++i){
+		vector<string> row = table1.Get_row(i);
+		bool found = false;
+		for (int j = 0; j < table2.Get_max_height(); ++j){
+			if (row == table2.Get_row(j))
+				found = true;
+		}
+		if (!found)
+			new_table.Insert_row(row);
+	}
+	new_table.Set_name(view_name);//names new table
+	return new_table;
+}
+
 Table Database::Cross_product(string view_name, string table1_name, string table2_name){
 	//set up temporary data structures
 	Table my_table1 = Get_table(table1_name);
@@ -173,6 +279,46 @@ Table Database::Cross_product(string view_name, string table1_name, string table
 	}
 	return new_table;
 }
+
+Table Database::Cross_product(string view_name, Table table1_name, Table table2_name){
+	//set up temporary data structures
+	Table my_table1 = Table(table1_name);
+	Table my_table2 = Table(table2_name);
+	int my_table1_height = my_table1.Get_max_height();
+	int my_table2_height = my_table2.Get_max_height();
+	int my_table1_width = my_table1.Get_width();
+	int my_table2_width = my_table2.Get_width();
+	vector<Attribute> new_attributes;
+
+	//setting up new_table
+	for (int i = 0; i < my_table1_width; i++){
+		new_attributes.push_back(my_table1[i]);
+	}
+	for (int i = 0; i < my_table2_width; i++){
+		new_attributes.push_back(my_table2[i]);
+	}
+	for (int i = 0; i < new_attributes.size(); i++){
+		new_attributes[i].Clear_data();
+	}
+
+	Table new_table;
+	new_table.Set_attributes(new_attributes);
+	new_table.Set_name(view_name);
+
+	//go through each row of my_table1, concatenate them with each row of my_table2
+	for (int i = 0; i < my_table1_height; i++){
+		vector<string>	row1 = my_table1.Get_row(i);
+		for (int j = 0; j < my_table2_height; ++j){
+			vector<string> row2 = my_table2.Get_row(j);
+			vector<string> new_row = row1;
+			for (int k = 0; k < row2.size(); ++k)
+				new_row.push_back(row2[k]);
+			new_table.Insert_row(new_row);
+		}
+	}
+	return new_table;
+}
+
 
 // Command Functions
 
