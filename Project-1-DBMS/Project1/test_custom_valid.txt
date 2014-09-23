@@ -1,0 +1,25 @@
+CREATE TABLE animals (id INTEGER, kind VARCHAR(8), age INTEGER) PRIMARY KEY (id);
+CREATE TABLE people (name VARCHAR(20), job VARCHAR(40), age INTEGER) PRIMARY KEY (name);
+
+INSERT INTO people VALUES FROM ("Joe", "engineer", 42);
+INSERT INTO people VALUES FROM ("John", "engineer", 27);
+INSERT INTO people VALUES FROM ("Josh", "civil", 9);
+INSERT INTO people VALUES FROM ("James", "engineer", 21);
+
+engineers <- select((job == "engineer") && (years < 35)) people;
+SHOW engineers;
+
+engineers <- rename(job) (project(name, job) (select (job != "civil" && (age <= 25 || age >= 65)) people));
+SHOW engineers;
+
+OPEN lions; 
+OPEN tigers;
+
+ligers <- lions + tigers;
+unicorns <- narwhals - dolphins;
+bad_decisions <- alcohol * bravery;
+
+WRITE unicorns;
+WRITE bad_decisions;
+
+EXIT;

@@ -1,0 +1,57 @@
+EXECUTING FILE test_given.txt:
+19 valid entries
+0 invalid entries
+----------------------------------------
+EXECUTING FILE test_custom_valid.txt:
+18 valid entries
+0 invalid entries
+----------------------------------------
+EXECUTING FILE test_custom_invalid.txt:syntax error on line 1:
+CREATE TABLE animals (id INTEGER kind VARCHAR(8), age INTEGER) PRIMARY KEY (id);
+
+syntax error on line 2:
+CREATE TABLE people (name VARCHAR(20), job CHARACTER(40), age INTEGER) PRIMARY KEY (name);
+
+syntax error on line 4:
+INSERT INTO people VALUES FROM ("Joe, "engineer", 42);
+
+syntax error on line 5:
+INSERT INTO people VALUES FROM ("John", VARCHAR(20) "engineer", 27);
+
+syntax error on line 6:
+INSERT INTO people VALUES FROM ("Josh", "civil", );
+
+syntax error on line 9:
+engineers <-- select((job == "engineer") && (years < 35)) people;
+
+syntax error on line 10:
+SHOW;
+
+syntax error on line 12:
+engineers <- rename(job) (project(name, job) select (job != "civil" && (age <= 25 || age >= 65)) people);
+
+syntax error on line 13:
+SHOW ME engineers;
+
+syntax error on line 15:
+OPN lions; 
+
+syntax error on line 16:
+PEN tigers;
+
+syntax error on line 18:
+ligers >> lions + tigers;
+
+syntax error on line 19:
+unicorns == narwhals - dolphins;
+
+syntax error on line 20:
+bad_decisions = alcohol * bravery;
+
+syntax error on line 22:
+WRITE 8unicorns;
+
+
+0 valid entries
+18 invalid entries
+----------------------------------------
