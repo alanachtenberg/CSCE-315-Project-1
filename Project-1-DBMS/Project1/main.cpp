@@ -1,15 +1,17 @@
 #include "Token_Stream.h"
 #include "DBParser.h"
 #include <iostream>
+#include <fstream>
 #include <iomanip>
 #include <fstream>
 
 using namespace std;
 
 int test_case = 2;
+string test_file = "test_custom.txt";
 
 void test_tokenizer() {
-	ifstream ifs("test2.txt");
+	ifstream ifs(test_file);
 	string line;
 	int valid = 0, invalid = 0;
 
@@ -46,9 +48,18 @@ void test_tokenizer() {
 	} 
 }
 
+
 void test_parser() {
 	DBParser parser;
-	parser.execute_file("test2.txt");
+
+	test_file = "test_given.txt";
+	parser.execute_file(test_file);
+
+	test_file = "test_custom_valid.txt";
+	parser.execute_file(test_file);
+
+	test_file = "test_custom_invalid.txt";
+	parser.execute_file(test_file);
 }
 
 int main(){
