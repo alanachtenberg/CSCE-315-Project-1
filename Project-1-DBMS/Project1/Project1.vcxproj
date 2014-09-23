@@ -76,8 +76,11 @@
     <ClInclude Include="Token_Stream.h" />
   </ItemGroup>
   <ItemGroup>
-    <Text Include="test.txt" />
-    <Text Include="test2.txt" />
+    <Text Include="output.txt" />
+    <Text Include="README.txt" />
+    <Text Include="test_custom_invalid.txt" />
+    <Text Include="test_given.txt" />
+    <Text Include="test_custom_valid.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
