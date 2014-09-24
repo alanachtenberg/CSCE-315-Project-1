@@ -1,6 +1,7 @@
 #include "DBParser.h"
 #include <iostream>
 #include <fstream>
+#include <vector>
 
 using namespace std;
 
@@ -65,7 +66,8 @@ bool DBParser::program() {
 
 //query ::= relation_name <- expr ;
 bool DBParser::query() {
-	if (relation_name()) {
+	string name = relation_name();
+	if (name.size() > 0) {
 		Token assignment_token = ts->get();
 		if (assignment_token.get_type() == _assign) {
 			if (expr()) {
@@ -288,7 +290,9 @@ bool DBParser::operand() {
 bool DBParser::open_cmd() {
 	Token open_token = ts->get();
 	if (open_token.get_type() == _open) {
-		if (relation_name()) {
+		string table_name = relation_name();
+		if (table_name.size() > 0) {
+			db.Open(table_name);
 			return true;
 		}
 	}
@@ -303,7 +307,9 @@ bool DBParser::open_cmd() {
 bool DBParser::close_cmd() {
 	Token close_token = ts->get();
 	if (close_token.get_type() == _close) {
-		if (relation_name()) {
+		string table_name = relation_name();
+		if (table_name.size() > 0) {
+			db.Close(table_name);
 			return true;
 		}
 	}
@@ -318,7 +324,9 @@ bool DBParser::close_cmd() {
 bool DBParser::write_cmd() {
 	Token write_token = ts->get();
 	if (write_token.get_type() == _write) {
-		if (relation_name()) {
+		string table_name = relation_name();
+		if (table_name.size() > 0) {
+			db.Write(table_name);
 			return true;
 		}
 	}
@@ -333,6 +341,7 @@ bool DBParser::write_cmd() {
 bool DBParser::exit_cmd() {
 	Token exit_token = ts->get();
 	if (exit_token.get_type() == _exit_program) {
+		db.Exit();
 		return true;
 	}
 	else {
@@ -362,19 +371,27 @@ bool DBParser::create_cmd() {
 	Token create_token = ts->get();
 	if (create_token.get_type() == _create) {
 		if (ts->get().get_type() == _table) {
-
-			if (relation_name()) {
+			string table_name = relation_name();
+			if (table_name.size() > 0) {
 
 				if (ts->get().get_type() == _lpar) {
-					if (typed_attribute_list()) {
+					vector<vector<string> > typed_attrs = typed_attribute_list();
+					if (typed_attrs.size == 2) {
 						if (ts->get().get_type() == _rpar) {
 
 							if (ts->get().get_type() == _primary) {
 								if (ts->get().get_type() == _key) {
 
 									if (ts->get().get_type() == _lpar) {
-										if (attribute_list()) {
+										vector<string> attrs = attribute_list();
+										if (attrs.size() > 0) {
 											if (ts->get().get_type() == _rpar) {
+												
+												db.Create(table_name,
+													typed_attrs[0],
+													typed_attrs[1],
+													attrs);
+												
 												return true;
 											}
 										}
@@ -498,9 +515,14 @@ bool DBParser::delete_cmd() {
 	Token delete_token = ts->get();
 	if (delete_token.get_type() == _delete) {
 		if (ts->get().get_type() == _from) {
-			if (relation_name()) {
+			string table_name = relation_name();
+			if (table_name.size() > 0) {
 				if (ts->get().get_type() == _where) {
-					if (condition()) {
+					vector<int> rows = condition();
+					if (rows.size() > 0) {
+
+						//db.Delete(table_name, )
+
 						return true;
 					}
 				}
@@ -518,16 +540,15 @@ bool DBParser::delete_cmd() {
 //------------------------------------------------------------------------------
 
 //relation_name ::= identifier
-bool DBParser::relation_name() {
+string DBParser::relation_name() {
 	Token relation_name_token = ts->get();
 	if (relation_name_token.get_type() == _identifier) {
-		return true;
+		return relation_name_token.get_name;
 	}
 	else {
 		ts->unget(relation_name_token);
+		return "";
 	}
-
-	return false;
 }
 
 //union ::= atomic_expr + atomic_expr
@@ -585,7 +606,8 @@ bool DBParser::atomic_expr() {
 	}
 	else {
 		ts->unget(lpar_token);
-		if (relation_name()) {
+		string table_name = relation_name();
+		if (table_name.size() > 0) {
 			return true;
 		}
 		else {
@@ -595,10 +617,10 @@ bool DBParser::atomic_expr() {
 }
 
 //attribute_name ::= identifier
-bool DBParser::attribute_name() {
+string DBParser::attribute_name() {
 	Token identifier_token = ts->get();
 	if (identifier_token.get_type() == _identifier) {
-		return true;
+		return identifier_token.get_name();
 	}
 	else {
 		ts->unget(identifier_token);
@@ -607,97 +629,115 @@ bool DBParser::attribute_name() {
 }
 
 //type ::= VARCHAR(integer) | INTEGER
-bool DBParser::type() {
+string DBParser::type() {
 	Token type_token = ts->get();
+	stringstream ss;
 	switch(type_token.get_type()) {
 	case _int_type:
-		return true;
-	case _float_type:
-		return true;
+		ss << "INTEGER";
+		return ss.str();
 	case _varchar:
-		return true;
+		ss << "VARCHAR(" << (int)type_token.get_value() << ")";
+		return ss.str();
 	default:
 		ts->unget(type_token);
-		return false;
+		return "";
 	}
 }
 
 //typed_attribute_list ::= attribute_name type {, attribute_name type}
-bool DBParser::typed_attribute_list() {
-	if (attribute_name()) {
-		if (type()) {
+vector<vector<string> > DBParser::typed_attribute_list() { //need to return vector<typed_attribute>
+	vector<vector<string> > typed_attrs;
+	typed_attrs.push_back(vector<string>()); //attr_name
+	typed_attrs.push_back(vector<string>()); //type
+
+	string attr_name = attribute_name();
+	if (attr_name.size() > 0) {
+		string type = type();
+		if (type.size() > 0) {
+			typed_attrs[0].push_back(attr_name);
+			typed_attrs[1].push_back(type);
+
 			while (true) {
 				Token comma_token = ts->get();
 				if (comma_token.get_type() == _comma) {
-					if (attribute_name() && type()) continue;
-					else {
-						return false;
+					attr_name = attribute_name();
+					if (attr_name.size() > 0) {
+						type = type();
+						if (type.size() > 0) {
+							typed_attrs[0].push_back(attr_name);
+							typed_attrs[1].push_back(type);
+						}
+						else {
+							typed_attrs.clear();
+							return typed_attrs;
+						}
 					}
-				}
-				else {
-					ts->unget(comma_token);
-					return true;
+					else {
+						ts->unget(comma_token);
+						return typed_attrs;
+					}
 				}
 			}
 		}
-	}
 
-	return false;
+		typed_attrs.clear();
+		return typed_attrs;
+	}
 }
 
 //attribute_list ::= attribute_name {, attribute_name} 
-bool DBParser::attribute_list() {
-	if (attribute_name()) {
+vector<string> DBParser::attribute_list() {
+	vector<string> attr_list;
+	string attr_name = attribute_name();
+	if (attr_name.size() > 0) {
+		attr_list.push_back(attr_name);
+
 		while (true) {
 			Token comma_token = ts->get();
 			if (comma_token.get_type() == _comma) {
-				if (attribute_name()) continue;
+				string attr_name = attribute_name();
+				if (attr_name.size() > 0) {
+					attr_list.push_back(attr_name);
+					continue;
+				}
 				else {
 					ts->unget(comma_token);
-					return false;
+					attr_list.clear();
+					return attr_list;
 				}
 			}
 			else {
 				ts->unget(comma_token);
-				return true;
+				return attr_list;
 			}
 		}
 	}
 	
-	return false;
+	attr_list.clear();
+	return attr_list;
 }
 
 //literal ::= "identifier" | integer | float
-bool DBParser::literal() {
+Token DBParser::literal() {
 	Token literal_token = ts->get();
 	if (literal_token.get_type() == _quotation) {
 		Token string_token = ts->get();
 		if (string_token.get_type() == _identifier) {
 			Token end_quote_token = ts->get();
 			if (end_quote_token.get_type() == _quotation) {
-				return true;
+				return string_token;
 			}
-			else {
-				ts->unget(end_quote_token);
-				ts->unget(string_token);
-				ts->unget(literal_token);
-				return false;
-			}
-		}
-		else {
-			ts->unget(string_token);
-			ts->unget(literal_token);
-			return false;
 		}
 	}
 	else if (literal_token.get_type() == _int_num) {
-		return true;
+		return literal_token;
 	}
 	else if (literal_token.get_type() == _float_num) {
-		return true;
+		return literal_token;
 	}
 	else {
 		ts->unget(literal_token);
-		return false;
+		return Token(_null);
 	}
 }
