@@ -19,19 +19,22 @@ class Node{
 private:
 	Node* Left;
 	Node* Right;
+public:
 	Token_Type Type;
 	string Value;
 
-public:
 	Node();
 	Node(const Node& node);
 
-	//Get
+	//Getters
 	Node& Get_left();
 	Node& Get_right();
-
+	//Setters
 	void Set_left(Node n);
 	void Set_right(Node n);
+	
+	//check if node is int or string
+	bool Is_literal() const;
 
 	ostream& Print_node(ostream& os);
 };
