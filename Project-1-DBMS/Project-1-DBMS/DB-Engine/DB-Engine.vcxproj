@@ -65,13 +65,17 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="Attribute.h" />
+    <ClInclude Include="ComparisonTree.h" />
     <ClInclude Include="Database.h" />
+    <ClInclude Include="Node.h" />
     <ClInclude Include="Table.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Attribute.cpp" />
+    <ClCompile Include="ComparisonTree.cpp" />
     <ClCompile Include="Database.cpp" />
     <ClCompile Include="DBMain.cpp" />
+    <ClCompile Include="Node.cpp" />
     <ClCompile Include="Table.cpp" />
   </ItemGroup>
   <ItemGroup>
