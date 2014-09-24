@@ -1,0 +1,8 @@
+9-9-2014: 
+	-Began work on parser.
+	-Tokenizer fully functional, all tokens from simple test case on project page
+	are recognized correctly.
+
+9-10-2014: 
+	-Began work on syntactical recognition algorithms
+	-Values return boolean values, should eventually return tables as needed
