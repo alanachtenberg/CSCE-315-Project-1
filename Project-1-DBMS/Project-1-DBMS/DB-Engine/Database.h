@@ -4,6 +4,7 @@
 #define DATABASE_H
 
 #include "Table.h"
+#include "Token.h"
 #include <vector>
 #include <string>
 #include <iostream>    
@@ -11,7 +12,7 @@
 
 using namespace std;
 
-enum Token_Type {//TEMP borrowing from Token.h
+/*enum Token_Type {//TEMP borrowing from Token.h
 	_number, _lpar, _rpar, _plus, _minus, _multiply, _divide, _mod, _assign, _semicolon,
 	_quotation, _comma,
 	_equals, _not_eq, _less, _less_eq, _greater, _greater_eq,
@@ -21,7 +22,7 @@ enum Token_Type {//TEMP borrowing from Token.h
 	_relation, _write, _open, _close,
 	_integer, _varchar, _char, _float, _identifier,
 	_exit_program, _null
-};
+}*/
 
 class Database
 {
