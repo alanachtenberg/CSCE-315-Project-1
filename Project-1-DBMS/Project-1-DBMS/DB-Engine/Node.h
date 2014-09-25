@@ -1,3 +1,5 @@
+#ifndef NODE_H
+#define NODE_H
 
 #include <string>
 using namespace std;
@@ -24,6 +26,7 @@ public:
 	string Value;
 
 	Node();
+	Node(string value, Token_Type type, Node *left=NULL, Node *right=NULL);
 	Node(const Node& node);
 
 	//Getters
@@ -38,3 +41,5 @@ public:
 
 	ostream& Print_node(ostream& os);
 };
+
+#endif

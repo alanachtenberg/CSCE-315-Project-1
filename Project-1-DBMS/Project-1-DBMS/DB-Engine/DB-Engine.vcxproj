@@ -64,6 +64,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\Project1\Token.h" />
     <ClInclude Include="Attribute.h" />
     <ClInclude Include="ComparisonTree.h" />
     <ClInclude Include="Database.h" />

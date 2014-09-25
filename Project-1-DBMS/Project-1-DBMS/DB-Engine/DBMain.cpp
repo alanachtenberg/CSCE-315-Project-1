@@ -3,15 +3,27 @@
 #include <stdio.h>
 #include <iostream>
 #include <fstream>
+#include "ComparisonTree.h"
 #include "Database.h"
 using namespace std;
 int main(){
+	//CREATE COMPARSION TREE
+	Node left= Node(string("name"),_varchar);
+	Node right = Node(string("alan"), _varchar);
+	Node right2 = Node(string("jacob"), _varchar);
+	Node comp1 = Node(string(">"), _greater, new Node(left),new Node(right2));
+	Node comp2 = Node(string("=="), _equals, new Node(left), new Node(right));
+	Node root = Node(string("&&"), _and, new Node(comp1), new Node(comp2));
+	Comparison_tree tree;
+	tree.Set_root(root);
+
 	Database db = Database();
 	db.Create("People", vector<string>{ "name", "age", "occupation" }, vector<string>{ "VARCHAR(10)", "INTEGER", "VARCHAR(64)" }, vector<string>{"name"});
 	db.Insert("People", vector < string > {"alan", "21", "broke cs student"});
 	db.Insert("People", vector < string > {"jacob", "21", "Napa flats"});
 	db.Insert("People", vector < string > {"robby", "21", "Hockey baller"});
 	db.Insert("People", vector < string > {"casey", "21", "notbroke cs student"});//testing insert
+	vector<int> temp=tree.Eval_tree(db.Get_table("People"));
 
 	db.Show("People");//testing insert and show
 	db.Write("People");//testing write

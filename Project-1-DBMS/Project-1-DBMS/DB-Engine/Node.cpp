@@ -11,6 +11,13 @@
 		Type = Token_Type::_null;
 		Value = "";
 	}
+	Node::Node(string value, Token_Type type, Node* left, Node* right){
+		Value = value;
+		Type = type;
+		Left = left;
+		Right = right;
+	}
+
 	Node::Node(const Node& node){
 		Left = node.Left;//copy of a pointer not object it points to
 		Right = node.Right;
@@ -37,7 +44,9 @@
 	void Node::Set_right(Node n){
 		Right = new Node(n);
 	}
-
+	bool Node::Is_literal() const {
+		return (Type == _int_num || Type == _varchar);
+	}
 	ostream& Node::Print_node(ostream& os){
 		os <<"value: " <<Value << " type: " << Type<<endl;
 		return os;
