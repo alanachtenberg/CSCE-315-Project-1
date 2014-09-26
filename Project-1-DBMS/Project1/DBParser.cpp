@@ -154,16 +154,24 @@ Parser_Table DBParser::command() {
 //------------------------------------------------------------------------------
 
 //selection ::= select (condition) atomic_expr
-bool DBParser::selection() {
+Parser_Table DBParser::selection() {
 	Token select_token = ts->get();
 	if (select_token.get_type() == _select) {
 		if (ts->get().get_type() == _lpar) {
-			if (condition()) {
+			vector<int> cond = condition();
+			if (cond.size() > 0) {
 				if (ts->get().get_type() == _rpar) {
-					if (atomic_expr())
-					{
-						//db.Select("", )
-						return true;
+					Parser_Table pt = atomic_expr();
+					if (pt.valid) {
+						//pt.table = db.Select(pt.table, cond);
+						if (pt.table.Is_default()) {
+							pt.valid = false;
+							return pt;
+						}
+						else {
+							pt.valid = true;
+							return pt;
+						}
 					}
 				}
 			}
@@ -177,14 +185,24 @@ bool DBParser::selection() {
 }
 
 //projection ::= project (attribute_list) atomic_expr
-bool DBParser::projection() {
+Parser_Table DBParser::projection() {
 	Token project_token = ts->get();
 	if (project_token.get_type() == _project) {
 		if (ts->get().get_type() == _lpar) {
-			if (attribute_list()) {
+			vector<string> attrs = attribute_list();
+			if (attrs.size() > 0) {
 				if (ts->get().get_type() == _rpar) {
-					if (atomic_expr()){
-						return true;
+					Parser_Table pt = atomic_expr();
+					if (pt.valid){
+						pt.table = db.Project("", pt.table, attrs);
+						if (pt.table.Is_default()) {
+							pt.valid = false;
+							return pt;
+						}
+						else {
+							pt.valid = true;
+							return pt;
+						}
 					}
 				}
 			}			
@@ -194,18 +212,24 @@ bool DBParser::projection() {
 		ts->unget(project_token);
 	}
 
-	return false;
+	Parser_Table pt;
+	pt.valid = false;
+	return pt;
 }
 
 //renaming ::= rename (attribute_list) atomic_expr
-bool DBParser::rename() {
+Parser_Table DBParser::rename() {
 	Token rename_token = ts->get();
 	if (rename_token.get_type() == _rename) {
 		if (ts->get().get_type() == _lpar) {
-			if (attribute_list()) {
+			vector<string> attrs = attribute_list();
+			if (attrs.size() > 0) {
 				if (ts->get().get_type() == _rpar) {
-					if (atomic_expr()) {
-						return true;
+					Parser_Table pt = atomic_expr();
+					if (pt.valid) {
+
+						//db.Rename(pt.table, attrs);
+						return pt;
 					}
 				}
 			}			
@@ -215,7 +239,9 @@ bool DBParser::rename() {
 		ts->unget(rename_token);
 	}
 
-	return false;
+	Parser_Table pt;
+	pt.valid = false;
+	return pt;
 }
 
 //condition ::= conjunction {|| conjunction}
@@ -330,7 +356,8 @@ Parser_Table DBParser::open_cmd() {
 	if (write_token.get_type() == _write) {
 		Parser_Table pt = relation_name();
 		if (pt.valid) {
-			db.Open(pt.table.Get_name());
+			pt.table = db.Open(pt.table.Get_name());
+			pt.valid = true;
 			return pt;
 		}
 	}
@@ -350,6 +377,8 @@ Parser_Table DBParser::close_cmd() {
 		Parser_Table pt = relation_name();
 		if (pt.valid) {
 			db.Close(pt.table.Get_name());
+			pt.table = Table();
+			pt.valid = true;
 			return pt;
 		}
 	}
@@ -439,12 +468,10 @@ Parser_Table DBParser::create_cmd() {
 										if (attrs.size() > 0) {
 											if (ts->get().get_type() == _rpar) {
 												
-												db.Create(pt.table.Get_name(),
+												pt.table = db.Create(pt.table.Get_name(),
 													typed_attrs[0],
 													typed_attrs[1],
-													attrs);
-												
-												pt.table = db.Get_table(pt.table.Get_name());
+													attrs);												
 												pt.valid = true;
 
 												return pt;
@@ -518,7 +545,8 @@ bool DBParser::insert_cmd() {
 	Token insert_token = ts->get();
 	if (insert_token.get_type() == _insert) {
 		if (ts->get().get_type() == _into) {
-			if (relation_name()) {
+			Parser_Table pt_to = relation_name();
+			if (pt_to.valid) {
 				if (ts->get().get_type() == _values) {
 					if (ts->get().get_type() == _from) {
 																		
@@ -549,7 +577,9 @@ bool DBParser::insert_cmd() {
 
 						//VALUES FROM RELATION expr
 						else if (lpar_token.get_type() == _relation) {
-							if (expr()) {
+							Parser_Table pt_from = expr();
+							if (pt_from.valid) {
+								db.Insert(pt_to.table, pt_from.table);
 								return true;
 							}							
 						}

@@ -5,9 +5,9 @@
 #include "Database.h"
 
 //TODO
-//overload db.Close(), db.Open() to accept table
 //get Create to return instance of table created
-
+//need new APIs: Select(Table, condition), Rename(Table, vector<string>)
+//Insert() needs to accept vector of strings
 
 struct Parser_Table {
 	Table table;
@@ -31,9 +31,9 @@ private:
 	//queries
 	Parser_Table query(); 
 
-	bool selection(); 
-	bool projection(); 
-	bool rename(); 
+	Parser_Table selection(); //done, needs API change
+	Parser_Table projection(); //done
+	Parser_Table rename(); //done, need API change
 
 	bool condition(); 
 	bool conjunction(); 
