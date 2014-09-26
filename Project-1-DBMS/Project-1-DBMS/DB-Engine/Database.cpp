@@ -428,6 +428,13 @@ void Database::Update(string table_name, vector<string> old_attributes, vector<s
 		Set_table(my_table);//updates Tables vec
 	}
 }
+/*void Database::Update(Table &table_name, vector<string> true_conditions, vector<pair<string, string>> new_values){
+	for (unsigned int i = 0; i < true_conditions.size(); i++){
+		table_name[new_values[i].first()][true_conditions[i]];//Gets tuple index from the true_conditions comparison list and inserts the tuples into the new_table
+	}
+	Set_table(table_name);//updates Tables vec
+}
+*/
 void Database::Insert(string table_name, vector<string> tuple){
 	Table my_table = Get_table(table_name);
 	if (my_table.Get_width() != tuple.size())
@@ -450,25 +457,24 @@ void Database::Insert(string dest_table, Table source){
 	Set_table(dest);//Updates tables vec
 }
 
-void Database::Insert(Table dest_table, Table source){
-	Table dest = Table(dest_table);
-	if (dest.Get_width() != source.Get_width())
+void Database::Insert(Table &dest_name, Table source){
+
+	if (dest_name.Get_width() != source.Get_width())
 		cerr << "Can not insert from source table to dest table, table width does not match" << endl;
 	else
 	{
 		for (int i = 0; i < source.Get_max_height(); ++i)
-			dest.Insert_row(source.Get_row(i));
+			dest_name.Insert_row(source.Get_row(i));
 	}
-	Set_table(dest);//Updates tables vec
+	
 }
 
 //Takes in a Table to add a tuple to. Tuple is in the form of a vector<string>
-void Database::Insert(Table dest_table, vector<string> new_tuple){
+void Database::Insert(Table &dest_table, vector<string> new_tuple){
 	if (dest_table.Get_width() != new_tuple.size())
 		cerr << "Can not insert tuple to dest table, table width does not match" << endl; //error checking
 	else
 			dest_table.Insert_row(new_tuple); //inserts tuple vector into table
-	Set_table(dest_table);//Updates tables vec
 }
 
 //can only handle a single comparison for now, need to be able to handle Where x==a&&y==b
