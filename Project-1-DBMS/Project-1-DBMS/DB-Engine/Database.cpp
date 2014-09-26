@@ -46,13 +46,15 @@ Table Database::Select(string view_name, Table in_table_name, string attribute_n
 	return new_table;
 }
 
+//Can take in a Table source and a condition index of the my_table source
+//Takes the vector of indicies and loops through the tuples, inserting them into the new_table
 Table Database::Select(string view_name, Table in_table_name, vector<int> true_conditions){
 	Table my_table = Table(in_table_name);
 	Table new_table = Table(my_table);
 	new_table.Clear_attribute_data();
 
 	for (unsigned int i = 0; i < true_conditions.size(); i++){
-		new_table.Insert_row(my_table.Get_row(true_conditions[i]));
+		new_table.Insert_row(my_table.Get_row(true_conditions[i]));//Gets tuple index from the true_conditions comparison list and inserts the tuples into the new_table
 	}
 	new_table.Set_name(view_name);
 	return new_table;
@@ -103,6 +105,20 @@ Table Database::Rename(string new_name, string old_name, string in_table){
 	}
 	Set_table(table);//updates table vector, not sure if this is correct implementation of grammar
 	return table;
+}
+
+Table Database::Rename(string view_name, Table in_table_name, vector<string> new_names){
+	Table new_table = Table(in_table_name);
+
+	int num_attr;
+	num_attr = new_table.Get_width();       // Number of columns in table
+	bool check = false;
+
+	for (int i = 0; i < num_attr; ++i){
+		new_table[i].Set_name(new_names[i]);// takes the new attribute name from the vector and sets it to the equal index in new_table attribute list
+	}
+	Set_table(new_table);//adds new_table to database
+	return new_table;
 }
 
 Table Database::Set_union(string view_name, string table1_name, string table2_name){
@@ -431,9 +447,7 @@ void Database::Insert(string dest_table, Table source){
 		for (int i = 0; i < source.Get_max_height(); ++i)
 			dest.Insert_row(source.Get_row(i));
 	}
-
 	Set_table(dest);//Updates tables vec
-
 }
 
 void Database::Insert(Table dest_table, Table source){
@@ -445,9 +459,16 @@ void Database::Insert(Table dest_table, Table source){
 		for (int i = 0; i < source.Get_max_height(); ++i)
 			dest.Insert_row(source.Get_row(i));
 	}
-
 	Set_table(dest);//Updates tables vec
+}
 
+//Takes in a Table to add a tuple to. Tuple is in the form of a vector<string>
+void Database::Insert(Table dest_table, vector<string> new_tuple){
+	if (dest_table.Get_width() != new_tuple.size())
+		cerr << "Can not insert tuple to dest table, table width does not match" << endl; //error checking
+	else
+			dest_table.Insert_row(new_tuple); //inserts tuple vector into table
+	Set_table(dest_table);//Updates tables vec
 }
 
 //can only handle a single comparison for now, need to be able to handle Where x==a&&y==b

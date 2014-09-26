@@ -32,6 +32,7 @@ public:
 	Table Project(string view_name, string in_table_name, vector<string> attributes);
 	Table Project(string view_name, Table in_table_name, vector<string> attributes);
 	Table Rename(string new_name, string old_name, string in_table);
+	Table Rename(string new_name, Table in_table_name, vector<string> new_names);
 	Table Set_union(string view_name, string table1_name, string table2_name);
 	Table Set_union(string view_name, Table table1_name, Table table2_name);
 	Table Set_difference(string view_name, string table1_name, string table2_name);
@@ -53,6 +54,7 @@ public:
 	void Insert(string table_name, vector<string> tuple);
 	void Insert(string dest_table, Table source);//Insert FROM source_table INTO dest_table
 	void Insert(Table dest_table, Table source);
+	void Insert(Table dest_table, vector<string> new_tuple);
 	void Delete(string table_name, string attribute_name, Token_Type comparison, string value);//renamed remove to delete to match project requirements
 	void Delete(Table table_name, Attribute attribute_name, Token_Type comparison, string value);
 	// Utility Functions
