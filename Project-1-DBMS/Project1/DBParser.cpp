@@ -11,12 +11,18 @@ ofstream ofs("output.txt");
 #define cout ofs
 */
 
-bool DBParser::execute_query(string query) {
+Table DBParser::execute_query(string query) {
 	ts = new Token_stream(query);
 
-	bool valid = program();
+	Parser_Table pt = program();
 	delete ts;
-	return valid;
+	
+	if (pt.valid) {
+		return pt.table;
+	}
+	else {
+		return Table();
+	}
 }
 
 void DBParser::execute_file(string filename) {
@@ -29,10 +35,10 @@ void DBParser::execute_file(string filename) {
 		line_no++;
 		if (line.size() > 0) {
 			try {
-				bool works = execute_query(line);
+				Table table = execute_query(line);
 
 
-				if (works) {
+				if (!table.Is_default()) {
 					valid++;
 				}
 				else {
@@ -52,26 +58,31 @@ void DBParser::execute_file(string filename) {
 
 //entry point 
 //------------------------------------------------------------------------------
-bool DBParser::program() {
-	if (query()) {
-		return true;
+Parser_Table DBParser::program() {
+	Parser_Table pt = query();
+	if (pt.valid) {
+		return pt;
 	}
-	else if (command()) {
-		return true;
+
+	pt = query();
+	if (pt.valid) {
+		return pt;
 	}
-	else {
-		return false;
-	}
+	
+	pt.valid = false;
+	return pt;
 }
 
 //query ::= relation_name <- expr ;
-bool DBParser::query() {
-	string name = relation_name();
-	if (name.size() > 0) {
+//figure out what to do here...
+Parser_Table DBParser::query() {
+	Parser_Table pt = relation_name();
+	if (pt.valid) {
 		Token assignment_token = ts->get();
 		if (assignment_token.get_type() == _assign) {
-			if (expr()) {
-				return true;
+			Parser_Table pt2 = expr();
+			if (pt2.valid) {
+				return pt2;
 			}
 		}
 		else {
@@ -79,37 +90,64 @@ bool DBParser::query() {
 		}
 	}
 
-	return false;
+	pt.valid = false;
+	return pt;
 }
 
 //command ::= (open-cmd | close-cmd | write-cmd | exit-cmd | show-cmd | create-cmd | update-cmd | insert-cmd | delete-cmd);
-bool DBParser::command() {
+Parser_Table DBParser::command() {
 	bool value;
-
-		 if (open_cmd())	value = true; 
-	else if (close_cmd())	value = true; 
-	else if (write_cmd())	value = true; 
-	else if (exit_cmd())	value = true; 
-	else if (show_cmd())	value = true; 
-	else if (create_cmd())	value = true; 
-	else if (update_cmd())	value = true; 
-	else if (insert_cmd())	value = true; 
-	else if (delete_cmd())	value = true; 
-	else					value = false;
+	Parser_Table pt = open_cmd();
+	if (pt.valid) { value = true; }
+	else {
+		pt = close_cmd();
+		if (pt.valid){ value = true; }
+		else {
+			pt = write_cmd();
+			if (pt.valid){ value = true; }
+			else {
+				pt = exit_cmd();
+				if (pt.valid){ value = true; }
+				else {
+					pt = show_cmd();
+					if (pt.valid){ value = true; }
+					else {
+						pt = create_cmd();
+						if (pt.valid){ value = true; }
+						else {
+							pt = update_cmd();
+							if (pt.valid){ value = true; }
+							else {
+								pt = insert_cmd();
+								if (pt.valid){ value = true; }
+								else {
+									pt = delete_cmd();
+									if (pt.valid){ value = true; }
+									else {
+										value = false;
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+	} 
+	
 	
 	if (value) {
 		Token semicolon_token = ts->get();
 		if (semicolon_token.get_type() == _semicolon) {
-			return true;
+			return pt;
 		}
 		else {
 			ts->unget(semicolon_token);
-			return false;
 		}
 	}
-	else {
-		return false;
-	}
+
+	pt.valid = false;
+	return pt;
 }
 
 //queries
@@ -124,7 +162,7 @@ bool DBParser::selection() {
 				if (ts->get().get_type() == _rpar) {
 					if (atomic_expr())
 					{
-
+						//db.Select("", )
 						return true;
 					}
 				}
@@ -287,92 +325,106 @@ bool DBParser::operand() {
 //------------------------------------------------------------------------------
 
 //open_cmd ::== OPEN relation_name 
-bool DBParser::open_cmd() {
-	Token open_token = ts->get();
-	if (open_token.get_type() == _open) {
-		string table_name = relation_name();
-		if (table_name.size() > 0) {
-			db.Open(table_name);
-			return true;
-		}
-	}
-	else {
-		ts->unget(open_token);
-	}
-
-	return false;
-}
-
-//close_cmd ::== CLOSE relation_name 
-bool DBParser::close_cmd() {
-	Token close_token = ts->get();
-	if (close_token.get_type() == _close) {
-		string table_name = relation_name();
-		if (table_name.size() > 0) {
-			db.Close(table_name);
-			return true;
-		}
-	}
-	else {
-		ts->unget(close_token);
-	}
-
-	return false;
-}
-
-//write_cmd ::== WRITE relation_name 
-bool DBParser::write_cmd() {
+Parser_Table DBParser::open_cmd() {
 	Token write_token = ts->get();
 	if (write_token.get_type() == _write) {
-		string table_name = relation_name();
-		if (table_name.size() > 0) {
-			db.Write(table_name);
-			return true;
+		Parser_Table pt = relation_name();
+		if (pt.valid) {
+			db.Open(pt.table.Get_name());
+			return pt;
 		}
 	}
 	else {
 		ts->unget(write_token);
 	}
 
-	return false;
+	Parser_Table pt;
+	pt.valid = false;
+	return pt;
+}
+
+//close_cmd ::== CLOSE relation_name 
+Parser_Table DBParser::close_cmd() {
+	Token write_token = ts->get();
+	if (write_token.get_type() == _write) {
+		Parser_Table pt = relation_name();
+		if (pt.valid) {
+			db.Close(pt.table.Get_name());
+			return pt;
+		}
+	}
+	else {
+		ts->unget(write_token);
+	}
+
+	Parser_Table pt;
+	pt.valid = false;
+	return pt;
+}
+
+//write_cmd ::== WRITE relation_name 
+Parser_Table DBParser::write_cmd() {
+	Token write_token = ts->get();
+	if (write_token.get_type() == _write) {
+		Parser_Table pt = relation_name();
+		if (pt.valid) {
+			db.Write(pt.table);
+			return pt;
+		}
+	}
+	else {
+		ts->unget(write_token);
+	}
+
+	Parser_Table pt;
+	pt.valid = false;
+	return pt;
 }
 
 //exit_cmd ::== EXIT 
-bool DBParser::exit_cmd() {
+Parser_Table DBParser::exit_cmd() {
 	Token exit_token = ts->get();
 	if (exit_token.get_type() == _exit_program) {
 		db.Exit();
-		return true;
+		Parser_Table pt;
+		pt.valid = true;
+		return pt;
 	}
 	else {
 		ts->unget(exit_token);
 	}
 
-	return false;
+	Parser_Table pt;
+	pt.valid = false;
+	return pt;
 }
 
 //show-cmd ::== SHOW atomic_expr 
-bool DBParser::show_cmd() {
+Parser_Table DBParser::show_cmd() {
 	Token show_token = ts->get();
 	if (show_token.get_type() == _show) {
-		if (atomic_expr()) {
-			return true;
+		Parser_Table pt = atomic_expr();
+		if (pt.valid) {
+			db.Show(pt.table);
+			return pt;
 		}
 	}
 	else {
 		ts->unget(show_token);
 	}
 
-	return false;
+	Parser_Table pt;
+	pt.valid = false;
+	return pt;
 }
 
 //create-cmd ::= CREATE TABLE relation_name (typed_attribute_list) PRIMARY KEY (attribute_list)
-bool DBParser::create_cmd() {
+Parser_Table DBParser::create_cmd() {
 	Token create_token = ts->get();
 	if (create_token.get_type() == _create) {
 		if (ts->get().get_type() == _table) {
-			string table_name = relation_name();
-			if (table_name.size() > 0) {
+			Parser_Table pt = relation_name();
+			if (pt.valid) {
 
 				if (ts->get().get_type() == _lpar) {
 					vector<vector<string> > typed_attrs = typed_attribute_list();
@@ -387,12 +439,15 @@ bool DBParser::create_cmd() {
 										if (attrs.size() > 0) {
 											if (ts->get().get_type() == _rpar) {
 												
-												db.Create(table_name,
+												db.Create(pt.table.Get_name(),
 													typed_attrs[0],
 													typed_attrs[1],
 													attrs);
 												
-												return true;
+												pt.table = db.Get_table(pt.table.Get_name());
+												pt.valid = true;
+
+												return pt;
 											}
 										}
 									}
@@ -408,7 +463,9 @@ bool DBParser::create_cmd() {
 		ts->unget(create_token);
 	}
 
-	return false;
+	Parser_Table pt;
+	pt.valid = false;
+	return pt;
 }
 
 //update_cmd ::= UPDATE relation_name SET attribute_name = literal { , attribute_name = literal } WHERE condition 
@@ -515,13 +572,13 @@ bool DBParser::delete_cmd() {
 	Token delete_token = ts->get();
 	if (delete_token.get_type() == _delete) {
 		if (ts->get().get_type() == _from) {
-			string table_name = relation_name();
-			if (table_name.size() > 0) {
+			Parser_Table pt = relation_name();
+			if (pt.valid) {
 				if (ts->get().get_type() == _where) {
 					vector<int> rows = condition();
 					if (rows.size() > 0) {
 
-						//db.Delete(table_name, )
+						//db.Delete(pt.table, rows);
 
 						return true;
 					}
@@ -540,14 +597,19 @@ bool DBParser::delete_cmd() {
 //------------------------------------------------------------------------------
 
 //relation_name ::= identifier
-string DBParser::relation_name() {
+Parser_Table DBParser::relation_name() {
 	Token relation_name_token = ts->get();
 	if (relation_name_token.get_type() == _identifier) {
-		return relation_name_token.get_name;
+		Parser_Table pt;
+		pt.table = db.Get_table(relation_name_token.get_name());
+		pt.valid = true;
+		return pt;
 	}
 	else {
 		ts->unget(relation_name_token);
-		return "";
+		Parser_Table pt;
+		pt.valid = false;
+		return pt;
 	}
 }
 
@@ -555,63 +617,93 @@ string DBParser::relation_name() {
 //difference ::= atomic_expr - atomic_expr
 //product ::= atomic_expr * atomic_expr 
 //expr ::= atomic-expr | selection | projection | renaming | union | difference | product
-bool DBParser::expr() {
-	if (selection())
-		return true;
-	else if (projection())
-		return true;
-	else if (rename())
-		return true;
-	else if (atomic_expr()) {
+Parser_Table DBParser::expr() {
+	Parser_Table pt = selection();
+	if (pt.valid) return pt;
+
+	pt = projection();
+	if (pt.valid) return pt;
+	
+	pt = rename();
+	if (pt.valid) return pt;
+
+	pt = atomic_expr();
+	if (pt.valid) {
 		Token expr_token = ts->get();
 		if (expr_token.get_type() == _plus) {
-			if (atomic_expr()) {
-				return true;
+			Parser_Table pt2 = atomic_expr();
+			if (pt2.valid) {
+				Parser_Table result;
+				result.table = db.Set_union("", pt.table, pt2.table);
+				result.valid = true;
+				return result;
 			}
-			else return false;
+			else {
+				pt.valid = false;
+				return pt;
+			}
 		}
 		else if (expr_token.get_type() == _minus) {
-			if (atomic_expr()) {
-				return true;
+			Parser_Table pt2 = atomic_expr();
+			if (pt2.valid) {
+				Parser_Table result;
+				result.table = db.Set_difference("", pt.table, pt2.table);
+				result.valid = true;
+				return result;
 			}
-			else return false;
+			else {
+				pt.valid = false;
+				return pt;
+			}
 		}
 		else if (expr_token.get_type() == _multiply) {
-			if (atomic_expr()) {
-				return true;
+			Parser_Table pt2 = atomic_expr();
+			if (pt2.valid) {
+				Parser_Table result;
+				result.table = db.Cross_product("", pt.table, pt2.table);
+				result.valid = true;
+				return result;
 			}
-			else return false;
+			else {
+				pt.valid = false;
+				return pt;
+			}
 		}
 		else {
 			ts->unget(expr_token);
-			return true;
+			pt.valid = false;
+			return pt;
 		}
 	}
 	else {
-		return false;
+		pt.valid = false;
+		return pt;
 	}
 }
 
 //atomic_expr ::= relation_name | (expr)
-bool DBParser::atomic_expr() {
+Parser_Table DBParser::atomic_expr() {
 	Token lpar_token = ts->get();
 	if (lpar_token.get_type() == _lpar) {
-		if (expr()) { 
+		Parser_Table pt = expr();
+		if (pt.valid) { 
 			Token rpar_token = ts->get();
 			if (rpar_token.get_type() == _rpar) {
-				return true;
+				return pt;
 			}
 		}
-		return false;
+		pt.valid = false;
+		return pt;
 	}
 	else {
 		ts->unget(lpar_token);
-		string table_name = relation_name();
-		if (table_name.size() > 0) {
-			return true;
+		Parser_Table pt = relation_name();
+		if (pt.valid) {
+			return pt;
 		}
 		else {
-			return false;
+			pt.valid = false;
+			return pt;
 		}
 	}
 }
@@ -653,20 +745,20 @@ vector<vector<string> > DBParser::typed_attribute_list() { //need to return vect
 
 	string attr_name = attribute_name();
 	if (attr_name.size() > 0) {
-		string type = type();
-		if (type.size() > 0) {
+		string type_name = type();
+		if (type_name.size() > 0) {
 			typed_attrs[0].push_back(attr_name);
-			typed_attrs[1].push_back(type);
+			typed_attrs[1].push_back(type_name);
 
 			while (true) {
 				Token comma_token = ts->get();
 				if (comma_token.get_type() == _comma) {
 					attr_name = attribute_name();
 					if (attr_name.size() > 0) {
-						type = type();
-						if (type.size() > 0) {
+						type_name = type();
+						if (type_name.size() > 0) {
 							typed_attrs[0].push_back(attr_name);
-							typed_attrs[1].push_back(type);
+							typed_attrs[1].push_back(type_name);
 						}
 						else {
 							typed_attrs.clear();

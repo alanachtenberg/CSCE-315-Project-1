@@ -4,6 +4,16 @@
 #include "Token_Stream.h"
 #include "Database.h"
 
+//TODO
+//overload db.Close(), db.Open() to accept table
+//get Create to return instance of table created
+
+
+struct Parser_Table {
+	Table table;
+	bool valid;
+};
+
 class DBParser {
 	Token_stream* ts;
 	Database db;
@@ -11,22 +21,19 @@ class DBParser {
 public: 
 	DBParser() {};
 
-	bool execute_query(std::string query);
+	Table execute_query(std::string query);
 	void execute_file(std::string filename);
 	
 private:
 	//entry point
-	bool program(); 
+	Parser_Table program(); 
 
 	//queries
-	bool query(); 
+	Parser_Table query(); 
 
 	bool selection(); 
 	bool projection(); 
 	bool rename(); 
-	bool set_union(); 
-	bool difference(); 
-	bool product(); 
 
 	bool condition(); 
 	bool conjunction(); 
@@ -35,22 +42,22 @@ private:
 	bool operand(); 
 
 	//commands
-	bool command(); 
+	Parser_Table command(); //done
 
-	bool open_cmd(); //done
-	bool close_cmd(); //done
-	bool write_cmd(); //done
-	bool exit_cmd();  //done
-	bool show_cmd(); 
-	bool create_cmd(); //done
+	Parser_Table open_cmd(); //done
+	Parser_Table close_cmd(); //done
+	Parser_Table write_cmd(); //done
+	Parser_Table exit_cmd();  //done
+	Parser_Table show_cmd(); //done
+	Parser_Table create_cmd(); //done
 	bool update_cmd(); 
 	bool insert_cmd();
 	bool delete_cmd(); 
 
 	//data
-	std::string relation_name(); //done
-	bool expr(); 
-	bool atomic_expr(); 
+	Parser_Table relation_name(); //done
+	Parser_Table expr(); //done
+	Parser_Table atomic_expr(); //done
 	std::string attribute_name(); //done
 	std::string type(); //done
 	std::vector<std::vector<std::string> > typed_attribute_list(); //done

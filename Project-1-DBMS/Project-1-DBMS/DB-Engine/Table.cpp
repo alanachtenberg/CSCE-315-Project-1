@@ -69,6 +69,11 @@ int Table::Get_max_height() const{
 	return max_height;
 }
 
+bool Table::Is_default() {
+	if (Name == "DefaultTableName") return true;
+	else return false;
+}
+
 vector<string> Table::Get_row(int index){
 	if (index<0 || index>Get_max_height()){
 		cerr << "cannot get row, index out of range"<<endl;

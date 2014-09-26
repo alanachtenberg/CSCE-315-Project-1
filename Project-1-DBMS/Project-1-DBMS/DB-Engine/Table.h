@@ -30,6 +30,7 @@ public:
 	//Utility functions
 	int Get_width() const;
 	int Get_max_height() const;
+	bool Is_default();
 
 	//Gets row of table by creating a new vector and added each individual attribute value
 	vector<string> Get_row(int index);
