@@ -1,4 +1,5 @@
 #include "Database.h"
+#include "ComparisonTree.cpp"
 #include <fstream>
 #include <iterator>
 Database::Database()
@@ -16,14 +17,13 @@ vector<Table> Database::get_Tables(){
 // Query Functions
 //need someone to computer comparisons before they are sent to the select function
 //ie. some seperate operator functions we can pass into the select function
-Table Database::Select(string view_name, string in_table_name, string attribute_name, Token_Type comparison, string value){
+Table Database::Select(string view_name, string in_table_name, Comparison_tree comparison){
 	
 	Table my_table = Get_table(in_table_name);
 	Table new_table = Table(my_table);
 	new_table.Clear_attribute_data();
 
-	Attribute my_attribute = my_table[attribute_name];
-	vector<int> row_indicies = Compare(my_attribute.Get_data(), comparison, value);//Gets a vector of rows that match comparison
+	vector<int> row_indicies = comparison.Eval_tree(my_table);
 	for (unsigned int i = 0; i < row_indicies.size(); i++){
 		new_table.Insert_row(my_table.Get_row(row_indicies[i]));
 	}
@@ -31,14 +31,13 @@ Table Database::Select(string view_name, string in_table_name, string attribute_
 	return new_table;
 }
 
-Table Database::Select(string view_name, Table in_table_name, string attribute_name, Token_Type comparison, string value){
+Table Database::Select(string view_name, Table in_table_name, Comparison_tree comparison){
 
 	Table my_table = Table(in_table_name);
 	Table new_table = Table(my_table);
 	new_table.Clear_attribute_data();
 
-	Attribute my_attribute = my_table[attribute_name];
-	vector<int> row_indicies = Compare(my_attribute.Get_data(), comparison, value);//Gets a vector of rows that match comparison
+	vector<int> row_indicies = comparison.Eval_tree(my_table);//Gets a vector of rows that match comparison
 	for (unsigned int i = 0; i < row_indicies.size(); i++){
 		new_table.Insert_row(my_table.Get_row(row_indicies[i]));
 	}
@@ -48,13 +47,14 @@ Table Database::Select(string view_name, Table in_table_name, string attribute_n
 
 //Can take in a Table source and a condition index of the my_table source
 //Takes the vector of indicies and loops through the tuples, inserting them into the new_table
-Table Database::Select(string view_name, Table in_table_name, vector<int> true_conditions){
+Table Database::Select(string view_name, Table in_table_name, Comparison_tree comparison){
 	Table my_table = Table(in_table_name);
 	Table new_table = Table(my_table);
 	new_table.Clear_attribute_data();
 
-	for (unsigned int i = 0; i < true_conditions.size(); i++){
-		new_table.Insert_row(my_table.Get_row(true_conditions[i]));//Gets tuple index from the true_conditions comparison list and inserts the tuples into the new_table
+	vector<int> row_indicies = comparison.Eval_tree(my_table);
+	for (unsigned int i = 0; i < row_indicies.size(); i++){
+		new_table.Insert_row(my_table.Get_row(row_indicies[i]));//Gets tuple index from the true_conditions comparison list and inserts the tuples into the new_table
 	}
 	new_table.Set_name(view_name);
 	return new_table;

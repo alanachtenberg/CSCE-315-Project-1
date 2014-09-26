@@ -26,9 +26,9 @@ public:
 	vector<Table> get_Tables();
 
 	// Query Functions
-	Table Select(string view_name, string in_table_name, string attribute_name, Token_Type comparison, string value);
-	Table Select(string view_name, Table in_table_name, string attribute_name, Token_Type comparison, string value);
-	Table Select(string view_name, Table in_table_name, vector<int> true_conditions);
+	Table Select(string view_name, string in_table_name, Comparison_tree comparison);
+	Table Select(string view_name, Table in_table_name, Comparison_tree comparison);
+	Table Select(string view_name, Table in_table_name, Comparison_tree comparison);
 	Table Project(string view_name, string in_table_name, vector<string> attributes);
 	Table Project(string view_name, Table in_table_name, vector<string> attributes);
 	Table Rename(string new_name, string old_name, string in_table);

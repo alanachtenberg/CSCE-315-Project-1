@@ -23,6 +23,7 @@ int main(){
 	db.Insert("People", vector < string > {"jacob", "21", "Napa flats"});
 	db.Insert("People", vector < string > {"robby", "21", "Hockey baller"});
 	db.Insert("People", vector < string > {"casey", "21", "notbroke cs student"});//testing insert
+	//TEST COMPARISON TREE
 	vector<int> temp=tree.Eval_tree(db.Get_table("People"));
 
 	db.Show("People");//testing insert and show
