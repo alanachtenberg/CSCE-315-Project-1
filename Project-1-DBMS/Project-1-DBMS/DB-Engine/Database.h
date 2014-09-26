@@ -9,6 +9,7 @@
 #include <string>
 #include <iostream>    
 #include <iomanip>
+#include <utility>
 
 using namespace std;
 
@@ -51,10 +52,11 @@ public:
 	void Show(Table table);
 	Table Create(string table_name,vector<string> attribute_names, vector<string> attribute_types, vector<string> keys);
 	void Update(string table_name, vector<string> old_attributes, vector<string> new_values, string attribute_name, Token_Type comparison, string value);
+	void Update(Table &table_name, vector<string> true_conditions, vector<pair<string, string>> new_values);
 	void Insert(string table_name, vector<string> tuple);
 	void Insert(string dest_table, Table source);//Insert FROM source_table INTO dest_table
-	void Insert(Table dest_table, Table source);
-	void Insert(Table dest_table, vector<string> new_tuple);
+	void Insert(Table &dest_table, Table source);
+	void Insert(Table &dest_table, vector<string> new_tuple);
 	void Delete(string table_name, string attribute_name, Token_Type comparison, string value);//renamed remove to delete to match project requirements
 	void Delete(Table table_name, Attribute attribute_name, Token_Type comparison, string value);
 	// Utility Functions
