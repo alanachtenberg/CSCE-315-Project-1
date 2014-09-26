@@ -46,6 +46,18 @@ Table Database::Select(string view_name, Table in_table_name, string attribute_n
 	return new_table;
 }
 
+Table Database::Select(string view_name, Table in_table_name, vector<int> true_conditions){
+	Table my_table = Table(in_table_name);
+	Table new_table = Table(my_table);
+	new_table.Clear_attribute_data();
+
+	for (unsigned int i = 0; i < true_conditions.size(); i++){
+		new_table.Insert_row(my_table.Get_row(true_conditions[i]));
+	}
+	new_table.Set_name(view_name);
+	return new_table;
+}
+
 Table Database::Project(string view_name, string in_table_name, vector<string> attributes){
 	Table my_table = Get_table(in_table_name);
 	vector<Attribute> projected;
