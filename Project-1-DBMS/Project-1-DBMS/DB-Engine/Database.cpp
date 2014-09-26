@@ -31,19 +31,6 @@ Table Database::Select(string view_name, string in_table_name, Comparison_tree c
 	return new_table;
 }
 
-Table Database::Select(string view_name, Table in_table_name, Comparison_tree comparison){
-
-	Table my_table = Table(in_table_name);
-	Table new_table = Table(my_table);
-	new_table.Clear_attribute_data();
-
-	vector<int> row_indicies = comparison.Eval_tree(my_table);//Gets a vector of rows that match comparison
-	for (unsigned int i = 0; i < row_indicies.size(); i++){
-		new_table.Insert_row(my_table.Get_row(row_indicies[i]));
-	}
-	new_table.Set_name(view_name);
-	return new_table;
-}
 
 //Can take in a Table source and a condition index of the my_table source
 //Takes the vector of indicies and loops through the tuples, inserting them into the new_table
@@ -428,13 +415,17 @@ void Database::Update(string table_name, vector<string> old_attributes, vector<s
 		Set_table(my_table);//updates Tables vec
 	}
 }
-/*void Database::Update(Table &table_name, vector<string> true_conditions, vector<pair<string, string>> new_values){
-	for (unsigned int i = 0; i < true_conditions.size(); i++){
-		table_name[new_values[i].first()][true_conditions[i]];//Gets tuple index from the true_conditions comparison list and inserts the tuples into the new_table
+
+//having trouble with the logice in the for loop
+void Database::Update(Table &table_name, Comparison_tree comparison, vector<pair<string, string>> new_values){
+	vector<int> row_indicies = comparison.Eval_tree(table_name);
+	for (unsigned int i = 0; i < row_indicies.size(); i++){
+		table_name[new_values[i].first].Set_value(i, new_values[i].second);
+																	
 	}
 	Set_table(table_name);//updates Tables vec
 }
-*/
+
 void Database::Insert(string table_name, vector<string> tuple){
 	Table my_table = Get_table(table_name);
 	if (my_table.Get_width() != tuple.size())
