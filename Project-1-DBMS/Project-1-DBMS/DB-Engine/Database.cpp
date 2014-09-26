@@ -350,7 +350,7 @@ void Database::Write(Table table){
 		Tables.push_back(table);//add to database tables
 	Write(table.Get_name());
 }
-void Database::Open(string table_name){
+Table Database::Open(string table_name){
 	ifstream in = ifstream((table_name + ".db").c_str());
 	if (!in.is_open())
 		cerr << "could not open file" << table_name + ".db"<<endl;
@@ -362,6 +362,8 @@ void Database::Open(string table_name){
 			Tables.push_back(new_table);
 		else
 			cout << "Table already open\n";
+
+		return new_table;
 	}
 }
 //For showing table in database
@@ -376,10 +378,11 @@ void Database::Show(string table_name){
 void Database::Show(Table table){
 	table.Pretty_print(cout);
 }
-void Database::Create(string table_name,vector<string> attribute_names, vector<string> attribute_types, vector<string> keys){
+Table Database::Create(string table_name,vector<string> attribute_names, vector<string> attribute_types, vector<string> keys){
 	Table new_table=Table(table_name,attribute_names, attribute_types, keys);
 	//TODO need to implement protection for multiple tables of the same name
 	Tables.push_back(new_table);
+	return new_table;
 }
 
 void Database::Update(string table_name, vector<string> old_attributes, vector<string> new_values, string attribute_name, Token_Type comparison, string value){

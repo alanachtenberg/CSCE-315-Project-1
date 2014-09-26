@@ -44,10 +44,10 @@ public:
 	void Write(string table_name);
 	//
 	void Write(Table table);
-	void Open(string table_name);
+	Table Open(string table_name);
 	void Show(string table_name);
 	void Show(Table table);
-	void Create(string table_name,vector<string> attribute_names, vector<string> attribute_types, vector<string> keys);
+	Table Create(string table_name,vector<string> attribute_names, vector<string> attribute_types, vector<string> keys);
 	void Update(string table_name, vector<string> old_attributes, vector<string> new_values, string attribute_name, Token_Type comparison, string value);
 	void Insert(string table_name, vector<string> tuple);
 	void Insert(string dest_table, Table source);//Insert FROM source_table INTO dest_table
