@@ -1,8 +1,8 @@
 #ifndef NODE_H
 #define NODE_H
 
-#include <string>
-#include <Token.h>
+//#include <std::string>
+#include "Token.h"
 using namespace std;
 
 class Node{
@@ -12,10 +12,10 @@ private:
 	Node* Right;
 public:
 	Token_Type Type;
-	string Value;
+	std::string Value;
 
 	Node();
-	Node(string value, Token_Type type, Node *left=NULL, Node *right=NULL);
+	Node(std::string value, Token_Type type, Node *left=NULL, Node *right=NULL);
 	Node(const Node& node);
 	~Node();
 	//Getters
@@ -25,7 +25,7 @@ public:
 	void Set_left(Node n);
 	void Set_right(Node n);
 	
-	//check if node is int or string
+	//check if node is int or std::string
 	bool Is_literal() const;
 
 	ostream& Print_node(ostream& os);

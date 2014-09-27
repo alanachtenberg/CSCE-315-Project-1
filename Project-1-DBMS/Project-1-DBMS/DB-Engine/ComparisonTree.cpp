@@ -1,8 +1,5 @@
-
-
-
 #include "ComparisonTree.h"
-
+#include <iostream>
 
 	Comparison_tree::Comparison_tree(){
 		Root = Node();

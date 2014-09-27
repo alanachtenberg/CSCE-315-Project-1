@@ -1,6 +1,9 @@
 #include "Node.h"
 #include <stdio.h>
 #include <iostream>
+#include <string>
+
+using namespace std;
 
 	Node::Node(){
 		Left = NULL;
@@ -50,6 +53,6 @@
 		return (Type == _int_num || Type == _varchar);
 	}
 	ostream& Node::Print_node(ostream& os){
-		os <<"value: " <<Value << " type: " << Type<<endl;
+		os << "value: " << Value << " type: " << Type<<endl;
 		return os;
 	}

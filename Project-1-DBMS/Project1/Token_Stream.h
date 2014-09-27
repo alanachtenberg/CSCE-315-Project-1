@@ -2,8 +2,8 @@
 #define TOKEN_STREAM_H
 
 #include "Token.h"
-#include <vector>
 #include <stack>
+#include <vector>
 #include <sstream>
 
 class Token_stream {

@@ -1,8 +1,4 @@
 #include "DBParser.h"
-#include "ComparisonTree.h"
-#include <iostream>
-#include <fstream>
-#include <vector>
 
 using namespace std;
 
@@ -17,7 +13,6 @@ Table DBParser::execute_query(string query) {
 
 	Parser_Table pt = program();
 	delete ts;
-	
 	if (pt.valid) {
 		return pt.table;
 	}
@@ -38,12 +33,11 @@ void DBParser::execute_file(string filename) {
 			try {
 				Table table = execute_query(line);
 
-
 				if (!table.Is_default()) {
 					valid++;
 				}
 				else {
-					cout << "syntax error on line " << line_no << ":\n" << line << "\n\n";
+					cout << "syntax error on line " << line_no << ":\n";
 					invalid++;
 				}
 			}
@@ -65,11 +59,10 @@ Parser_Table DBParser::program() {
 		return pt;
 	}
 
-	pt = query();
+	pt = command();
 	if (pt.valid) {
 		return pt;
 	}
-	
 	pt.valid = false;
 	return pt;
 }
@@ -295,7 +288,7 @@ Comparison_tree DBParser::comparison() {
 	string operand_left = operand();
 	if (operand_left.size() > 0) {
 		Token op_token = op();
-		if (!op_token.get_type() == _null) {
+		if (op_token.get_type() != _null) {
 			string operand_right = operand();
 			if (operand_right.size() > 0) {
 				Comparison_tree ct;
@@ -361,8 +354,8 @@ string DBParser::operand() {
 
 //open_cmd ::== OPEN relation_name 
 Parser_Table DBParser::open_cmd() {
-	Token write_token = ts->get();
-	if (write_token.get_type() == _write) {
+	Token open_token = ts->get();
+	if (open_token.get_type() == _open) {
 		Parser_Table pt = relation_name();
 		if (pt.valid) {
 			pt.table = db.Open(pt.table.Get_name());
@@ -371,7 +364,7 @@ Parser_Table DBParser::open_cmd() {
 		}
 	}
 	else {
-		ts->unget(write_token);
+		ts->unget(open_token);
 	}
 
 	Parser_Table pt;
@@ -381,18 +374,19 @@ Parser_Table DBParser::open_cmd() {
 
 //close_cmd ::== CLOSE relation_name 
 Parser_Table DBParser::close_cmd() {
-	Token write_token = ts->get();
-	if (write_token.get_type() == _write) {
+	Token close_token = ts->get();
+	if (close_token.get_type() == _close) {
 		Parser_Table pt = relation_name();
 		if (pt.valid) {
 			db.Close(pt.table.Get_name());
 			pt.table = Table();
+			pt.table.Set_name("table closed");
 			pt.valid = true;
 			return pt;
 		}
 	}
 	else {
-		ts->unget(write_token);
+		ts->unget(close_token);
 	}
 
 	Parser_Table pt;
@@ -406,7 +400,7 @@ Parser_Table DBParser::write_cmd() {
 	if (write_token.get_type() == _write) {
 		Parser_Table pt = relation_name();
 		if (pt.valid) {
-			db.Write(pt.table);
+			pt.table = db.Write(pt.table);
 			return pt;
 		}
 	}
@@ -460,13 +454,13 @@ Parser_Table DBParser::show_cmd() {
 Parser_Table DBParser::create_cmd() {
 	Token create_token = ts->get();
 	if (create_token.get_type() == _create) {
-		if (ts->get().get_type() == _table) {
+		if (ts->get().get_type() == _table) {			
 			Parser_Table pt = relation_name();
 			if (pt.valid) {
 
 				if (ts->get().get_type() == _lpar) {
 					vector<vector<string> > typed_attrs = typed_attribute_list();
-					if (typed_attrs.size == 2) {
+					if (typed_attrs.size() == 2) {
 						if (ts->get().get_type() == _rpar) {
 
 							if (ts->get().get_type() == _primary) {
@@ -598,7 +592,7 @@ Parser_Table DBParser::insert_cmd() {
 										
 										if (ts->get().get_type() == _rpar) {
 											Parser_Table pt;
-											db.Insert(pt_to.table, items);
+											pt.table = db.Insert(pt_to.table, items);
 											pt.valid = true;
 											return pt;
 										}
@@ -612,7 +606,7 @@ Parser_Table DBParser::insert_cmd() {
 							Parser_Table pt_from = expr();
 							if (pt_from.valid) {
 								Parser_Table pt;
-								db.Insert(pt_to.table, pt_from.table);
+								pt.table = db.Insert(pt_to.table, pt_from.table);
 								pt.valid = true;
 								return pt;
 							}							
@@ -642,7 +636,7 @@ Parser_Table DBParser::delete_cmd() {
 			if (pt.valid) {
 				if (ts->get().get_type() == _where) {
 					Comparison_tree ct = condition();
-					db.Delete(pt.table, ct);
+					//db.Delete(pt.table, ct);
 					pt.valid = true;
 
 					return pt;					
@@ -737,7 +731,7 @@ Parser_Table DBParser::expr() {
 		}
 		else {
 			ts->unget(expr_token);
-			pt.valid = false;
+			pt.valid = true;
 			return pt;
 		}
 	}
@@ -831,17 +825,17 @@ vector<vector<string> > DBParser::typed_attribute_list() { //need to return vect
 							return typed_attrs;
 						}
 					}
-					else {
-						ts->unget(comma_token);
-						return typed_attrs;
-					}
+				}
+				else {
+					ts->unget(comma_token);
+					return typed_attrs;
 				}
 			}
 		}
-
-		typed_attrs.clear();
-		return typed_attrs;
 	}
+
+	typed_attrs.clear();
+	return typed_attrs;
 }
 
 //attribute_list ::= attribute_name {, attribute_name} 
@@ -887,13 +881,13 @@ string DBParser::literal() {
 				return string_token.get_name();
 			}
 		}
+		return "";
 	}
 	else if (literal_token.get_type() == _int_num) {
 		stringstream ss;
 		ss << literal_token.get_value();
 		return ss.str();
 	}
-	
 	else {
 		ts->unget(literal_token);
 		return "";

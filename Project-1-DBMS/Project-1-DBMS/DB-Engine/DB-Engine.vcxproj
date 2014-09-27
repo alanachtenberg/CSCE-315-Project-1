@@ -44,7 +44,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>C:\Users\Casey\Source\Repos\Project-1-DBMS\Project-1-DBMS\Project1</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Users\Casey\Source\Repos\Project-1-DBMS\Project-1-DBMS\Project-1-DBMS\DB-Engine;C:\Users\Casey\Source\Repos\Project-1-DBMS\Project-1-DBMS\Project1</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -65,7 +65,9 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\Project1\DBParser.h" />
     <ClInclude Include="..\..\Project1\Token.h" />
+    <ClInclude Include="..\..\Project1\Token_Stream.h" />
     <ClInclude Include="Attribute.h" />
     <ClInclude Include="ComparisonTree.h" />
     <ClInclude Include="Database.h" />
@@ -73,6 +75,10 @@
     <ClInclude Include="Table.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\Project1\DBParser.cpp" />
+    <ClCompile Include="..\..\Project1\main.cpp" />
+    <ClCompile Include="..\..\Project1\Token.cpp" />
+    <ClCompile Include="..\..\Project1\Token_Stream.cpp" />
     <ClCompile Include="Attribute.cpp" />
     <ClCompile Include="ComparisonTree.cpp" />
     <ClCompile Include="Database.cpp" />
@@ -82,6 +88,10 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="People.db" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="..\..\Project1\test_given.txt" />
+    <Text Include="final_test.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

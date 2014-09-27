@@ -1,4 +1,8 @@
 #include "Attribute.h"
+#include <iostream>
+#include <string>
+
+using namespace std;
 
 Attribute::Attribute(){
 	Name = "DefaultName";

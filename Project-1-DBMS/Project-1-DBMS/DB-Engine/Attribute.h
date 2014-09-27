@@ -2,49 +2,44 @@
 #define ATTRIBUTE_H
 
 #include <vector>
-#include <string>
-#include <iostream>
-
-using namespace std;
-
 
 class Attribute{
 	private:
-		const string ENDLIST = "ENDLIST"; //used to simplify Read function
-		string Name;
-		string VarType;
-		vector<string> Data;
+		const std::string ENDLIST = "ENDLIST"; //used to simplify Read function
+		std::string Name;
+		std::string VarType;
+		std::vector<std::string> Data;
 	public:
 		//Constructors
 		Attribute();
-		Attribute(string name, string vartype, vector<string> data);
+		Attribute(std::string name, std::string vartype, std::vector<std::string> data);
 		Attribute(const Attribute& attribute);
 		//Copy Assignment operator
 		Attribute& operator = (const Attribute& attribute);
 		
 		//Getters and Setters
 		
-		string	Get_name() const;
-		void  Set_name(string name);
+		std::string	Get_name() const;
+		void  Set_name(std::string name);
 
-		string  Get_vartype() const;
-		void  Set_vartype(string vartype);
+		std::string  Get_vartype() const;
+		void  Set_vartype(std::string vartype);
 		
 		void Clear_data();
-		vector<string> Get_data() const;
-		void Set_data( vector<string> data);
+		std::vector<std::string> Get_data() const;
+		void Set_data(std::vector<std::string> data);
 
-		string Get_value(unsigned int index) const;
-		void Set_value(unsigned int index, string value);
-		void Insert_value(string value);
+		std::string Get_value(unsigned int index) const;
+		void Set_value(unsigned int index, std::string value);
+		void Insert_value(std::string value);
 
 		int Get_size() const;
 
 		//Read and Write
-		istream& Read(istream& is);
-		ostream& Write(ostream& os);
+		std::istream& Read(std::istream& is);
+		std::ostream& Write(std::ostream& os);
 
-		string& operator [](unsigned int i);
+		std::string& operator [](unsigned int i);
 };
 
 

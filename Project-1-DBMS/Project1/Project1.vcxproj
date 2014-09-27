@@ -66,21 +66,9 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="DBParser.cpp" />
-    <ClCompile Include="main.cpp" />
-    <ClCompile Include="Token.cpp" />
-    <ClCompile Include="Token_Stream.cpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="DBParser.h" />
-    <ClInclude Include="Token.h" />
-    <ClInclude Include="Token_Stream.h" />
-  </ItemGroup>
-  <ItemGroup>
     <Text Include="output.txt" />
     <Text Include="README.txt" />
     <Text Include="test_custom_invalid.txt" />
-    <Text Include="test_given.txt" />
     <Text Include="test_custom_valid.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

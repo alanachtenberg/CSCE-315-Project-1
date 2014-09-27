@@ -1,11 +1,13 @@
 #include "Database.h"
 #include "ComparisonTree.h"
 #include <fstream>
+#include <iostream>
+#include <string>
 #include <iterator>
+
 Database::Database()
 {
 }
-
 
 Database::~Database()
 {
@@ -348,13 +350,15 @@ void Database::Exit(){
 	cout << "Closing DBMS" << endl;
 	std::exit(0); 
 }
-void Database::Write(string table_name){
+Table Database::Write(string table_name){
 	Table my_table=Get_table(table_name);
 	ofstream out = ofstream((table_name+".db").c_str(), std::ofstream::out | std::ofstream::trunc);//trunc flag means content already in file will be deleted
 	out << my_table;//Writes table to output stream
+
+	return my_table;
 }
 
-void Database::Write(Table table){
+Table Database::Write(Table table){
 	bool found = false;
 	for ( unsigned int i = 0; i < Tables.size(); ++i)
 		if (Tables[i].Get_name() == table.Get_name()){
@@ -364,6 +368,8 @@ void Database::Write(Table table){
 	if (!found)
 		Tables.push_back(table);//add to database tables
 	Write(table.Get_name());
+
+	return table;
 }
 Table Database::Open(string table_name){
 	ifstream in = ifstream((table_name + ".db").c_str());
@@ -392,6 +398,7 @@ void Database::Show(string table_name){
 }
 //For showing any table
 void Database::Show(Table table){
+	cout << "Width: " << table.Get_width() << " Height: " << table.Get_max_height() << "\n";
 	table.Pretty_print(cout);
 }
 Table Database::Create(string table_name,vector<string> attribute_names, vector<string> attribute_types, vector<string> keys){
@@ -427,7 +434,7 @@ void Database::Update(Table &table_name, Comparison_tree comparison, vector<pair
 	Set_table(table_name);//updates Tables vec
 }
 
-void Database::Insert(string table_name, vector<string> tuple){
+Table Database::Insert(string table_name, vector<string> tuple){
 	Table my_table = Get_table(table_name);
 	if (my_table.Get_width() != tuple.size())
 		cerr << "Cant insert Tuple, size of tuple does not match table" << endl;
@@ -436,8 +443,10 @@ void Database::Insert(string table_name, vector<string> tuple){
 		my_table.Insert_row(tuple);
 	}
 	Set_table(my_table);//Updates tables vec
+
+	return my_table;
 }
-void Database::Insert(string dest_table, Table source){
+Table Database::Insert(string dest_table, Table source){
 	Table dest = Get_table(dest_table);
 	if (dest.Get_width() != source.Get_width())
 		cerr << "Can not insert from source table to dest table, table width does not match" << endl;
@@ -447,9 +456,10 @@ void Database::Insert(string dest_table, Table source){
 			dest.Insert_row(source.Get_row(i));
 	}
 	Set_table(dest);//Updates tables vec
+	return dest;
 }
 
-void Database::Insert(Table &dest_name, Table source){
+Table Database::Insert(Table &dest_name, Table source){
 
 	if (dest_name.Get_width() != source.Get_width())
 		cerr << "Can not insert from source table to dest table, table width does not match" << endl;
@@ -458,15 +468,19 @@ void Database::Insert(Table &dest_name, Table source){
 		for ( unsigned int i = 0; i < source.Get_max_height(); ++i)
 			dest_name.Insert_row(source.Get_row(i));
 	}
-	
+	Set_table(dest_name);//Updates tables vec
+	return dest_name;
 }
 
 //Takes in a Table to add a tuple to. Tuple is in the form of a vector<string>
-void Database::Insert(Table &dest_table, vector<string> new_tuple){
+Table Database::Insert(Table &dest_table, vector<string> new_tuple){
 	if (dest_table.Get_width() != new_tuple.size())
 		cerr << "Can not insert tuple to dest table, table width does not match" << endl; //error checking
 	else
 			dest_table.Insert_row(new_tuple); //inserts tuple vector into table
+
+	Set_table(dest_table);//Updates tables vec
+	return dest_table;
 }
 
 //can only handle a single comparison for now, need to be able to handle Where x==a&&y==b
@@ -525,8 +539,10 @@ Table Database::Get_table(string table_name) const{
 			return Tables[i];
 		}
 	}
-	cerr << "Table get, NOT FOUND\n";
-	return Table();//IF Table not found return default
+	//cerr << "Table get, NOT FOUND\n";
+	Table table;//IF Table not found return default
+	table.Set_name(table_name);
+	return table;
 }
 void Database::Set_table(Table& table){
 	bool found = false;

@@ -11,8 +11,8 @@ private:
 	Node Root;
 	Table Data_table;
 	//returns vector of ints corresponding to rows that evaluate to true;
-	vector<int> Eval_node(Node n);
-	vector<int>	Compare(const Node& left, const Token_Type& type, const Node& right);
+	std::vector<int> Eval_node(Node n);
+	std::vector<int>	Compare(const Node& left, const Token_Type& type, const Node& right);
 
 public:
 
@@ -26,7 +26,7 @@ public:
 
 
 	//calls eval_node on root
-	vector<int> Eval_tree(const Table& table);
+	std::vector<int> Eval_tree(const Table& table);
 
 };
 

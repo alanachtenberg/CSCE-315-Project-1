@@ -1,4 +1,5 @@
 #include "Token.h"
+#include <string>
 
 std::string Token_Type_Name[] = {
 	"_lpar", "_rpar", "_plus", "_minus", "_multiply", "_divide", "_mod", "_assign", "_semicolon",

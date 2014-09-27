@@ -11,70 +11,65 @@
 #include <iomanip>
 #include <utility>
 
-using namespace std;
-
-
-
 class Database
 {
 private:
-	vector<Table> Tables;
+	std::vector<Table> Tables;
 public:
 	Database();
 	~Database();
 
-	//returns Tables vector
-	vector<Table> get_Tables();
+	//returns Tables std::vector
+	std::vector<Table> get_Tables();
 
 	// Query Functions
-	Table Select(string view_name, string in_table_name, Comparison_tree comparison);
-	Table Select(string view_name, Table in_table_name, Comparison_tree comparison);
-	Table Project(string view_name, string in_table_name, vector<string> attributes);
-	Table Project(string view_name, Table in_table_name, vector<string> attributes);
-	Table Rename(string new_name, string old_name, string in_table);
-	Table Rename(string new_name, Table in_table_name, vector<string> new_names);
-	Table Set_union(string view_name, string table1_name, string table2_name);
-	Table Set_union(string view_name, Table table1_name, Table table2_name);
-	Table Set_difference(string view_name, string table1_name, string table2_name);
-	Table Set_difference(string view_name, Table table1_name, Table table2_name);
-	Table Cross_product(string view_name, string table1_name, string table2_name);
-	Table Cross_product(string view_name, Table table1_name, Table table2_name);
+	Table Select(std::string view_name, std::string in_table_name, Comparison_tree comparison);
+	Table Select(std::string view_name, Table in_table_name, Comparison_tree comparison);
+	Table Project(std::string view_name, std::string in_table_name, std::vector<std::string> attributes);
+	Table Project(std::string view_name, Table in_table_name, std::vector<std::string> attributes);
+	Table Rename(std::string new_name, std::string old_name, std::string in_table);
+	Table Rename(std::string new_name, Table in_table_name, std::vector<std::string> new_names);
+	Table Set_union(std::string view_name, std::string table1_name, std::string table2_name);
+	Table Set_union(std::string view_name, Table table1_name, Table table2_name);
+	Table Set_difference(std::string view_name, std::string table1_name, std::string table2_name);
+	Table Set_difference(std::string view_name, Table table1_name, Table table2_name);
+	Table Cross_product(std::string view_name, std::string table1_name, std::string table2_name);
+	Table Cross_product(std::string view_name, Table table1_name, Table table2_name);
 
 	// Command Functions
-	void Close(string table_name);
+	void Close(std::string table_name);
 	void Exit();
-	void Write(string table_name);
-	//
-	void Write(Table table);
-	Table Open(string table_name);
-	void Show(string table_name);
+	Table Write(std::string table_name);
+	Table Write(Table table);
+	Table Open(std::string table_name);
+	void Show(std::string table_name);
 	void Show(Table table);
-	Table Create(string table_name,vector<string> attribute_names, vector<string> attribute_types, vector<string> keys);
-	void Update(string table_name, vector<string> old_attributes, vector<string> new_values, string attribute_name, Token_Type comparison, string value);
-	void Update(Table &table_name, Comparison_tree comparison, vector<pair<string, string>> new_values);
-	void Insert(string table_name, vector<string> tuple);
-	void Insert(string dest_table, Table source);//Insert FROM source_table INTO dest_table
-	void Insert(Table &dest_table, Table source);
-	void Insert(Table &dest_table, vector<string> new_tuple);
-	void Delete(string table_name, string attribute_name, Token_Type comparison, string value);//renamed remove to delete to match project requirements
-	void Delete(Table table_name, Attribute attribute_name, Token_Type comparison, string value);
+	Table Create(std::string table_name,std::vector<std::string> attribute_names, std::vector<std::string> attribute_types, std::vector<std::string> keys);
+	void Update(std::string table_name, std::vector<std::string> old_attributes, std::vector<std::string> new_values, std::string attribute_name, Token_Type comparison, std::string value);
+	void Update(Table &table_name, Comparison_tree comparison, std::vector<pair<std::string, std::string>> new_values);
+	Table Insert(std::string table_name, std::vector<std::string> tuple);
+	Table Insert(std::string dest_table, Table source);//Insert FROM source_table INTO dest_table
+	Table Insert(Table &dest_table, Table source);
+	Table Insert(Table &dest_table, std::vector<std::string> new_tuple);
+	void Delete(std::string table_name, std::string attribute_name, Token_Type comparison, std::string value);//renamed remove to delete to match project requirements
+	void Delete(Table table_name, Attribute attribute_name, Token_Type comparison, std::string value);
 	// Utility Functions
 	
 	
 
 	//renames table with old_name to new_name
-	void Update_table_name(string new_name, string old_name);
+	void Update_table_name(std::string new_name, std::string old_name);
 
 	//returns table by table name
-	Table Get_table(string table_name) const;
+	Table Get_table(std::string table_name) const;
 	void  Set_table(Table& table);
-	//returns vector of ints=i where, values[i] comparison value evaluates to true
+	//returns std::vector of ints=i where, values[i] comparison value evaluates to true
 	//can only handle a single comparison for now, need to be able to handle more complex comparisons like x==a&&y==b
-	vector<int> Compare(vector<string> values, Token_Type comparison, string value);
+	std::vector<int> Compare(std::vector<std::string> values, Token_Type comparison, std::string value);
 
-	//access operators one with int index or with string table name
+	//access operators one with int index or with std::string table name
 	Table operator[](unsigned int i) const;
-	Table operator[](string table_name) const;
+	Table operator[](std::string table_name) const;
 };
 
 #endif

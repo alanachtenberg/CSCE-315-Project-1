@@ -1,8 +1,7 @@
-
-
-#include <stdio.h>
+/*#include <stdio.h>
 #include <iostream>
 #include <fstream>
+#include <string>
 #include "Database.h"
 using namespace std;
 int main(){
@@ -17,13 +16,13 @@ int main(){
 	tree.Set_root(root);
 
 	Database db = Database();
-	db.Create("People", vector<string>{ "name", "age", "occupation" }, vector<string>{ "VARCHAR(10)", "INTEGER", "VARCHAR(64)" }, vector<string>{"name"});
-	db.Insert("People", vector < string > {"alan", "21", "broke cs student"});
-	db.Insert("People", vector < string > {"jacob", "21", "Napa flats"});
-	db.Insert("People", vector < string > {"robby", "21", "Hockey baller"});
-	db.Insert("People", vector < string > {"casey", "21", "notbroke cs student"});//testing insert
+	Table table = db.Create("People", vector<string>{ "name", "age", "occupation" }, vector<string>{ "VARCHAR(10)", "INTEGER", "VARCHAR(64)" }, vector<string>{"name"});
+	db.Insert(table, vector < string > {"alan", "21", "broke cs student"});
+	db.Insert(table, vector < string > {"jacob", "21", "Napa flats"});
+	db.Insert(table, vector < string > {"robby", "21", "Hockey baller"});
+	db.Insert(table, vector < string > {"casey", "21", "notbroke cs student"});//testing insert
 	//TEST COMPARISON TREE
-	vector<int> temp=tree.Eval_tree(db.Get_table("People"));
+	//vector<int> temp=tree.Eval_tree(db.Get_table("People"));
 
 	db.Show("People");//testing insert and show
 	db.Write("People");//testing write
@@ -38,13 +37,13 @@ int main(){
 	db.Show("People");//Testing update
 	
 	db.Create("cs_students", vector<string>{ "name", "age", "occupation" }, vector<string>{ "VARCHAR(10)", "INTEGER", "VARCHAR(64)" }, vector<string>{"name"});
-	db.Insert("cs_students", db.Select("selection", "People", tree));//Inserts all tuples where age is 21
+	//db.Insert("cs_students", db.Select("selection", "People", tree));//Inserts all tuples where age is 21
 	db.Show("cs_students");//testing Insert of relation and selection of multiple values
 
 	db.Delete("cs_students", "name", Token_Type::_not_eq, "blank");//deletes all entries where name!="blank"
 	db.Show("cs_students");//testing delete
 
-	db.Insert("cs_students",db.Select("selection","People",tree));
+	//db.Insert("cs_students",db.Select("selection","People",tree));
 	db.Show("cs_students");//testing insert of selection of single value
 
 	db.Show(db.Set_union("all", "cs_students", "People")); //Testing union
@@ -66,8 +65,12 @@ int main(){
 	string block;
 	cout << "input anything to continue with database exit\n";
 	cin >> block;
+
+	
+	string block;
+	cin >> block;
 	db.Exit();//Testing exit
 	cout << "HEY DATABASE DIDNT EXIT\n";
 	cin >> block;
 	return 0;
-}
+}*/

@@ -1,6 +1,7 @@
+#include "Token_Stream.h"
 #include <algorithm>
 #include <iostream>
-#include "Token_Stream.h"
+#include <vector>
 
 using namespace std;
 
