@@ -1,0 +1,11 @@
+friends
+name
+VARCHAR(10)
+joey;ross;chandler;rachel;monica;phoebe;ENDLIST;
+kind
+VARCHAR(5)
+boy;boy;boy;girl;girl;girl;ENDLIST;
+years
+INTEGER
+1;1;1;1;1;1;ENDLIST;
+ENDTABLE

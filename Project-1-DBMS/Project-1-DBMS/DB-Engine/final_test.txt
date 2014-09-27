@@ -1,0 +1,26 @@
+CREATE TABLE friends (name VARCHAR(10), kind VARCHAR(5), years INTEGER) PRIMARY KEY (name, kind);
+INSERT INTO friends VALUES FROM ("Joey", "boy", 1);
+INSERT INTO friends VALUES FROM ("Ross", "boy", 1);
+INSERT INTO friends VALUES FROM ("Chandler", "boy", 1);
+INSERT INTO friends VALUES FROM ("Rachel", "girl", 1);
+INSERT INTO friends VALUES FROM ("Monica", "girl", 1);
+INSERT INTO friends VALUES FROM ("Phoebe", "girl", 1);
+
+
+CREATE TABLE himym (name VARCHAR(10), kind VARCHAR(5), years INTEGER) PRIMARY KEY (name, kind);
+INSERT INTO himym VALUES FROM ("Ted", "boy", 1);
+INSERT INTO himym VALUES FROM ("Marshall", "boy", 1);
+INSERT INTO himym VALUES FROM ("Barney", "boy", 1);
+INSERT INTO himym VALUES FROM ("Robin", "girl", 1);
+INSERT INTO himym VALUES FROM ("Lily", "girl", 1);
+
+
+CREATE TABLE sitcoms (name VARCHAR(10), kind VARCHAR(5), years INTEGER) PRIMARY KEY (name, kind);
+INSERT INTO sitcoms VALUES FROM RELATION friends;
+INSERT INTO sitcoms VALUES FROM RELATION himym;
+SHOW sitcoms;
+
+WRITE friends;
+CLOSE friends;
+
+SHOW friends;
