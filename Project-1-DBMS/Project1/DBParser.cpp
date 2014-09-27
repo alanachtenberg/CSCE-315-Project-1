@@ -1,4 +1,5 @@
 #include "DBParser.h"
+#include "ComparisonTree.h"
 #include <iostream>
 #include <fstream>
 #include <vector>
@@ -158,22 +159,24 @@ Parser_Table DBParser::selection() {
 	Token select_token = ts->get();
 	if (select_token.get_type() == _select) {
 		if (ts->get().get_type() == _lpar) {
-			vector<int> cond = condition();
-			if (cond.size() > 0) {
-				if (ts->get().get_type() == _rpar) {
-					Parser_Table pt = atomic_expr();
-					if (pt.valid) {
-						//pt.table = db.Select(pt.table, cond);
-						if (pt.table.Is_default()) {
-							pt.valid = false;
-							return pt;
-						}
-						else {
-							pt.valid = true;
-							return pt;
-						}
+			Comparison_tree ct = condition();
+			if (ts->get().get_type() == _rpar) {
+				Parser_Table pt = atomic_expr();
+				if (pt.valid) {
+					//vector<int> cond = ct.Eval_tree(pt.table);
+					pt.table = db.Select("", pt.table, ct);
+
+
+					if (pt.table.Is_default()) {
+						pt.valid = false;
+						return pt;
+					}
+					else {
+						pt.valid = true;
+						return pt;
 					}
 				}
+				
 			}
 		}
 	}
@@ -181,7 +184,9 @@ Parser_Table DBParser::selection() {
 		ts->unget(select_token);
 	}
 
-	return false;
+	Parser_Table pt;
+	pt.valid = false;
+	return pt;
 }
 
 //projection ::= project (attribute_list) atomic_expr
@@ -245,105 +250,112 @@ Parser_Table DBParser::rename() {
 }
 
 //condition ::= conjunction {|| conjunction}
-bool DBParser::condition() {
-	if (conjunction()) {
-		while (true) {
-			Token or_token = ts->get();
-			if (or_token.get_type() == _or) {
-				if (conjunction()) continue;
-				else {
-					ts->unget(or_token);
-					return false;
-				}
-			}
-			else {
-				ts->unget(or_token);
-				return true;
-			}
+Comparison_tree DBParser::condition() {
+	Comparison_tree ct_root, ct_left, ct_right;
+	ct_left = conjunction();
+	while (true) {
+		Token or_token = ts->get();
+		if (or_token.get_type() == _or) {
+			ct_right = conjunction();
+			Node root("||", _or, new Node(ct_left.Get_root()), new Node(ct_right.Get_root()));
+			ct_root.Set_root(root);
+
+			ct_left = Comparison_tree(ct_root);
+		}
+		else {
+			ts->unget(or_token);
+			return ct_root;
 		}
 	}
-	
-	return false;
+
+	return Comparison_tree();
 }
 
 //conjunction ::= comparison {&& comparison}
-bool DBParser::conjunction() {
-	if (comparison()) {
-		while (true) {
-			Token and_token = ts->get();
-			if (and_token.get_type() == _and) {
-				if (comparison()) continue;
-				else {
-					ts->unget(and_token);
-					return false;
-				}
-			}
-			else {
-				ts->unget(and_token);
-				return true;
-			}
+Comparison_tree DBParser::conjunction() {
+	Comparison_tree ct_root, ct_left, ct_right;
+	ct_left = comparison();
+	while (true) {
+		Token and_token = ts->get();
+		if (and_token.get_type() == _and) {
+			ct_right = comparison();
+			Node root("&&", _and, new Node(ct_left.Get_root()), new Node(ct_right.Get_root()));
+			ct_root.Set_root(root);
+
+			ct_left = Comparison_tree(ct_root);
+		}
+		else {
+			ts->unget(and_token);
+			return ct_root;
 		}
 	}
 	
-	return false;
+	return Comparison_tree();
 }
 
 //comparison ::= operand op operand | (condition)
-bool DBParser::comparison() {
-	if (operand()) {
-		if (op()) {
-			if (operand()) {
-				return true;
+Comparison_tree DBParser::comparison() {
+	string operand_left = operand();
+	if (operand_left.size() > 0) {
+		Token op_token = op();
+		if (!op_token.get_type() == _null) {
+			string operand_right = operand();
+			if (operand_right.size() > 0) {
+				Comparison_tree ct;
+				Node left(operand_left, _varchar);
+				Node right(operand_right, _varchar);
+				Node root(op_token.get_name(), op_token.get_type(), new Node(left), new Node(right));
+				ct.Set_root(root);
+
+				return ct;
 			}
 		}
 	}
 	else {
 		Token lpar_token = ts->get();
 		if (lpar_token.get_type() == _lpar) {
-			if (condition()) {
-				Token rpar_token = ts->get();
-				if (rpar_token.get_type() == _rpar) {
-					return true;
-				}	
-			}
+			Comparison_tree ct = condition();
+			Token rpar_token = ts->get();
+			if (rpar_token.get_type() == _rpar) {
+				return ct;
+			}	
 		}
 		else {
 			ts->unget(lpar_token);
 		}
 	}
 
-	return false;
+	return Comparison_tree();
 }
 
 //op ::= == | != | < | > | <= | >=
-bool DBParser::op() {
+Token DBParser::op() {
 	Token op_token = ts->get();
 	switch (op_token.get_type()) {
 	case _equals:
-		return true;
 	case _not_eq:
-		return true;
 	case _less:
-		return true;
 	case _greater:
-		return true;
 	case _less_eq:
-		return true;
 	case _greater_eq:
-		return true;
+		return op_token;
 	default:
 		ts->unget(op_token);
-		return false;
+		return Token(_null);
 	}
 }
 
 //operand ::= attribute_name | literal
-bool DBParser::operand() {
-	if (attribute_name())
-		return true;
-	else if (literal()) 
-		return true;
-	else return false;
+string DBParser::operand() {
+	string value = attribute_name();
+	if (value.size() > 0)
+		return value;
+
+	value = literal();
+	if (value.size() > 0) 
+		return value;
+	
+	return "";
 }
 
 
@@ -496,35 +508,52 @@ Parser_Table DBParser::create_cmd() {
 }
 
 //update_cmd ::= UPDATE relation_name SET attribute_name = literal { , attribute_name = literal } WHERE condition 
-bool DBParser::update_cmd() {
+Parser_Table DBParser::update_cmd() {
 	Token update_token = ts->get();
 	if (update_token.get_type() == _update) {
-		if (relation_name()) {
+		Parser_Table pt = relation_name();
+		if (pt.valid) {
 
 			if (ts->get().get_type() == _set) {
+				vector<pair<string, string> > new_values;
+				string attr_name = attribute_name();
 
-				if (attribute_name()) {
+				if (attr_name.size() > 0) {
 					if (ts->get().get_type() == _assign_eq) {
+						string change_to = literal();
 
-						if (literal()) {
+						if (change_to.size() > 0) {
+							new_values.push_back(pair<string, string>(attr_name, change_to));
+
 							while (true) {
 								Token comma_token = ts->get();
 								if (comma_token.get_type() == _comma) {
-									if (literal()) continue;
-									else {
-										ts->unget(comma_token);
-										break;
+									attr_name = attribute_name();
+									if (attr_name.size() > 0) {
+										if (ts->get().get_type() == _assign_eq) {
+											change_to = literal();
+											if (change_to.size() > 0) {
+												new_values.push_back(pair<string, string>(attr_name, change_to));
+												continue;
+											}
+											else {
+												pt.valid = false;
+												return pt;
+											}
+										}
 									}
 								}
 								else {
 									ts->unget(comma_token);
 									
 									if (ts->get().get_type() == _where) {
-										if (condition()) {
-											return true;
-										}
-										else break;
+										Comparison_tree ct = condition();
+										//vector<int> cond = ct.Eval_tree(pt.table);
+
+										pt.table = db.Update(pt.table, ct, new_values);
+										return pt;
 									}
+									else break;
 								}
 							}
 						}
@@ -537,7 +566,9 @@ bool DBParser::update_cmd() {
 		ts->unget(update_token);
 	}
 
-	return false;
+	Parser_Table pt;
+	pt.valid = false;
+	return pt;
 }
 
 //insert_cmd :: = INSERT INTO relation_name VALUES FROM(literal {, literal }) | INSERT INTO relation_name VALUES FROM RELATION expr
@@ -598,20 +629,20 @@ bool DBParser::insert_cmd() {
 }
 
 //delete_cmd ::= DELETE FROM relation_name WHERE condition
-bool DBParser::delete_cmd() {
+Parser_Table DBParser::delete_cmd() {
 	Token delete_token = ts->get();
 	if (delete_token.get_type() == _delete) {
 		if (ts->get().get_type() == _from) {
 			Parser_Table pt = relation_name();
 			if (pt.valid) {
 				if (ts->get().get_type() == _where) {
-					vector<int> rows = condition();
-					if (rows.size() > 0) {
+					Comparison_tree ct = condition();
 
-						//db.Delete(pt.table, rows);
+					Parser_Table pt = db.Delete(pt.table, ct);
+					pt.valid = true;
 
-						return true;
-					}
+					return pt;
+					
 				}
 			}
 		}
@@ -620,7 +651,9 @@ bool DBParser::delete_cmd() {
 		ts->unget(delete_token);
 	}
 
-	return false;
+	Parser_Table pt;
+	pt.valid = false;
+	return pt;
 }
 
 //Data structures
@@ -841,25 +874,25 @@ vector<string> DBParser::attribute_list() {
 }
 
 //literal ::= "identifier" | integer | float
-Token DBParser::literal() {
+string DBParser::literal() {
 	Token literal_token = ts->get();
 	if (literal_token.get_type() == _quotation) {
 		Token string_token = ts->get();
 		if (string_token.get_type() == _identifier) {
 			Token end_quote_token = ts->get();
 			if (end_quote_token.get_type() == _quotation) {
-				return string_token;
+				return string_token.get_name();
 			}
 		}
 	}
 	else if (literal_token.get_type() == _int_num) {
-		return literal_token;
+		stringstream ss;
+		ss << literal_token.get_value();
+		return ss.str();
 	}
-	else if (literal_token.get_type() == _float_num) {
-		return literal_token;
-	}
+	
 	else {
 		ts->unget(literal_token);
-		return Token(_null);
+		return "";
 	}
 }

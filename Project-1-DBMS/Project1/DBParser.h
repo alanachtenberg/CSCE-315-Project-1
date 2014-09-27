@@ -35,11 +35,11 @@ private:
 	Parser_Table projection(); //done
 	Parser_Table rename(); //done, need API change
 
-	bool condition(); 
-	bool conjunction(); 
-	bool comparison(); 
-	bool op(); 
-	bool operand(); 
+	Comparison_tree condition(); //done
+	Comparison_tree conjunction(); //done
+	Comparison_tree comparison(); //done
+	Token op(); //done 
+	std::string operand(); //done
 
 	//commands
 	Parser_Table command(); //done
@@ -50,9 +50,9 @@ private:
 	Parser_Table exit_cmd();  //done
 	Parser_Table show_cmd(); //done
 	Parser_Table create_cmd(); //done
-	bool update_cmd(); 
+	Parser_Table update_cmd(); //done
 	bool insert_cmd();
-	bool delete_cmd(); 
+	Parser_Table delete_cmd(); 
 
 	//data
 	Parser_Table relation_name(); //done
@@ -62,7 +62,7 @@ private:
 	std::string type(); //done
 	std::vector<std::vector<std::string> > typed_attribute_list(); //done
 	std::vector<std::string> attribute_list(); //done
-	Token literal();
+	std::string literal();
 
 };
 

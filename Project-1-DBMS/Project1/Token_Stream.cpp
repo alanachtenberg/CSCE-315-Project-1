@@ -36,49 +36,49 @@ Token Token_stream::get() {
 		case '<':
 			input_stream->get(ch);
 			if (ch == '-') {
-				curr_token = Token(_assign);
+				curr_token = Token(_assign, "<-");
 			}
 			else if (ch == '=') {
-				curr_token = Token(_less_eq);
+				curr_token = Token(_less_eq, "<=");
 			}
 			else {
-				curr_token = Token(_less);
+				curr_token = Token(_less, "<");
 			}
 			break;
 		case '>':
 			input_stream->get(ch);
 			if (ch == '=') {
-				curr_token = Token(_greater_eq);
+				curr_token = Token(_greater_eq, ">=");
 			}
 			else {
-				curr_token = Token(_greater);
+				curr_token = Token(_greater, ">");
 			}
 			break;
 		case '=':
 			input_stream->get(ch);
 			if (ch == '=') {
-				curr_token = Token(_equals);
+				curr_token = Token(_equals, "==");
 			}
 			else {
-				curr_token = Token(_assign_eq);
+				curr_token = Token(_assign_eq, "=");
 			}
 			break;
 		case '!':
 			input_stream->get(ch);
 			if (ch == '=') {
-				curr_token = Token(_not_eq);
+				curr_token = Token(_not_eq, "!=");
 			}
 			break;
 		case '&':
 			input_stream->get(ch);
 			if (ch == '&') {
-				curr_token = Token(_and);
+				curr_token = Token(_and, "&&");
 			}
 			break;
 		case '|':
 			input_stream->get(ch);
 			if (ch == '|') {
-				curr_token = Token(_or);
+				curr_token = Token(_or, "||");
 			}
 			break;
 		case '.':
