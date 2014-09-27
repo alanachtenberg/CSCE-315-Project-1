@@ -3,7 +3,6 @@
 #include <stdio.h>
 #include <iostream>
 #include <fstream>
-#include "ComparisonTree.h"
 #include "Database.h"
 using namespace std;
 int main(){
@@ -39,14 +38,13 @@ int main(){
 	db.Show("People");//Testing update
 	
 	db.Create("cs_students", vector<string>{ "name", "age", "occupation" }, vector<string>{ "VARCHAR(10)", "INTEGER", "VARCHAR(64)" }, vector<string>{"name"});
-	db.Insert("cs_students", db.Select("selection", "People", "age", Token_Type::_equals, "21"));//Inserts all tuples where age is 21
+	db.Insert("cs_students", db.Select("selection", "People", tree));//Inserts all tuples where age is 21
 	db.Show("cs_students");//testing Insert of relation and selection of multiple values
 
 	db.Delete("cs_students", "name", Token_Type::_not_eq, "blank");//deletes all entries where name!="blank"
 	db.Show("cs_students");//testing delete
 
-	db.Insert("cs_students",db.Select("selection","People","name",Token_Type::_equals,"alan"));
-	db.Insert("cs_students", db.Select("selection", "People", "name", Token_Type::_equals, "casey"));
+	db.Insert("cs_students",db.Select("selection","People",tree));
 	db.Show("cs_students");//testing insert of selection of single value
 
 	db.Show(db.Set_union("all", "cs_students", "People")); //Testing union

@@ -2,7 +2,7 @@
 #define COMPARISON_TREE_H
 
 #include "Table.h"
-#include "Node.h";
+#include "Node.h"
 
 class Comparison_tree
 {
