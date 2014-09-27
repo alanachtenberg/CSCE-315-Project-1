@@ -8,6 +8,17 @@
 		Root = Node();
 		Data_table = Table();
 	}
+	//table is a default parameter
+	Comparison_tree::Comparison_tree(Node root, Table table){
+		Root = root;
+		Data_table = table;
+	}
+	//constructor that makes a new tree from 2 existing trees
+	Comparison_tree::Comparison_tree(string new_root_value, Token_Type new_root_type, Comparison_tree left_tree, Comparison_tree right_tree){
+		Root = Node(new_root_value, new_root_type, new Node(left_tree.Get_root()), new Node (right_tree.Get_root()));
+		Data_table = Table();
+	}
+
 
 	Node Comparison_tree::Get_root(){
 		return Root;

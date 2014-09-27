@@ -28,7 +28,7 @@ public:
 	Node();
 	Node(string value, Token_Type type, Node *left=NULL, Node *right=NULL);
 	Node(const Node& node);
-
+	~Node();
 	//Getters
 	Node& Get_left();
 	Node& Get_right();
