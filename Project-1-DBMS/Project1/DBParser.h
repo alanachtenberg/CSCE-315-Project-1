@@ -51,7 +51,7 @@ private:
 	Parser_Table show_cmd(); //done
 	Parser_Table create_cmd(); //done
 	Parser_Table update_cmd(); //done
-	bool insert_cmd();
+	Parser_Table insert_cmd();
 	Parser_Table delete_cmd(); 
 
 	//data

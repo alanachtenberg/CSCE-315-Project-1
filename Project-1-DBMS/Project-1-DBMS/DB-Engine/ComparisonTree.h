@@ -20,7 +20,7 @@ public:
 	//constructs a tree, by setting Root node
 	Comparison_tree(Node root, Table table=Table());
 	//constructor that makes a new tree from 2 existing trees
-	Comparison_tree(string new_root_value, Token_Type new_root_type, Comparison_tree left_tree, Comparison_tree right_tree);
+	Comparison_tree(std::string new_root_value, Token_Type new_root_type, Comparison_tree left_tree, Comparison_tree right_tree);
 	Node Get_root();
 	void Set_root(Node n);
 

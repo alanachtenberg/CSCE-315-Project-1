@@ -163,9 +163,7 @@ Parser_Table DBParser::selection() {
 			if (ts->get().get_type() == _rpar) {
 				Parser_Table pt = atomic_expr();
 				if (pt.valid) {
-					//vector<int> cond = ct.Eval_tree(pt.table);
 					pt.table = db.Select("", pt.table, ct);
-
 
 					if (pt.table.Is_default()) {
 						pt.valid = false;
@@ -233,7 +231,8 @@ Parser_Table DBParser::rename() {
 					Parser_Table pt = atomic_expr();
 					if (pt.valid) {
 
-						//db.Rename(pt.table, attrs);
+						pt.table = db.Rename("", pt.table, attrs);
+						pt.valid = true;
 						return pt;
 					}
 				}
@@ -257,10 +256,9 @@ Comparison_tree DBParser::condition() {
 		Token or_token = ts->get();
 		if (or_token.get_type() == _or) {
 			ct_right = conjunction();
-			Node root("||", _or, new Node(ct_left.Get_root()), new Node(ct_right.Get_root()));
-			ct_root.Set_root(root);
+			ct_root = Comparison_tree("&&", _or, ct_left, ct_right);
 
-			ct_left = Comparison_tree(ct_root);
+			ct_left = ct_root;
 		}
 		else {
 			ts->unget(or_token);
@@ -279,10 +277,9 @@ Comparison_tree DBParser::conjunction() {
 		Token and_token = ts->get();
 		if (and_token.get_type() == _and) {
 			ct_right = comparison();
-			Node root("&&", _and, new Node(ct_left.Get_root()), new Node(ct_right.Get_root()));
-			ct_root.Set_root(root);
+			ct_root = Comparison_tree("&&", _and, ct_left, ct_right);
 
-			ct_left = Comparison_tree(ct_root);
+			ct_left = ct_root;
 		}
 		else {
 			ts->unget(and_token);
@@ -548,9 +545,7 @@ Parser_Table DBParser::update_cmd() {
 									
 									if (ts->get().get_type() == _where) {
 										Comparison_tree ct = condition();
-										//vector<int> cond = ct.Eval_tree(pt.table);
-
-										pt.table = db.Update(pt.table, ct, new_values);
+										db.Update(pt.table, ct, new_values);
 										return pt;
 									}
 									else break;
@@ -572,7 +567,7 @@ Parser_Table DBParser::update_cmd() {
 }
 
 //insert_cmd :: = INSERT INTO relation_name VALUES FROM(literal {, literal }) | INSERT INTO relation_name VALUES FROM RELATION expr
-bool DBParser::insert_cmd() {
+Parser_Table DBParser::insert_cmd() {
 	Token insert_token = ts->get();
 	if (insert_token.get_type() == _insert) {
 		if (ts->get().get_type() == _into) {
@@ -584,22 +579,28 @@ bool DBParser::insert_cmd() {
 						//VALUES FROM(literal {, literal })
 						Token lpar_token = ts->get();
 						if (lpar_token.get_type() == _lpar) {
-
-							if (literal()) {
+							vector<string> items;
+							string item = literal();
+							if (item.size() > 0) {
+								items.push_back(item);
 								while (true) {
 									Token comma_token = ts->get();
 									if (comma_token.get_type() == _comma) {
-										if (literal()) continue;
-										else {
-											ts->unget(comma_token);
-											break;
+										item = literal();
+										if (item.size() > 0) {
+											items.push_back(item);
+											continue;
 										}
+										else break; //print error message
 									}
 									else {
 										ts->unget(comma_token);
 										
 										if (ts->get().get_type() == _rpar) {
-											return true;
+											Parser_Table pt;
+											db.Insert(pt_to.table, items);
+											pt.valid = true;
+											return pt;
 										}
 									}
 								}
@@ -610,8 +611,10 @@ bool DBParser::insert_cmd() {
 						else if (lpar_token.get_type() == _relation) {
 							Parser_Table pt_from = expr();
 							if (pt_from.valid) {
+								Parser_Table pt;
 								db.Insert(pt_to.table, pt_from.table);
-								return true;
+								pt.valid = true;
+								return pt;
 							}							
 						}
 
@@ -625,7 +628,9 @@ bool DBParser::insert_cmd() {
 		ts->unget(insert_token);
 	}
 
-	return false;
+	Parser_Table pt;
+	pt.valid = false;
+	return pt;
 }
 
 //delete_cmd ::= DELETE FROM relation_name WHERE condition
@@ -637,12 +642,10 @@ Parser_Table DBParser::delete_cmd() {
 			if (pt.valid) {
 				if (ts->get().get_type() == _where) {
 					Comparison_tree ct = condition();
-
-					Parser_Table pt = db.Delete(pt.table, ct);
+					db.Delete(pt.table, ct);
 					pt.valid = true;
 
-					return pt;
-					
+					return pt;					
 				}
 			}
 		}
