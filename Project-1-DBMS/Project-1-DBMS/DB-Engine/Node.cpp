@@ -21,6 +21,11 @@
 		Type = node.Type;
 		Value = node.Value;
 	}
+	Node::~Node(){
+		delete Left;
+		delete Right;
+		delete this;
+	}
 
 	//Get
 	Node& Node::Get_left(){

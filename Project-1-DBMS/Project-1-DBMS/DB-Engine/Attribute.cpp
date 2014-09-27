@@ -4,7 +4,7 @@ Attribute::Attribute(){
 	Name = "DefaultName";
 	VarType = "DefaultVarType";
 	Data = vector<string>();
-	for (int i = 0; i < 10; ++i){
+	for ( unsigned int i = 0; i < 10; ++i){
 		Data.push_back("DefaultData");
 	}
 }
@@ -54,7 +54,7 @@ vector<string> Attribute::Get_data() const{
 void Attribute::Set_data(vector<string> data){
 	Data = data;
 }
-string Attribute::Get_value(int index) const{
+string Attribute::Get_value(unsigned int index) const{
 	if (index<0 || index>Data.size())
 		cerr << "can not get attribute value, index out of range" << endl;
 	else
@@ -62,7 +62,7 @@ string Attribute::Get_value(int index) const{
 	return "default";
 }
 
-void Attribute::Set_value(int index, string value){
+void Attribute::Set_value(unsigned int index, string value){
 	if (index<0 || index>Data.size())
 		cerr << "can not set attribute value, index out of range" << endl;
 	else
@@ -94,13 +94,13 @@ istream& Attribute::Read(istream& is){
 ostream& Attribute::Write(ostream& os){
 	os << Name << endl;
 	os << VarType << endl;
-	for (int i = 0; i < Data.size(); ++i)
+	for ( unsigned int i = 0; i < Data.size(); ++i)
 		os << Data[i]<< ";";
 	os << ENDLIST << ";\n";
 	return os;
 }
 
-string& Attribute::operator[](int i){
+string& Attribute::operator[](unsigned int i){
 	if (i<0 || i>Data.size()){
 		cerr << "Out of range access of data\n";
 		return string("Default");

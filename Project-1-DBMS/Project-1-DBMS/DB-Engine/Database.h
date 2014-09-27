@@ -73,7 +73,7 @@ public:
 	vector<int> Compare(vector<string> values, Token_Type comparison, string value);
 
 	//access operators one with int index or with string table name
-	Table operator[](int i) const;
+	Table operator[](unsigned int i) const;
 	Table operator[](string table_name) const;
 };
 

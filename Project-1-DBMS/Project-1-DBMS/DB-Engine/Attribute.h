@@ -34,8 +34,8 @@ class Attribute{
 		vector<string> Get_data() const;
 		void Set_data( vector<string> data);
 
-		string Get_value(int index) const;
-		void Set_value(int index, string value);
+		string Get_value(unsigned int index) const;
+		void Set_value(unsigned int index, string value);
 		void Insert_value(string value);
 
 		int Get_size() const;
@@ -44,7 +44,7 @@ class Attribute{
 		istream& Read(istream& is);
 		ostream& Write(ostream& os);
 
-		string& operator [](int i);
+		string& operator [](unsigned int i);
 };
 
 

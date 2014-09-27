@@ -1,5 +1,5 @@
 #include "Database.h"
-#include "ComparisonTree.cpp"
+#include "ComparisonTree.h"
 #include <fstream>
 #include <iterator>
 Database::Database()
@@ -50,7 +50,7 @@ Table Database::Select(string view_name, Table in_table_name, Comparison_tree co
 Table Database::Project(string view_name, string in_table_name, vector<string> attributes){
 	Table my_table = Get_table(in_table_name);
 	vector<Attribute> projected;
-	for (int i = 0; i < attributes.size(); i++){
+	for ( unsigned int i = 0; i < attributes.size(); i++){
 		projected.push_back(my_table[attributes[i]]);
 
 	}
@@ -63,7 +63,7 @@ Table Database::Project(string view_name, string in_table_name, vector<string> a
 Table Database::Project(string view_name, Table in_table_name, vector<string> attributes){
 	Table my_table = Table(in_table_name);
 	vector<Attribute> projected;
-	for (int i = 0; i < attributes.size(); i++){
+	for ( unsigned int i = 0; i < attributes.size(); i++){
 		projected.push_back(my_table[attributes[i]]);
 
 	}
@@ -76,11 +76,11 @@ Table Database::Project(string view_name, Table in_table_name, vector<string> at
 Table Database::Rename(string new_name, string old_name, string in_table){
 	Table table = Get_table(in_table);
 	
-	int num_attr;
+	unsigned int num_attr;
 	num_attr = table.Get_width();       // Number of columns in table
 	bool check = false;
 
-	for (int i = 0; i < num_attr; ++i){
+	for ( unsigned int i = 0; i < num_attr; ++i){
 		if (table[i].Get_name() == old_name){
 			cout << "Old name found" << endl;
 			table[i].Set_name(new_name);
@@ -97,11 +97,11 @@ Table Database::Rename(string new_name, string old_name, string in_table){
 Table Database::Rename(string view_name, Table in_table_name, vector<string> new_names){
 	Table new_table = Table(in_table_name);
 
-	int num_attr;
+	unsigned int num_attr;
 	num_attr = new_table.Get_width();       // Number of columns in table
 	bool check = false;
 
-	for (int i = 0; i < num_attr; ++i){
+	for ( unsigned int i = 0; i < num_attr; ++i){
 		new_table[i].Set_name(new_names[i]);// takes the new attribute name from the vector and sets it to the equal index in new_table attribute list
 	}
 	Set_table(new_table);//adds new_table to database
@@ -114,22 +114,22 @@ Table Database::Set_union(string view_name, string table1_name, string table2_na
 	Table table2 = Get_table(table2_name);
 
 	// Check to see if each relation has same number of attributes
-	int num_attr1, num_attr2;
+	unsigned int num_attr1, num_attr2;
 	num_attr1 = new_table.Get_width();
 	num_attr2 = table2.Get_width();
 	if (num_attr1 != num_attr2)
 		cerr << "Error during set union (different number of attributes)" << endl;
 
 	// Check to make sure the attributes are the same in each table
-	for (int i = 0; i < num_attr1; ++i){
+	for ( unsigned int i = 0; i < num_attr1; ++i){
 		if (new_table[i].Get_name() != table2[i].Get_name())
 			cerr << " Error during set union (attributes do not match)" << endl;
 	}
 
-	for (int i = 0; i < table2.Get_max_height(); ++i){
+	for ( unsigned int i = 0; i < table2.Get_max_height(); ++i){
 		bool found = false;
 		vector<string> row = table2.Get_row(i);
-		for (int j = 0; j < new_table.Get_max_height(); ++j)
+		for ( unsigned int j = 0; j < new_table.Get_max_height(); ++j)
 			if (row == new_table.Get_row(j))
 				found = true;
 		if (!found)
@@ -145,22 +145,22 @@ Table Database::Set_union(string view_name, Table table1_name, Table table2_name
 	Table table2 = Table(table2_name);
 
 	// Check to see if each relation has same number of attributes
-	int num_attr1, num_attr2;
+	unsigned int num_attr1, num_attr2;
 	num_attr1 = new_table.Get_width();
 	num_attr2 = table2.Get_width();
 	if (num_attr1 != num_attr2)
 		cerr << "Error during set union (different number of attributes)" << endl;
 
 	// Check to make sure the attributes are the same in each table
-	for (int i = 0; i < num_attr1; ++i){
+	for ( unsigned int i = 0; i < num_attr1; ++i){
 		if (new_table[i].Get_name() != table2[i].Get_name())
 			cerr << " Error during set union (attributes do not match)" << endl;
 	}
 
-	for (int i = 0; i < table2.Get_max_height(); ++i){
+	for ( unsigned int i = 0; i < table2.Get_max_height(); ++i){
 		bool found = false;
 		vector<string> row = table2.Get_row(i);
-		for (int j = 0; j < new_table.Get_max_height(); ++j)
+		for ( unsigned int j = 0; j < new_table.Get_max_height(); ++j)
 			if (row == new_table.Get_row(j))
 				found = true;
 		if (!found)
@@ -177,21 +177,21 @@ Table Database::Set_difference(string view_name, string table1_name, string tabl
 
 	// Checking to make sure Union Compatable
 	// Check to see if each relation has same number of attributes
-	int num_attr1, num_attr2;
+	unsigned int num_attr1, num_attr2;
 	num_attr1 = table1.Get_width();
 	num_attr2 = table2.Get_width();
 	if (num_attr1 != num_attr2)
 		cerr << "Error during set difference (different number of attributes)" << endl;
 
 	// Check to make sure the attributes are the same in each table
-	for (int i = 0; i < num_attr1; ++i){
+	for ( unsigned int i = 0; i < num_attr1; ++i){
 		if (table1[i].Get_name() != table2[i].Get_name())
 			cerr << " Error during set difference (attributes do not match)" << endl;
 	}
 	
-	/*for (int i = 0; i < table2.Get_max_height(); ++i){
+	/*for ( unsigned int i = 0; i < table2.Get_max_height(); ++i){
 		vector<string> row = table2.Get_row(i);
-		for (int j = 0; j < new_table.Get_max_height(); ++j)
+		for ( unsigned int j = 0; j < new_table.Get_max_height(); ++j)
 			if (row == new_table.Get_row(j))
 				new_table.Delete_row(j); //CAUSES PROBLEMS WITH MULTIPLE DELETES simpler to just pushback into new vector values that dont match
 	}*/
@@ -199,10 +199,10 @@ Table Database::Set_difference(string view_name, string table1_name, string tabl
 	Table new_table = Table(table1);//gets copy of table1 including attribute names
 	new_table.Clear_attribute_data();//clears old data
 
-	for (int i = 0; i < table1.Get_max_height(); ++i){
+	for ( unsigned int i = 0; i < table1.Get_max_height(); ++i){
 		vector<string> row = table1.Get_row(i);
 		bool found = false;
-		for (int j = 0; j < table2.Get_max_height(); ++j){
+		for ( unsigned int j = 0; j < table2.Get_max_height(); ++j){
 			if (row == table2.Get_row(j))
 				found = true;
 		}
@@ -220,21 +220,21 @@ Table Database::Set_difference(string view_name, Table table1_name, Table table2
 
 	// Checking to make sure Union Compatable
 	// Check to see if each relation has same number of attributes
-	int num_attr1, num_attr2;
+	unsigned int num_attr1, num_attr2;
 	num_attr1 = table1.Get_width();
 	num_attr2 = table2.Get_width();
 	if (num_attr1 != num_attr2)
 		cerr << "Error during set difference (different number of attributes)" << endl;
 
 	// Check to make sure the attributes are the same in each table
-	for (int i = 0; i < num_attr1; ++i){
+	for ( unsigned int i = 0; i < num_attr1; ++i){
 		if (table1[i].Get_name() != table2[i].Get_name())
 			cerr << " Error during set difference (attributes do not match)" << endl;
 	}
 
-	/*for (int i = 0; i < table2.Get_max_height(); ++i){
+	/*for ( unsigned int i = 0; i < table2.Get_max_height(); ++i){
 	vector<string> row = table2.Get_row(i);
-	for (int j = 0; j < new_table.Get_max_height(); ++j)
+	for ( unsigned int j = 0; j < new_table.Get_max_height(); ++j)
 	if (row == new_table.Get_row(j))
 	new_table.Delete_row(j); //CAUSES PROBLEMS WITH MULTIPLE DELETES simpler to just pushback into new vector values that dont match
 	}*/
@@ -242,10 +242,10 @@ Table Database::Set_difference(string view_name, Table table1_name, Table table2
 	Table new_table = Table(table1);//gets copy of table1 including attribute names
 	new_table.Clear_attribute_data();//clears old data
 
-	for (int i = 0; i < table1.Get_max_height(); ++i){
+	for ( unsigned int i = 0; i < table1.Get_max_height(); ++i){
 		vector<string> row = table1.Get_row(i);
 		bool found = false;
-		for (int j = 0; j < table2.Get_max_height(); ++j){
+		for ( unsigned int j = 0; j < table2.Get_max_height(); ++j){
 			if (row == table2.Get_row(j))
 				found = true;
 		}
@@ -260,20 +260,20 @@ Table Database::Cross_product(string view_name, string table1_name, string table
 	//set up temporary data structures
 	Table my_table1 = Get_table(table1_name);
 	Table my_table2 = Get_table(table2_name);
-	int my_table1_height = my_table1.Get_max_height();
-	int my_table2_height = my_table2.Get_max_height();
-	int my_table1_width = my_table1.Get_width();
-	int my_table2_width = my_table2.Get_width();
+	unsigned int my_table1_height = my_table1.Get_max_height();
+	unsigned int my_table2_height = my_table2.Get_max_height();
+	unsigned int my_table1_width = my_table1.Get_width();
+	unsigned int my_table2_width = my_table2.Get_width();
 	vector<Attribute> new_attributes;
 	
 	//setting up new_table
-	for (int i = 0; i < my_table1_width; i++){
+	for ( unsigned int i = 0; i < my_table1_width; i++){
 		new_attributes.push_back(my_table1[i]);
 	}
-	for (int i = 0; i < my_table2_width; i++){
+	for ( unsigned int i = 0; i < my_table2_width; i++){
 		new_attributes.push_back(my_table2[i]);
 	}
-	for (int i = 0; i < new_attributes.size(); i++){
+	for ( unsigned int i = 0; i < new_attributes.size(); i++){
 		new_attributes[i].Clear_data();
 	}
 
@@ -282,12 +282,12 @@ Table Database::Cross_product(string view_name, string table1_name, string table
 	new_table.Set_name(view_name);
 
 	//go through each row of my_table1, concatenate them with each row of my_table2
-	for (int i = 0; i < my_table1_height; i++){
+	for ( unsigned int i = 0; i < my_table1_height; i++){
 		vector<string>	row1 = my_table1.Get_row(i);
-		for (int j = 0; j < my_table2_height; ++j){
+		for ( unsigned int j = 0; j < my_table2_height; ++j){
 			vector<string> row2 = my_table2.Get_row(j);
 			vector<string> new_row=row1;
-			for (int k = 0; k < row2.size(); ++k)
+			for ( unsigned int k = 0; k < row2.size(); ++k)
 				new_row.push_back(row2[k]);
 			new_table.Insert_row(new_row);
 		}
@@ -299,20 +299,20 @@ Table Database::Cross_product(string view_name, Table table1_name, Table table2_
 	//set up temporary data structures
 	Table my_table1 = Table(table1_name);
 	Table my_table2 = Table(table2_name);
-	int my_table1_height = my_table1.Get_max_height();
-	int my_table2_height = my_table2.Get_max_height();
-	int my_table1_width = my_table1.Get_width();
-	int my_table2_width = my_table2.Get_width();
+	unsigned int my_table1_height = my_table1.Get_max_height();
+	unsigned int my_table2_height = my_table2.Get_max_height();
+	unsigned int my_table1_width = my_table1.Get_width();
+	unsigned int my_table2_width = my_table2.Get_width();
 	vector<Attribute> new_attributes;
 
 	//setting up new_table
-	for (int i = 0; i < my_table1_width; i++){
+	for ( unsigned int i = 0; i < my_table1_width; i++){
 		new_attributes.push_back(my_table1[i]);
 	}
-	for (int i = 0; i < my_table2_width; i++){
+	for ( unsigned int i = 0; i < my_table2_width; i++){
 		new_attributes.push_back(my_table2[i]);
 	}
-	for (int i = 0; i < new_attributes.size(); i++){
+	for ( unsigned int i = 0; i < new_attributes.size(); i++){
 		new_attributes[i].Clear_data();
 	}
 
@@ -321,12 +321,12 @@ Table Database::Cross_product(string view_name, Table table1_name, Table table2_
 	new_table.Set_name(view_name);
 
 	//go through each row of my_table1, concatenate them with each row of my_table2
-	for (int i = 0; i < my_table1_height; i++){
+	for ( unsigned int i = 0; i < my_table1_height; i++){
 		vector<string>	row1 = my_table1.Get_row(i);
-		for (int j = 0; j < my_table2_height; ++j){
+		for ( unsigned int j = 0; j < my_table2_height; ++j){
 			vector<string> row2 = my_table2.Get_row(j);
 			vector<string> new_row = row1;
-			for (int k = 0; k < row2.size(); ++k)
+			for ( unsigned int k = 0; k < row2.size(); ++k)
 				new_row.push_back(row2[k]);
 			new_table.Insert_row(new_row);
 		}
@@ -338,7 +338,7 @@ Table Database::Cross_product(string view_name, Table table1_name, Table table2_
 // Command Functions
 
 void Database::Close(string table_name){
-	for (int i = 0; i<Tables.size();++i)
+	for ( unsigned int i = 0; i<Tables.size();++i)
 		if (table_name == Tables[i].Get_name()){
 			Tables.erase(Tables.begin() + i);//Deletes index i begin() returns iterator
 			break;//make sure to quit iterating because we change tables vec
@@ -356,7 +356,7 @@ void Database::Write(string table_name){
 
 void Database::Write(Table table){
 	bool found = false;
-	for (int i = 0; i < Tables.size(); ++i)
+	for ( unsigned int i = 0; i < Tables.size(); ++i)
 		if (Tables[i].Get_name() == table.Get_name()){
 		Tables[i] = table;
 		found = true;
@@ -380,6 +380,7 @@ Table Database::Open(string table_name){
 
 		return new_table;
 	}
+	return Table(); //error return default table
 }
 //For showing table in database
 void Database::Show(string table_name){
@@ -409,8 +410,8 @@ void Database::Update(string table_name, vector<string> old_attributes, vector<s
 
 		vector<int> row_indicies = Compare(comparison_attribute.Get_data(), comparison, value);
 
-		for (int i = 0; i < row_indicies.size(); ++i)
-			for (int j = 0; j < old_attributes.size(); ++j)
+		for ( unsigned int i = 0; i < row_indicies.size(); ++i)
+			for ( unsigned int j = 0; j < old_attributes.size(); ++j)
 				my_table[old_attributes[j]][row_indicies[i]]=new_values[j]; //old_attibutes[j] is attribute name, row_indicies[i] is the index of data to replace
 		Set_table(my_table);//updates Tables vec
 	}
@@ -442,7 +443,7 @@ void Database::Insert(string dest_table, Table source){
 		cerr << "Can not insert from source table to dest table, table width does not match" << endl;
 	else
 	{
-		for (int i = 0; i < source.Get_max_height(); ++i)
+		for ( unsigned int i = 0; i < source.Get_max_height(); ++i)
 			dest.Insert_row(source.Get_row(i));
 	}
 	Set_table(dest);//Updates tables vec
@@ -454,7 +455,7 @@ void Database::Insert(Table &dest_name, Table source){
 		cerr << "Can not insert from source table to dest table, table width does not match" << endl;
 	else
 	{
-		for (int i = 0; i < source.Get_max_height(); ++i)
+		for ( unsigned int i = 0; i < source.Get_max_height(); ++i)
 			dest_name.Insert_row(source.Get_row(i));
 	}
 	
@@ -475,7 +476,7 @@ void Database::Delete(string table_name, string attribute_name ,Token_Type compa
 
 	vector<int> row_indicies=Compare(my_attribute.Get_data(), comparison, value);//Gets a vector of rows that match comparison
 
-	for (int i = 0; i < row_indicies.size(); ++i)
+	for ( unsigned int i = 0; i < row_indicies.size(); ++i)
 		my_table.Delete_row(row_indicies[i]-i);//minus i because every time you delete a row there is one less in the vector
 	//ex. delete 2 4 6 becomes delete 2, delete 3, delete 4
 	Set_table(my_table);//update tables vec
@@ -487,7 +488,7 @@ void Database::Delete(Table table_name, Attribute attribute_name, Token_Type com
 
 	vector<int> row_indicies = Compare(my_attribute.Get_data(), comparison, value);//Gets a vector of rows that match comparison
 
-	for (int i = 0; i < row_indicies.size(); ++i)
+	for ( unsigned int i = 0; i < row_indicies.size(); ++i)
 		my_table.Delete_row(row_indicies[i] - i);//minus i because every time you delete a row there is one less in the vector
 	//ex. delete 2 4 6 becomes delete 2, delete 3, delete 4
 	Set_table(my_table);//update tables vec
@@ -496,7 +497,7 @@ void Database::Delete(Table table_name, Attribute attribute_name, Token_Type com
 // Utility Functions
 //no need for get_table_index(int), when you can Get_table(string)
 //int Database::Get_table_index(string table_name){
-//	for (int i = 0; i < Tables.size(); ++i)
+//	for ( unsigned int i = 0; i < Tables.size(); ++i)
 //		if (table_name == Tables[i].Get_name())
 //			return i;
 //	cerr << "Table index not found\n";
@@ -510,7 +511,7 @@ void Database::Delete(Table table_name, Attribute attribute_name, Token_Type com
 
 void Database::Update_table_name(string new_name, string old_name){
 	bool found = false;
-	for (int i = 0; i < Tables.size(); ++i)
+	for ( unsigned int i = 0; i < Tables.size(); ++i)
 		if (old_name == Tables[i].Get_name()){
 			Tables[i].Set_name(new_name);
 			found = true;
@@ -519,7 +520,7 @@ void Database::Update_table_name(string new_name, string old_name){
 		cerr << "Matching table not found, renaming therefore impossible\n";
 }
 Table Database::Get_table(string table_name) const{
-	for (int i = 0; i < Tables.size(); i++){
+	for ( unsigned int i = 0; i < Tables.size(); i++){
 		if (Tables[i].Get_name() == table_name){
 			return Tables[i];
 		}
@@ -529,7 +530,7 @@ Table Database::Get_table(string table_name) const{
 }
 void Database::Set_table(Table& table){
 	bool found = false;
-	for (int i = 0; i < Tables.size(); i++){
+	for ( unsigned int i = 0; i < Tables.size(); i++){
 		if (Tables[i].Get_name() == table.Get_name()){
 			Tables[i] = table;
 			found = true;
@@ -541,7 +542,7 @@ void Database::Set_table(Table& table){
 //returns vector of row index where, (values[i] comparison value) evaluates to true
 vector<int> Database::Compare(vector<string> values, Token_Type comparison, string value){
 	vector<int> hits = vector<int>();//vector of indicies that return true for comparison
-	for (int i = 0; i < values.size(); ++i){	
+	for ( unsigned int i = 0; i < values.size(); ++i){	
 		switch (comparison)//
 		{
 		case Token_Type::_equals:
@@ -576,7 +577,7 @@ vector<int> Database::Compare(vector<string> values, Token_Type comparison, stri
 	return hits;
 }
 
-Table Database::operator[](int i) const{
+Table Database::operator[](unsigned int i) const{
 	if (i<0 || i>Tables.size()){
 		cerr << "can not access Table, index out of range\n";
 		return Table();
