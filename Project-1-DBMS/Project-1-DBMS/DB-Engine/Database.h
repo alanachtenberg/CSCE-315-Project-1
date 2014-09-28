@@ -23,8 +23,8 @@ public:
 	std::vector<Table> get_Tables();
 
 	// Query Functions
-	Table Select(std::string view_name, std::string in_table_name, Comparison_tree comparison);
-	Table Select(std::string view_name, Table in_table_name, Comparison_tree comparison);
+	Table Select(std::string view_name, std::string in_table_name, Comparison_tree *comparison);
+	Table Select(std::string view_name, Table in_table_name, Comparison_tree *comparison);
 	Table Project(std::string view_name, std::string in_table_name, std::vector<std::string> attributes);
 	Table Project(std::string view_name, Table in_table_name, std::vector<std::string> attributes);
 	Table Rename(std::string new_name, std::string old_name, std::string in_table);
@@ -46,7 +46,7 @@ public:
 	void Show(Table table);
 	Table Create(std::string table_name,std::vector<std::string> attribute_names, std::vector<std::string> attribute_types, std::vector<std::string> keys);
 	void Update(std::string table_name, std::vector<std::string> old_attributes, std::vector<std::string> new_values, std::string attribute_name, Token_Type comparison, std::string value);
-	void Update(Table &table_name, Comparison_tree comparison, std::vector<pair<std::string, std::string>> new_values);
+	void Update(Table &table_name, Comparison_tree *comparison, std::vector<pair<std::string, std::string>> new_values);
 	Table Insert(std::string table_name, std::vector<std::string> tuple);
 	Table Insert(std::string dest_table, Table source);//Insert FROM source_table INTO dest_table
 	Table Insert(Table &dest_table, Table source);

@@ -19,13 +19,13 @@ vector<Table> Database::get_Tables(){
 // Query Functions
 //need someone to computer comparisons before they are sent to the select function
 //ie. some seperate operator functions we can pass into the select function
-Table Database::Select(string view_name, string in_table_name, Comparison_tree comparison){
+Table Database::Select(string view_name, string in_table_name, Comparison_tree *comparison){
 	
 	Table my_table = Get_table(in_table_name);
 	Table new_table = Table(my_table);
 	new_table.Clear_attribute_data();
 
-	vector<int> row_indicies = comparison.Eval_tree(my_table);
+	vector<int> row_indicies = comparison->Eval_tree(my_table);
 	for (unsigned int i = 0; i < row_indicies.size(); i++){
 		new_table.Insert_row(my_table.Get_row(row_indicies[i]));
 	}
@@ -36,12 +36,12 @@ Table Database::Select(string view_name, string in_table_name, Comparison_tree c
 
 //Can take in a Table source and a condition index of the my_table source
 //Takes the vector of indicies and loops through the tuples, inserting them into the new_table
-Table Database::Select(string view_name, Table in_table_name, Comparison_tree comparison){
+Table Database::Select(string view_name, Table in_table_name, Comparison_tree *comparison){
 	Table my_table = Table(in_table_name);
 	Table new_table = Table(my_table);
 	new_table.Clear_attribute_data();
 
-	vector<int> row_indicies = comparison.Eval_tree(my_table);
+	vector<int> row_indicies = comparison->Eval_tree(my_table);
 	for (unsigned int i = 0; i < row_indicies.size(); i++){
 		new_table.Insert_row(my_table.Get_row(row_indicies[i]));//Gets tuple index from the true_conditions comparison list and inserts the tuples into the new_table
 	}
@@ -425,8 +425,8 @@ void Database::Update(string table_name, vector<string> old_attributes, vector<s
 }
 
 //having trouble with the logice in the for loop
-void Database::Update(Table &table_name, Comparison_tree comparison, vector<pair<string, string>> new_values){
-	vector<int> row_indicies = comparison.Eval_tree(table_name);
+void Database::Update(Table &table_name, Comparison_tree *comparison, vector<pair<string, string>> new_values){
+	vector<int> row_indicies = comparison->Eval_tree(table_name);
 	for (unsigned int i = 0; i < row_indicies.size(); i++){
 		table_name[new_values[i].first].Set_value(i, new_values[i].second);
 																	

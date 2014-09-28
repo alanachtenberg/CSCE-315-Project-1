@@ -38,36 +38,36 @@ private:
 
 	Parser_Table selection(); 
 	Parser_Table projection();
-	Parser_Table rename(); 
+	Parser_Table rename(); //working, but crashes with incorrect input list size
 
-	Comparison_tree condition(); 
-	Comparison_tree conjunction(); 
-	Comparison_tree comparison(); 
+	Comparison_tree* condition(); 
+	Comparison_tree* conjunction(); 
+	Comparison_tree* comparison(); 
 	Token op();
 	std::string operand(); 
 
 	//commands
-	Parser_Table command(); 
+	Parser_Table command(); //working
 
-	Parser_Table open_cmd(); 
+	Parser_Table open_cmd(); //calls functions correctly, implementation doesn't seem to work
 	Parser_Table close_cmd(); //working
-	Parser_Table write_cmd(); 
-	Parser_Table exit_cmd();  
-	Parser_Table show_cmd(); 
+	Parser_Table write_cmd(); //working, I think
+	Parser_Table exit_cmd();  //working
+	Parser_Table show_cmd();  //working
 	Parser_Table create_cmd(); //working
 	Parser_Table update_cmd(); 
 	Parser_Table insert_cmd(); //working
 	Parser_Table delete_cmd(); 
 
 	//data
-	Parser_Table relation_name(); 
-	Parser_Table expr(); 
-	Parser_Table atomic_expr(); 
-	std::string attribute_name(); 
-	std::string type(); 
-	std::vector<std::vector<std::string> > typed_attribute_list(); 
-	std::vector<std::string> attribute_list(); 
-	std::string literal();
+	Parser_Table relation_name(); //working
+	Parser_Table expr(); //working
+	Parser_Table atomic_expr(); //working
+	std::string attribute_name(); //working 
+	std::string type(); //working
+	std::vector<std::vector<std::string> > typed_attribute_list(); //working
+	std::vector<std::string> attribute_list(); //working
+	std::string literal(); //working
 
 };
 

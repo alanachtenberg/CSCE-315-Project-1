@@ -87,9 +87,6 @@
     <ClCompile Include="Table.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="People.db" />
-  </ItemGroup>
-  <ItemGroup>
     <Text Include="..\..\Project1\test_given.txt" />
     <Text Include="final_test.txt" />
   </ItemGroup>

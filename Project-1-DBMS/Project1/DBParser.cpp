@@ -152,22 +152,14 @@ Parser_Table DBParser::selection() {
 	Token select_token = ts->get();
 	if (select_token.get_type() == _select) {
 		if (ts->get().get_type() == _lpar) {
-			Comparison_tree ct = condition();
+			Comparison_tree *ct = condition();
 			if (ts->get().get_type() == _rpar) {
 				Parser_Table pt = atomic_expr();
 				if (pt.valid) {
 					pt.table = db.Select("", pt.table, ct);
-
-					if (pt.table.Is_default()) {
-						pt.valid = false;
-						return pt;
-					}
-					else {
-						pt.valid = true;
-						return pt;
-					}
+					pt.valid = true;
+					return pt;
 				}
-				
 			}
 		}
 	}
@@ -191,14 +183,8 @@ Parser_Table DBParser::projection() {
 					Parser_Table pt = atomic_expr();
 					if (pt.valid){
 						pt.table = db.Project("", pt.table, attrs);
-						if (pt.table.Is_default()) {
-							pt.valid = false;
-							return pt;
-						}
-						else {
-							pt.valid = true;
-							return pt;
-						}
+						pt.valid = true;
+						return pt;
 					}
 				}
 			}			
@@ -242,14 +228,15 @@ Parser_Table DBParser::rename() {
 }
 
 //condition ::= conjunction {|| conjunction}
-Comparison_tree DBParser::condition() {
-	Comparison_tree ct_root, ct_left, ct_right;
+Comparison_tree* DBParser::condition() {
+	Comparison_tree *ct_root, *ct_left, *ct_right;
 	ct_left = conjunction();
+	ct_root = ct_left;
 	while (true) {
 		Token or_token = ts->get();
 		if (or_token.get_type() == _or) {
 			ct_right = conjunction();
-			ct_root = Comparison_tree("&&", _or, ct_left, ct_right);
+			ct_root = new Comparison_tree("&&", _or, ct_left, ct_right);
 
 			ct_left = ct_root;
 		}
@@ -259,18 +246,19 @@ Comparison_tree DBParser::condition() {
 		}
 	}
 
-	return Comparison_tree();
+	return new Comparison_tree();
 }
 
 //conjunction ::= comparison {&& comparison}
-Comparison_tree DBParser::conjunction() {
-	Comparison_tree ct_root, ct_left, ct_right;
+Comparison_tree* DBParser::conjunction() {
+	Comparison_tree *ct_root, *ct_left, *ct_right;
 	ct_left = comparison();
+	ct_root = ct_left;
 	while (true) {
 		Token and_token = ts->get();
 		if (and_token.get_type() == _and) {
 			ct_right = comparison();
-			ct_root = Comparison_tree("&&", _and, ct_left, ct_right);
+			ct_root = new Comparison_tree("&&", _and, ct_left, ct_right);
 
 			ct_left = ct_root;
 		}
@@ -280,22 +268,22 @@ Comparison_tree DBParser::conjunction() {
 		}
 	}
 	
-	return Comparison_tree();
+	return new Comparison_tree();
 }
 
 //comparison ::= operand op operand | (condition)
-Comparison_tree DBParser::comparison() {
+Comparison_tree* DBParser::comparison() {
 	string operand_left = operand();
 	if (operand_left.size() > 0) {
 		Token op_token = op();
 		if (op_token.get_type() != _null) {
 			string operand_right = operand();
 			if (operand_right.size() > 0) {
-				Comparison_tree ct;
-				Node left(operand_left, _varchar);
-				Node right(operand_right, _varchar);
-				Node root(op_token.get_name(), op_token.get_type(), new Node(left), new Node(right));
-				ct.Set_root(root);
+				Comparison_tree *ct = new Comparison_tree();
+				Node* left = new Node(operand_left, _varchar);
+				Node* right = new Node(operand_right, _varchar);
+				Node* root = new Node(op_token.get_name(), op_token.get_type(), left, right);
+				ct->Set_root(root);
 
 				return ct;
 			}
@@ -304,7 +292,7 @@ Comparison_tree DBParser::comparison() {
 	else {
 		Token lpar_token = ts->get();
 		if (lpar_token.get_type() == _lpar) {
-			Comparison_tree ct = condition();
+			Comparison_tree *ct = condition();
 			Token rpar_token = ts->get();
 			if (rpar_token.get_type() == _rpar) {
 				return ct;
@@ -315,7 +303,7 @@ Comparison_tree DBParser::comparison() {
 		}
 	}
 
-	return Comparison_tree();
+	return new Comparison_tree();
 }
 
 //op ::= == | != | < | > | <= | >=
@@ -538,7 +526,7 @@ Parser_Table DBParser::update_cmd() {
 									ts->unget(comma_token);
 									
 									if (ts->get().get_type() == _where) {
-										Comparison_tree ct = condition();
+										Comparison_tree *ct = condition();
 										db.Update(pt.table, ct, new_values);
 										return pt;
 									}
@@ -635,7 +623,7 @@ Parser_Table DBParser::delete_cmd() {
 			Parser_Table pt = relation_name();
 			if (pt.valid) {
 				if (ts->get().get_type() == _where) {
-					Comparison_tree ct = condition();
+					Comparison_tree *ct = condition();
 					//db.Delete(pt.table, ct);
 					pt.valid = true;
 

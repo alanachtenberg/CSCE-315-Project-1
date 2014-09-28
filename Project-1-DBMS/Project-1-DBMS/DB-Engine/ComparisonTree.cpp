@@ -2,32 +2,32 @@
 #include <iostream>
 
 	Comparison_tree::Comparison_tree(){
-		Root = Node();
+		Root = NULL;
 		Data_table = Table();
 	}
 	//table is a default parameter
-	Comparison_tree::Comparison_tree(Node root, Table table){
+	Comparison_tree::Comparison_tree(Node *root, Table table){
 		Root = root;
 		Data_table = table;
 	}
 	//constructor that makes a new tree from 2 existing trees
-	Comparison_tree::Comparison_tree(string new_root_value, Token_Type new_root_type, Comparison_tree left_tree, Comparison_tree right_tree){
-		Root = Node(new_root_value, new_root_type, new Node(left_tree.Get_root()), new Node (right_tree.Get_root()));
+	Comparison_tree::Comparison_tree(string new_root_value, Token_Type new_root_type, Comparison_tree *left_tree, Comparison_tree *right_tree){
+		Root = new Node(new_root_value, new_root_type, left_tree->Get_root(), right_tree->Get_root());
 		Data_table = Table();
 	}
 
 
-	Node Comparison_tree::Get_root(){
+	Node* Comparison_tree::Get_root(){
 		return Root;
 	}
-	void Comparison_tree::Set_root(Node n){
+	void Comparison_tree::Set_root(Node *n){
 		Root = n;
 	}
 
 	//sets table and calls eval node on root
 	vector<int> Comparison_tree::Eval_tree(const Table& table){
 		Data_table = table;
-		return Eval_node(Root);
+		return Eval_node(*Root);
 	}
 
 	vector<int> Comparison_tree::Eval_node(Node n){

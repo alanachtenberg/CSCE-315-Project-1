@@ -25,9 +25,8 @@ using namespace std;
 		Value = node.Value;
 	}
 	Node::~Node(){
-		delete Left;
-		delete Right;
-		delete this;
+		if (Left != NULL) delete Left;
+		if (Right != NULL) delete Right;
 	}
 
 	//Get
