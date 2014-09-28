@@ -14,7 +14,7 @@ using namespace std;
 	Node::Node(string value, Token_Type type, Node* left, Node* right){
 		Value = value;
 		Type = type;
-		Left = left;
+		Left = left;//copy pointer
 		Right = right;
 	}
 
@@ -30,16 +30,16 @@ using namespace std;
 	}
 
 	//Get
-	Node& Node::Get_left(){
+	Node* Node::Get_left(){
 		if (Left == NULL)
 			cerr << "cant Get, left pointer null" << endl;
-		return *Left;
+		return Left;
 	}
 
-	Node& Node::Get_right(){
+	Node* Node::Get_right(){
 		if (Right == NULL)
 			cerr << "cant Get, right pointer null" << endl;
-		return *Right;
+		return Right;
 	}
 
 	void Node::Set_left(Node n){

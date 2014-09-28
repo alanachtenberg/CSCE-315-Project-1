@@ -27,12 +27,12 @@
 	//sets table and calls eval node on root
 	vector<int> Comparison_tree::Eval_tree(const Table& table){
 		Data_table = table;
-		return Eval_node(*Root);
+		return Eval_node(Root);
 	}
 
-	vector<int> Comparison_tree::Eval_node(Node n){
+	vector<int> Comparison_tree::Eval_node(Node* n){
 		vector<int> valid_rows, left_rows, right_rows;
-		switch(n.Type){
+		switch(n->Type){
 		case _varchar:
 		case _int_num:
 			cerr << "Can not evaluate a comparison with a literal as the root, literal must be lhs or rhs" << endl;
@@ -43,11 +43,11 @@
 		case _greater_eq:
 		case _equals:
 		case _not_eq :
-			return Compare(n.Get_left(), n.Type, n.Get_right());
+			return Compare(n->Get_left(), n->Type, n->Get_right());
 			break;
 		case _and :
-			left_rows = Eval_node(n.Get_left());//evaluate left
-			right_rows = Eval_node(n.Get_right());//evaluate right
+			left_rows = Eval_node(n->Get_left());//evaluate left
+			right_rows = Eval_node(n->Get_right());//evaluate right
 			for ( unsigned int i = 0; i < left_rows.size(); ++i)
 				for ( unsigned int j = 0; j < right_rows.size(); ++j)
 					if (left_rows[i] == right_rows[j]) // check if left row number matches any in right
@@ -55,8 +55,8 @@
 			return valid_rows;
 			break;
 		case _or :
-			left_rows = Eval_node(n.Get_left());//evaluate left
-			right_rows = Eval_node(n.Get_right());//evaluate right
+			left_rows = Eval_node(n->Get_left());//evaluate left
+			right_rows = Eval_node(n->Get_right());//evaluate right
 
 			valid_rows = left_rows;//get all left side
 			for ( unsigned int i = 0; i < right_rows.size(); ++i){
@@ -75,40 +75,52 @@
 		return valid_rows;
 	}
 
-	vector<int>	Comparison_tree::Compare(const Node& left,const Token_Type& type,const Node& right ){
+	vector<int>	Comparison_tree::Compare(Node* left,const Token_Type& type, Node* right ){
 		vector<int> valid_rows;
-		if (left.Is_literal() && right.Is_literal()){
+		if (left->Is_literal() && right->Is_literal()){
 			switch (type){
 			case(Token_Type::_less):
 				for (unsigned int i = 0; i < Data_table.Get_max_height(); ++i)
-					if (Data_table[left.Value][i] < right.Value)
-						valid_rows.push_back(i);
+					if (Data_table[left->Value].Get_name() != "DefaultName")
+						if (Data_table[left->Value][i] < right->Value)
+							valid_rows.push_back(i);
 				return valid_rows;
+				break;
 			case(Token_Type::_less_eq) :
-				for (unsigned int i = 0; i < Data_table.Get_max_height(); ++i)
-					if (Data_table[left.Value][i] <= right.Value)
-						valid_rows.push_back(i);
+				for (unsigned int j = 0; j< Data_table.Get_max_height(); ++j) //used different letter for debugging purposes
+					if (Data_table[left->Value].Get_name() != "DefaultName")
+						if (Data_table[left->Value][j] <= right->Value)
+							valid_rows.push_back(j);
 				return valid_rows;
+				break;
 			case(Token_Type::_greater) :
-				for (unsigned int i = 0; i < Data_table.Get_max_height(); ++i)
-					if (Data_table[left.Value][i] > right.Value)
-						valid_rows.push_back(i);
+				for (unsigned int k = 0; k< Data_table.Get_max_height(); ++k)
+					if (Data_table[left->Value].Get_name() != "DefaultName")
+						if (Data_table[left->Value][k] > right->Value)
+							valid_rows.push_back(k);
 				return valid_rows;
+				break;
 			case(Token_Type::_greater_eq) :
-				for ( unsigned int i = 0; i < Data_table.Get_max_height(); ++i)
-					if (Data_table[left.Value][i] >= right.Value)
-						valid_rows.push_back(i);
+				for ( unsigned int l = 0; l < Data_table.Get_max_height(); ++l)
+					if (Data_table[left->Value].Get_name() != "DefaultName")
+						if (Data_table[left->Value][l] >= right->Value)
+							valid_rows.push_back(l);
 				return valid_rows;
+				break;
 			case(Token_Type::_equals) :
-				for ( unsigned int i = 0; i < Data_table.Get_max_height(); ++i)
-					if (Data_table[left.Value][i] == right.Value)
-						valid_rows.push_back(i);
+				for ( unsigned int m = 0; m < Data_table.Get_max_height(); ++m)
+					if (Data_table[left->Value].Get_name()!="DefaultName")
+						if (Data_table[left->Value][m]==right->Value)
+							valid_rows.push_back(m);
 				return valid_rows;
+				break;
 			case(Token_Type::_not_eq) :
-				for ( unsigned int i = 0; i < Data_table.Get_max_height(); ++i)
-					if (Data_table[left.Value][i] != right.Value)
-						valid_rows.push_back(i);
+				for ( unsigned int n = 0; n < Data_table.Get_max_height(); ++n)
+					if (Data_table[left->Value].Get_name() != "DefaultName")
+						if (Data_table[left->Value][n] == right->Value)
+							valid_rows.push_back(n);
 				return valid_rows;
+				break;
 			default:
 				cerr << "error not a simple comparison, < , <= , > , >= , == , !=\n";
 			}

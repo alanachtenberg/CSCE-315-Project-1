@@ -8,12 +8,12 @@ class Comparison_tree
 {
 
 private:
-	Node *Root;
+	Node * Root;
 	Table Data_table;
 	//returns vector of ints corresponding to rows that evaluate to true;
-	std::vector<int> Eval_node(Node n);
-	std::vector<int>	Compare(const Node& left, const Token_Type& type, const Node& right);
-	~Comparison_tree() { } //if (Root != NULL) delete Root; }
+	std::vector<int> Eval_node(Node* n);
+	std::vector<int> Compare(Node* left, const Token_Type& type, Node* right);
+	
 
 
 public:
@@ -23,6 +23,7 @@ public:
 	Comparison_tree(Node *root, Table table=Table());
 	//constructor that makes a new tree from 2 existing trees
 	Comparison_tree(std::string new_root_value, Token_Type new_root_type, Comparison_tree *left_tree, Comparison_tree *right_tree);
+	~Comparison_tree() { } //if (Root != NULL) delete Root; }
 	Node* Get_root();
 	void Set_root(Node *n);
 

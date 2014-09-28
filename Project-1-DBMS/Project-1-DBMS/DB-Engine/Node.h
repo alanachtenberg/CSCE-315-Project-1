@@ -19,8 +19,8 @@ public:
 	Node(const Node& node);
 	~Node();
 	//Getters
-	Node& Get_left();
-	Node& Get_right();
+	Node* Get_left();
+	Node* Get_right();
 	//Setters
 	void Set_left(Node n);
 	void Set_right(Node n);

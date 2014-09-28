@@ -65,30 +65,31 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\Project1\DBParser.h" />
-    <ClInclude Include="..\..\Project1\Token.h" />
-    <ClInclude Include="..\..\Project1\Token_Stream.h" />
+    <Text Include="..\..\Project1\test_given.txt" />
+    <Text Include="final_test.txt" />
+  </ItemGroup>
+  <ItemGroup>
     <ClInclude Include="Attribute.h" />
     <ClInclude Include="ComparisonTree.h" />
     <ClInclude Include="Database.h" />
+    <ClInclude Include="DBParser.h" />
     <ClInclude Include="Node.h" />
     <ClInclude Include="Table.h" />
+    <ClInclude Include="Token.h" />
+    <ClInclude Include="Token_Stream.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\Project1\DBParser.cpp" />
-    <ClCompile Include="..\..\Project1\main.cpp" />
-    <ClCompile Include="..\..\Project1\Token.cpp" />
-    <ClCompile Include="..\..\Project1\Token_Stream.cpp" />
     <ClCompile Include="Attribute.cpp" />
     <ClCompile Include="ComparisonTree.cpp" />
     <ClCompile Include="Database.cpp" />
     <ClCompile Include="DBMain.cpp" />
+    <ClCompile Include="DBParser.cpp" />
+    <ClCompile Include="main.cpp" />
     <ClCompile Include="Node.cpp" />
+    <ClCompile Include="Source.cpp" />
     <ClCompile Include="Table.cpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <Text Include="..\..\Project1\test_given.txt" />
-    <Text Include="final_test.txt" />
+    <ClCompile Include="Token.cpp" />
+    <ClCompile Include="Token_Stream.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

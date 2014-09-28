@@ -15,28 +15,36 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
+    <Text Include="..\..\Project1\test_given.txt">
+      <Filter>Resource Files</Filter>
+    </Text>
+    <Text Include="final_test.txt">
+      <Filter>Resource Files</Filter>
+    </Text>
+  </ItemGroup>
+  <ItemGroup>
     <ClInclude Include="Attribute.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Database.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Table.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="ComparisonTree.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Database.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="DBParser.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
     <ClInclude Include="Node.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Project1\Token.h">
+    <ClInclude Include="Table.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Project1\DBParser.h">
+    <ClInclude Include="Token.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Project1\Token_Stream.h">
+    <ClInclude Include="Token_Stream.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -44,40 +52,35 @@
     <ClCompile Include="Attribute.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="DBMain.cpp">
+    <ClCompile Include="ComparisonTree.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Database.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Table.cpp">
+    <ClCompile Include="DBMain.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="DBParser.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Node.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="ComparisonTree.cpp">
+    <ClCompile Include="Source.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\Project1\Token.cpp">
+    <ClCompile Include="Table.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\Project1\DBParser.cpp">
+    <ClCompile Include="Token.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\Project1\main.cpp">
+    <ClCompile Include="Token_Stream.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\Project1\Token_Stream.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-  </ItemGroup>
-  <ItemGroup>
-    <Text Include="..\..\Project1\test_given.txt">
-      <Filter>Resource Files</Filter>
-    </Text>
-    <Text Include="final_test.txt">
-      <Filter>Resource Files</Filter>
-    </Text>
   </ItemGroup>
 </Project>

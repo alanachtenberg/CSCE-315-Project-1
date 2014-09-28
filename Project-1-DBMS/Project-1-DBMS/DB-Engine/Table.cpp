@@ -188,7 +188,7 @@ ostream& Table::Pretty_print(ostream& os){
 }
 
 Attribute& Table::operator [](unsigned int i){//use of const prevents operator from modifying Table or calling non const functions
-	if (i<0 || i>Attributes.size()){
+	if (i<0 || i>=Attributes.size()){
 		cerr << "error out of range access of Attributes\n";
 			return Attribute();
 	}

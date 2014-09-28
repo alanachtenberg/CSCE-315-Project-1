@@ -8,9 +8,6 @@ Attribute::Attribute(){
 	Name = "DefaultName";
 	VarType = "DefaultVarType";
 	Data = vector<string>();
-	for ( unsigned int i = 0; i < 10; ++i){
-		Data.push_back("DefaultData");
-	}
 }
 
 Attribute::Attribute(string name, string vartype, vector<string> data){
@@ -105,7 +102,7 @@ ostream& Attribute::Write(ostream& os){
 }
 
 string& Attribute::operator[](unsigned int i){
-	if (i<0 || i>Data.size()){
+	if (i<0 || i>=Data.size()){
 		cerr << "Out of range access of data\n";
 		return string("Default");
 	}
