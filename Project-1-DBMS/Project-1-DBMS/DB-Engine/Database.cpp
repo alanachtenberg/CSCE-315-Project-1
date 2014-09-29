@@ -192,27 +192,21 @@ Table Database::Set_difference(string view_name, string table1_name, string tabl
 			cerr << " Error during set difference (attributes do not match)" << endl;
 	}
 	
-	/*for ( unsigned int i = 0; i < table2.Get_max_height(); ++i){
-		vector<string> row = table2.Get_row(i);
-		for ( unsigned int j = 0; j < new_table.Get_max_height(); ++j)
-			if (row == new_table.Get_row(j))
-				new_table.Delete_row(j); //CAUSES PROBLEMS WITH MULTIPLE DELETES simpler to just pushback into new vector values that dont match
-	}*/
 
-	Table new_table = Table(table1);//gets copy of table1 including attribute names
-	new_table.Clear_attribute_data();//clears old data
+	Table new_table = Table(table1);			//gets copy of table1 including attribute names
+	new_table.Clear_attribute_data();			//clears old data
 
 	for ( unsigned int i = 0; i < table1.Get_max_height(); ++i){
-		vector<string> row = table1.Get_row(i);
+		vector<string> row = table1.Get_row(i);							// Get row of table1 at index i
 		bool found = false;
 		for ( unsigned int j = 0; j < table2.Get_max_height(); ++j){
-			if (row == table2.Get_row(j))
-				found = true;
+			if (row == table2.Get_row(j))								// Compare row of table1 at index i to each row in table2
+				found = true;											// If there is a row in table2 = to a row[i] in table1, set found = true
 		}
-		if (!found)
-			new_table.Insert_row(row);
+		if (!found)														
+			new_table.Insert_row(row);									// Insert row[i] of table1 into new_table if the row is not present in table2
 	}
-	new_table.Set_name(view_name);//names new table
+	new_table.Set_name(view_name);										// names new table
 	return new_table;
 }
 
@@ -235,27 +229,20 @@ Table Database::Set_difference(string view_name, Table table1_name, Table table2
 			cerr << " Error during set difference (attributes do not match)" << endl;
 	}
 
-	/*for ( unsigned int i = 0; i < table2.Get_max_height(); ++i){
-	vector<string> row = table2.Get_row(i);
-	for ( unsigned int j = 0; j < new_table.Get_max_height(); ++j)
-	if (row == new_table.Get_row(j))
-	new_table.Delete_row(j); //CAUSES PROBLEMS WITH MULTIPLE DELETES simpler to just pushback into new vector values that dont match
-	}*/
-
-	Table new_table = Table(table1);//gets copy of table1 including attribute names
-	new_table.Clear_attribute_data();//clears old data
+	Table new_table = Table(table1);				//gets copy of table1 including attribute names
+	new_table.Clear_attribute_data();				//clears old data
 
 	for ( unsigned int i = 0; i < table1.Get_max_height(); ++i){
-		vector<string> row = table1.Get_row(i);
+		vector<string> row = table1.Get_row(i);							// Get row of table1 at index i
 		bool found = false;
 		for ( unsigned int j = 0; j < table2.Get_max_height(); ++j){
-			if (row == table2.Get_row(j))
-				found = true;
+			if (row == table2.Get_row(j))								// Compare row of table1 at index i to each row in table2
+				found = true;											// If there is a row in table2 = to a row[i] in table1, set found = true
 		}
 		if (!found)
-			new_table.Insert_row(row);
+			new_table.Insert_row(row);									// Insert row[i] of table1 into new_table if the row is not present in table2
 	}
-	new_table.Set_name(view_name);//names new table
+	new_table.Set_name(view_name);					//names new table
 	return new_table;
 }
 
