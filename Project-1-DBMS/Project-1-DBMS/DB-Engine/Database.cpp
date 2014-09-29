@@ -22,14 +22,14 @@ vector<Table> Database::get_Tables(){
 Table Database::Select(string view_name, string in_table_name, Comparison_tree *comparison){
 	
 	Table my_table = Get_table(in_table_name);
-	Table new_table = Table(my_table);
-	new_table.Clear_attribute_data();
+	Table new_table = Table(my_table);					// gets copy of my_table including attribute names
+	new_table.Clear_attribute_data();					// clears old data
 
-	vector<int> row_indicies = comparison->Eval_tree(my_table);
+	vector<int> row_indicies = comparison->Eval_tree(my_table);		// vector of row indicies from my_table we want to insert into new_table
 	for (unsigned int i = 0; i < row_indicies.size(); i++){
-		new_table.Insert_row(my_table.Get_row(row_indicies[i]));
+		new_table.Insert_row(my_table.Get_row(row_indicies[i]));	// Insert rows from my_table, at index of (row_indicies[i]), into new_table 
 	}
-	new_table.Set_name(view_name);
+	new_table.Set_name(view_name);									// Name new table 
 	return new_table;
 }
 
@@ -37,15 +37,16 @@ Table Database::Select(string view_name, string in_table_name, Comparison_tree *
 //Can take in a Table source and a condition index of the my_table source
 //Takes the vector of indicies and loops through the tuples, inserting them into the new_table
 Table Database::Select(Table &in_table_name, Comparison_tree *comparison){
-	Table new_table = Table(in_table_name);
-	new_table.Clear_attribute_data();
 
-	vector<int> row_indicies = comparison->Eval_tree(in_table_name);
+	Table new_table = Table(in_table_name);			// gets copy of in_table_name including attribute names
+	new_table.Clear_attribute_data();				// clears old data
+
+	vector<int> row_indicies = comparison->Eval_tree(in_table_name);	// vector of row indicies from in_table_name we want to insert into new_table
 
 	for (unsigned int i = 0; i < row_indicies.size(); i++){
-		new_table.Insert_row(in_table_name.Get_row(row_indicies[i]));//Gets tuple index from the true_conditions comparison list and inserts the tuples into the new_table
+		new_table.Insert_row(in_table_name.Get_row(row_indicies[i]));	//Gets tuple index from the true_conditions comparison list and inserts the tuples into the new_table
 	}
-	new_table.Set_name(in_table_name.Get_name());
+	new_table.Set_name(in_table_name.Get_name());					// Name new table
 	return new_table;
 }
 
