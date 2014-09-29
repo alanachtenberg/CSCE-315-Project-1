@@ -16,7 +16,6 @@
 		Data_table = Table();
 	}
 
-
 	Node* Comparison_tree::Get_root(){
 		return Root;
 	}
