@@ -259,17 +259,17 @@ Table Database::Cross_product(string view_name, string table1_name, string table
 	
 	//setting up new_table
 	for ( unsigned int i = 0; i < my_table1_width; i++){
-		new_attributes.push_back(my_table1[i]);
+		new_attributes.push_back(my_table1[i]);				// get the attributes from my_table1
 	}
 	for ( unsigned int i = 0; i < my_table2_width; i++){
-		new_attributes.push_back(my_table2[i]);
+		new_attributes.push_back(my_table2[i]);				// get the attributes from my_table2
 	}
 	for ( unsigned int i = 0; i < new_attributes.size(); i++){
-		new_attributes[i].Clear_data();
+		new_attributes[i].Clear_data();						// clear the attributes' data
 	}
 
 	Table new_table;
-	new_table.Set_attributes(new_attributes);
+	new_table.Set_attributes(new_attributes);				// create new_table with the new attributes
 	new_table.Set_name(view_name);
 
 	//go through each row of my_table1, concatenate them with each row of my_table2
@@ -298,17 +298,17 @@ Table Database::Cross_product(string view_name, Table table1_name, Table table2_
 
 	//setting up new_table
 	for ( unsigned int i = 0; i < my_table1_width; i++){
-		new_attributes.push_back(my_table1[i]);
+		new_attributes.push_back(my_table1[i]);				// Get the atrrtibutes from my_table1
 	}
 	for ( unsigned int i = 0; i < my_table2_width; i++){
-		new_attributes.push_back(my_table2[i]);
+		new_attributes.push_back(my_table2[i]);				// Get the attributes from my_table2
 	}
 	for ( unsigned int i = 0; i < new_attributes.size(); i++){
-		new_attributes[i].Clear_data();
+		new_attributes[i].Clear_data();						// Clear the attributes' data
 	}
 
 	Table new_table;
-	new_table.Set_attributes(new_attributes);
+	new_table.Set_attributes(new_attributes);				// create new_table with the new attributes
 	new_table.Set_name(view_name);
 
 	//go through each row of my_table1, concatenate them with each row of my_table2
