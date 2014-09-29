@@ -60,7 +60,7 @@ Table Database::Project(string view_name, string in_table_name, vector<string> a
 	Table new_table;
 	new_table.Set_name(view_name);
 	new_table.Set_attributes(projected);
-	Tables.push_back(new_table);
+	
 	return new_table;
 }
 
@@ -74,7 +74,6 @@ Table Database::Project(string view_name, Table in_table_name, vector<string> at
 	Table new_table;
 	new_table.Set_name(view_name);
 	new_table.Set_attributes(projected);
-	Tables.push_back(new_table);
 	return new_table;
 }
 
@@ -96,7 +95,6 @@ Table Database::Rename(string new_name, string old_name, string in_table){
 		cerr << "Error during Rename (could not find existing name)" << endl;
 	}
 	Set_table(table);//updates table vector, not sure if this is correct implementation of grammar
-	
 	return table;
 }
 
@@ -142,7 +140,6 @@ Table Database::Set_union(string view_name, string table1_name, string table2_na
 			new_table.Insert_row(row);
 	}
 	new_table.Set_name(view_name);//names new table
-	Tables.push_back(new_table);
 	return new_table;
 }
 
@@ -174,7 +171,6 @@ Table Database::Set_union(string view_name, Table table1_name, Table table2_name
 			new_table.Insert_row(row);
 	}
 	new_table.Set_name(view_name);//names new table
-	Tables.push_back(new_table);
 	return new_table;
 }
 
@@ -218,7 +214,6 @@ Table Database::Set_difference(string view_name, string table1_name, string tabl
 			new_table.Insert_row(row);
 	}
 	new_table.Set_name(view_name);//names new table
-	Tables.push_back(new_table);
 	return new_table;
 }
 
@@ -262,7 +257,6 @@ Table Database::Set_difference(string view_name, Table table1_name, Table table2
 			new_table.Insert_row(row);
 	}
 	new_table.Set_name(view_name);//names new table
-	Tables.push_back(new_table);
 	return new_table;
 }
 
@@ -302,7 +296,6 @@ Table Database::Cross_product(string view_name, string table1_name, string table
 			new_table.Insert_row(new_row);
 		}
 	}
-	Tables.push_back(new_table);
 	return new_table;
 }
 
@@ -342,7 +335,6 @@ Table Database::Cross_product(string view_name, Table table1_name, Table table2_
 			new_table.Insert_row(new_row);
 		}
 	}
-	Tables.push_back(new_table);
 	return new_table;
 }
 
