@@ -19,12 +19,10 @@ CREATE TABLE add (name VARCHAR(10), kind VARCHAR(5), years INTEGER) PRIMARY KEY 
 INSERT INTO add VALUES FROM RELATION friends;
 INSERT INTO add VALUES FROM RELATION himym;
 
-himym <- rename (aname, akind, ayears) friends;
+friends <- rename (aname, akind, ayears) friends;
 
 friends <- friends + himym;
 SHOW friends;
 
-himym <- select(aname == "Ted") himym;
+UPDATE himym SET aname = "guy" WHERE (aname == "Robin");
 SHOW himym;
-
-SHOW friends;

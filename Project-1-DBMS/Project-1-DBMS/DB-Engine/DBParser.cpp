@@ -274,18 +274,46 @@ Comparison_tree* DBParser::conjunction() {
 //comparison ::= operand op operand | (condition)
 Comparison_tree* DBParser::comparison() {
 	string operand_left = operand();
+	cout << operand_left;
 	if (operand_left.size() > 0) {
 		Token op_token = op();
+		cout << op_token.get_name();
 		if (op_token.get_type() != _null) {
 			string operand_right = operand();
+			cout << operand_right;
 			if (operand_right.size() > 0) {
-				Comparison_tree *ct = new Comparison_tree();
-				Node* left = new Node(operand_left, _varchar);
-				Node* right = new Node(operand_right, _varchar);
-				Node* root = new Node(op_token.get_name(), op_token.get_type(), left, right);
-				ct->Set_root(root);
+				Node *left = new Node(); 
+				Node *right = new Node();
+				
+				for (int i = 0; i < operand_left.size(); i++) {
+					if (isalpha(operand_left.at(i))) {
+						left = new Node(operand_left, _varchar);
+						break;
+					}
+					
+					if (i == operand_left.size() - 1) {
+						left = new Node(operand_left, _int_num);
+					}
+				}
 
-				return ct;
+				for (int i = 0; i < operand_right.size(); i++) {
+					if (isalpha(operand_right.at(i))) {
+						right = new Node(operand_right, _varchar);
+						break;
+					}
+
+					if (i == operand_right.size() - 1) {
+						right = new Node(operand_right, _int_num);
+					}
+				}
+
+				if (left != NULL && right != NULL) {
+					Node *root = new Node(op_token.get_name(), op_token.get_type(), left, right);
+					Comparison_tree *ct = new Comparison_tree(root);
+
+					return ct;
+				}
+				else return new Comparison_tree();
 			}
 		}
 	}
