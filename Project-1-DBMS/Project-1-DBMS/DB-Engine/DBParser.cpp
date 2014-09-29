@@ -186,7 +186,7 @@ Parser_Table DBParser::projection() {
 				if (ts->get().get_type() == _rpar) {
 					Parser_Table pt = atomic_expr();
 					if (pt.valid){
-						pt.table = db.Project(pt.table.Get_name(), pt.table, attrs);
+						pt.table = db.Project(pt.table, attrs);
 						pt.valid = true;
 						return pt;
 					}
@@ -214,7 +214,7 @@ Parser_Table DBParser::rename() {
 					Parser_Table pt = atomic_expr();
 					if (pt.valid) {
 
-						pt.table = db.Rename("", pt.table, attrs);
+						pt.table = db.Rename( pt.table, attrs);
 						pt.valid = true;
 						return pt;
 					}
@@ -723,7 +723,7 @@ Parser_Table DBParser::expr() {
 			Parser_Table pt2 = atomic_expr();
 			if (pt2.valid) {
 				Parser_Table result;
-				result.table = db.Set_difference(pt.table.Get_name(), pt.table, pt2.table);
+				result.table = db.Set_difference(pt.table, pt2.table);
 				result.valid = true;
 				return result;
 			}
@@ -736,7 +736,7 @@ Parser_Table DBParser::expr() {
 			Parser_Table pt2 = atomic_expr();
 			if (pt2.valid) {
 				Parser_Table result;
-				result.table = db.Cross_product(pt.table.Get_name(), pt.table, pt2.table);
+				result.table = db.Cross_product(pt.table, pt2.table);
 				result.valid = true;
 				return result;
 			}

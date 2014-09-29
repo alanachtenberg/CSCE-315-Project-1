@@ -27,8 +27,13 @@ SHOW himym;
 DELETE FROM friends WHERE ((ayears != 3));
 SHOW friends;
 
-CREATE TABLE add (name VARCHAR(10), kind VARCHAR(5), years INTEGER) PRIMARY KEY (name);
 add <- select (years == 1) (more_himym + more_friends);
 SHOW add;
 add <- project (name, kind) more_friends;
+SHOW add;
+
+WRITE add;
+CLOSE add;
+SHOW add;
+OPEN add;
 SHOW add;
