@@ -24,7 +24,7 @@ public:
 
 	// Query Functions
 	Table Select(std::string view_name, std::string in_table_name, Comparison_tree *comparison);
-	Table Select(std::string view_name, Table in_table_name, Comparison_tree *comparison);
+	Table Select(Table &in_table_name, Comparison_tree *comparison);
 	Table Project(std::string view_name, std::string in_table_name, std::vector<std::string> attributes);
 	Table Project(std::string view_name, Table in_table_name, std::vector<std::string> attributes);
 	Table Rename(std::string new_name, std::string old_name, std::string in_table);
@@ -53,6 +53,7 @@ public:
 	Table Insert(Table &dest_table, std::vector<std::string> new_tuple);
 	void Delete(std::string table_name, std::string attribute_name, Token_Type comparison, std::string value);//renamed remove to delete to match project requirements
 	void Delete(Table table_name, Attribute attribute_name, Token_Type comparison, std::string value);
+	Table Delete(Table &table_name, Comparison_tree *comparison);
 	// Utility Functions
 	
 	

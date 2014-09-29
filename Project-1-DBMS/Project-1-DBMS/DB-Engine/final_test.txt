@@ -1,10 +1,13 @@
 CREATE TABLE friends (name VARCHAR(10), kind VARCHAR(5), years INTEGER) PRIMARY KEY (name);
 INSERT INTO friends VALUES FROM ("Joey", "boy", 1);
-INSERT INTO friends VALUES FROM ("Ross", "boy", 1);
-INSERT INTO friends VALUES FROM ("Chandler", "boy", 1);
-INSERT INTO friends VALUES FROM ("Rachel", "girl", 1);
-INSERT INTO friends VALUES FROM ("Monica", "girl", 1);
-INSERT INTO friends VALUES FROM ("Phoebe", "girl", 1);
+INSERT INTO friends VALUES FROM ("Ross", "boy", 2);
+INSERT INTO friends VALUES FROM ("Chandler", "boy", 3);
+INSERT INTO friends VALUES FROM ("Rachel", "girl", 4);
+INSERT INTO friends VALUES FROM ("Monica", "girl", 5);
+INSERT INTO friends VALUES FROM ("Phoebe", "girl", 6);
+CREATE TABLE more_friends (name VARCHAR(10), kind VARCHAR(5), years INTEGER) PRIMARY KEY (name);
+INSERT INTO more_friends VALUES FROM RELATION friends;
+
 
 CREATE TABLE himym (name VARCHAR(10), kind VARCHAR(5), years INTEGER) PRIMARY KEY (name);
 INSERT INTO himym VALUES FROM ("Ted", "boy", 1);
@@ -12,17 +15,20 @@ INSERT INTO himym VALUES FROM ("Marshall", "boy", 1);
 INSERT INTO himym VALUES FROM ("Barney", "boy", 1);
 INSERT INTO himym VALUES FROM ("Robin", "girl", 1);
 INSERT INTO himym VALUES FROM ("Lily", "girl", 1);
+CREATE TABLE more_himym (name VARCHAR(10), kind VARCHAR(5), years INTEGER) PRIMARY KEY (name);
+INSERT INTO more_himym VALUES FROM RELATION himym;
 
 himym <- rename (aname, akind, ayears) (himym);
-
-CREATE TABLE add (name VARCHAR(10), kind VARCHAR(5), years INTEGER) PRIMARY KEY (name);
-INSERT INTO add VALUES FROM RELATION friends;
-INSERT INTO add VALUES FROM RELATION himym;
-
 friends <- rename (aname, akind, ayears) friends;
 
-friends <- friends + himym;
+UPDATE himym SET aname = "guy", akind = "dude" WHERE ((aname == "Robin") || (aname == "Ted"));
+SHOW himym;
+
+DELETE FROM friends WHERE ((ayears != 3));
 SHOW friends;
 
-UPDATE himym SET aname = "guy" WHERE (aname == "Robin");
-SHOW himym;
+CREATE TABLE add (name VARCHAR(10), kind VARCHAR(5), years INTEGER) PRIMARY KEY (name);
+add <- select (years == 1) (more_himym + more_friends);
+SHOW add;
+add <- project (name, kind) more_friends;
+SHOW add;

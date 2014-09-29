@@ -37,17 +37,16 @@ Table Database::Select(string view_name, string in_table_name, Comparison_tree *
 
 //Can take in a Table source and a condition index of the my_table source
 //Takes the vector of indicies and loops through the tuples, inserting them into the new_table
-Table Database::Select(string view_name, Table in_table_name, Comparison_tree *comparison){
-	Table my_table = Table(in_table_name);
-	Table new_table = Table(my_table);
+Table Database::Select(Table &in_table_name, Comparison_tree *comparison){
+	Table new_table = Table(in_table_name);
 	new_table.Clear_attribute_data();
 
-	vector<int> row_indicies = comparison->Eval_tree(my_table);
+	vector<int> row_indicies = comparison->Eval_tree(in_table_name);
+
 	for (unsigned int i = 0; i < row_indicies.size(); i++){
-		new_table.Insert_row(my_table.Get_row(row_indicies[i]));//Gets tuple index from the true_conditions comparison list and inserts the tuples into the new_table
+		new_table.Insert_row(in_table_name.Get_row(row_indicies[i]));//Gets tuple index from the true_conditions comparison list and inserts the tuples into the new_table
 	}
-	new_table.Set_name(view_name);
-	Tables.push_back(new_table);
+	new_table.Set_name(in_table_name.Get_name());
 	return new_table;
 }
 
@@ -442,8 +441,12 @@ Table Database::Update(string table_name, vector<string> old_attributes, vector<
 Table Database::Update(Table &table_name, Comparison_tree *comparison, vector<pair<string, string>> new_values){
 	vector<int> row_indicies = comparison->Eval_tree(table_name);
 	for (unsigned int i = 0; i < row_indicies.size(); i++){
-		table_name[new_values[i].first].Set_value(i, new_values[i].second);
-																		
+		int table_row = row_indicies[i];
+
+		for (unsigned int j = 0; j < new_values.size(); j++) {
+			table_name[j].Set_value(table_row, new_values[j].second);
+		}		
+
 	}
 	Set_table(table_name);//updates Tables vec
 	return table_name;
@@ -521,6 +524,17 @@ void Database::Delete(Table table_name, Attribute attribute_name, Token_Type com
 		my_table.Delete_row(row_indicies[i] - i);//minus i because every time you delete a row there is one less in the vector
 	//ex. delete 2 4 6 becomes delete 2, delete 3, delete 4
 	Set_table(my_table);//update tables vec
+}
+
+Table Database::Delete(Table &table_name, Comparison_tree *comparison){
+
+	vector<int> row_indicies = comparison->Eval_tree(table_name);//Gets a vector of rows that match comparison
+
+	for (unsigned int i = 0; i < row_indicies.size(); ++i)
+		table_name.Delete_row(row_indicies[i] - i);//minus i because every time you delete a row there is one less in the vector
+	//ex. delete 2 4 6 becomes delete 2, delete 3, delete 4
+	Set_table(table_name);//update tables vec
+	return table_name;
 }
 
 // Utility Functions

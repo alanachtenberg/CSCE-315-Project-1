@@ -31,33 +31,33 @@ public:
 	
 private:
 	//entry point
-	Parser_Table program(); 
+	Parser_Table program(); //working
 
 	//queries
-	Parser_Table query(); 
+	Parser_Table query(); //working
 
-	Parser_Table selection(); //doesnt crash, but doesn't actually calculate as it needs to
-	Parser_Table projection(); //doesnt crash, but doesn't actually calculate as it needs to
+	Parser_Table selection(); //working
+	Parser_Table projection(); //working
 	Parser_Table rename(); //working, but crashes with incorrect input list size
 
-	Comparison_tree* condition(); 
-	Comparison_tree* conjunction(); 
-	Comparison_tree* comparison(); 
-	Token op();
-	std::string operand(); 
+	Comparison_tree* condition(); //working
+	Comparison_tree* conjunction(); //working
+	Comparison_tree* comparison(); //working
+	Token op(); //working
+	std::string operand(); //working 
 
 	//commands
 	Parser_Table command(); //working
 
-	Parser_Table open_cmd(); //calls functions correctly, implementation doesn't seem to work
-	Parser_Table close_cmd(); //working
+	Parser_Table open_cmd(); //working, I think
+	Parser_Table close_cmd(); //working, I think
 	Parser_Table write_cmd(); //working, I think
-	Parser_Table exit_cmd();  //working
+	Parser_Table exit_cmd();  //working, I think
 	Parser_Table show_cmd();  //working
 	Parser_Table create_cmd(); //working
-	Parser_Table update_cmd(); 
+	Parser_Table update_cmd(); //working
 	Parser_Table insert_cmd(); //working
-	Parser_Table delete_cmd(); 
+	Parser_Table delete_cmd(); //working
 
 	//data
 	Parser_Table relation_name(); //working

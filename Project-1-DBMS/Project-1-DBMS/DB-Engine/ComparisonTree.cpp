@@ -117,7 +117,7 @@
 			case(Token_Type::_not_eq) :
 				for ( unsigned int n = 0; n < Data_table.Get_max_height(); ++n)
 					if (Data_table[left->Value].Get_name() != "DefaultName")
-						if (Data_table[left->Value][n] == right->Value)
+						if (Data_table[left->Value][n] != right->Value)
 							valid_rows.push_back(n);
 				return valid_rows;
 				break;

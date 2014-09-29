@@ -76,6 +76,10 @@ Parser_Table DBParser::query() {
 		if (assignment_token.get_type() == _assign) {
 			Parser_Table pt2 = expr();
 			if (pt2.valid) {
+				pt2.table.Set_name(pt.table.Get_name());
+
+				db.Set_table(pt2.table);
+
 				return pt2;
 			}
 		}
@@ -156,7 +160,7 @@ Parser_Table DBParser::selection() {
 			if (ts->get().get_type() == _rpar) {
 				Parser_Table pt = atomic_expr();
 				if (pt.valid) {
-					pt.table = db.Select("", pt.table, ct);
+					pt.table = db.Select(pt.table, ct);
 					pt.valid = true;
 					return pt;
 				}
@@ -274,13 +278,10 @@ Comparison_tree* DBParser::conjunction() {
 //comparison ::= operand op operand | (condition)
 Comparison_tree* DBParser::comparison() {
 	string operand_left = operand();
-	cout << operand_left;
 	if (operand_left.size() > 0) {
 		Token op_token = op();
-		cout << op_token.get_name();
 		if (op_token.get_type() != _null) {
 			string operand_right = operand();
-			cout << operand_right;
 			if (operand_right.size() > 0) {
 				Node *left = new Node(); 
 				Node *right = new Node();
@@ -652,9 +653,8 @@ Parser_Table DBParser::delete_cmd() {
 			if (pt.valid) {
 				if (ts->get().get_type() == _where) {
 					Comparison_tree *ct = condition();
-					//db.Delete(pt.table, ct);
+					pt.table = db.Delete(pt.table, ct);
 					pt.valid = true;
-
 					return pt;					
 				}
 			}
