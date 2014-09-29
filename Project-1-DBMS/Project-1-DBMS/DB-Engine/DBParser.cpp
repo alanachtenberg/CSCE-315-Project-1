@@ -9,20 +9,20 @@ ofstream ofs("output.txt");
 */
 
 Table DBParser::execute_query(string query) {
-	ts = new Token_stream(query);
+	ts = new Token_stream(query); //initialize tokenstream with query
 
-	Parser_Table pt = program();
-	delete ts;
+	Parser_Table pt = program();//run program
+	delete ts;//get rid of old query
 	if (pt.valid) {
 		return pt.table;
 	}
 	else {
-		return Table();
+		return Table(); //default table if parser table is not valid
 	}
 }
 
 void DBParser::execute_file(string filename) {
-	ifstream ifs(filename);
+	ifstream ifs(filename); // open file for input
 	string line;
 	int valid = 0, invalid = 0, line_no = 0;
 
@@ -34,15 +34,15 @@ void DBParser::execute_file(string filename) {
 				Table table = execute_query(line);
 
 				if (!table.Is_default()) {
-					valid++;
+					valid++; //table was  valid increase value
 				}
 				else {
 					cout << "syntax error on line " << line_no << ":\n";
-					invalid++;
+					invalid++; //table was invalid
 				}
 			}
 			catch (...) {
-				invalid++;
+				invalid++; //unknown error, must be invalid
 				cerr << "syntax error\n";
 			}
 		}
@@ -54,27 +54,27 @@ void DBParser::execute_file(string filename) {
 //entry point 
 //------------------------------------------------------------------------------
 Parser_Table DBParser::program() {
-	Parser_Table pt = query();
-	if (pt.valid) {
+	Parser_Table pt = query(); 
+	if (pt.valid) { //try running query
 		return pt;
 	}
 
 	pt = command();
-	if (pt.valid) {
+	if (pt.valid) {// oops not a query, try running command
 		return pt;
 	}
-	pt.valid = false;
+	pt.valid = false; //not query not command just return
 	return pt;
 }
 
 //query ::= relation_name <- expr ;
 //figure out what to do here...
 Parser_Table DBParser::query() {
-	Parser_Table pt = relation_name();
+	Parser_Table pt = relation_name(); //check for relation name
 	if (pt.valid) {
-		Token assignment_token = ts->get();
+		Token assignment_token = ts->get(); //get assignment token
 		if (assignment_token.get_type() == _assign) {
-			Parser_Table pt2 = expr();
+			Parser_Table pt2 = expr();//check for expression
 			if (pt2.valid) {
 				pt2.table.Set_name(pt.table.Get_name());
 
@@ -95,7 +95,7 @@ Parser_Table DBParser::query() {
 //command ::= (open-cmd | close-cmd | write-cmd | exit-cmd | show-cmd | create-cmd | update-cmd | insert-cmd | delete-cmd);
 Parser_Table DBParser::command() {
 	bool value;
-	Parser_Table pt = open_cmd();
+	Parser_Table pt = open_cmd(); //lets try the command functions
 	if (pt.valid) { value = true; }
 	else {
 		pt = close_cmd();
@@ -134,13 +134,13 @@ Parser_Table DBParser::command() {
 	} 
 	
 	
-	if (value) {
-		Token semicolon_token = ts->get();
+	if (value) { //if a command worked
+		Token semicolon_token = ts->get();//get end of line marker
 		if (semicolon_token.get_type() == _semicolon) {
 			return pt;
 		}
 		else {
-			ts->unget(semicolon_token);
+			ts->unget(semicolon_token); // oops that was not a semicolon put it back
 		}
 	}
 
@@ -152,7 +152,7 @@ Parser_Table DBParser::command() {
 //------------------------------------------------------------------------------
 
 //selection ::= select (condition) atomic_expr
-Parser_Table DBParser::selection() {
+Parser_Table DBParser::selection() { //
 	Token select_token = ts->get();
 	if (select_token.get_type() == _select) {
 		if (ts->get().get_type() == _lpar) {
