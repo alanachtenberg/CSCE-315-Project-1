@@ -408,9 +408,11 @@ Table Database::Create(string table_name,vector<string> attribute_names, vector<
 	return new_table;
 }
 
-void Database::Update(string table_name, vector<string> old_attributes, vector<string> new_values, string attribute_name, Token_Type comparison, string value){
-	if (old_attributes.size() != new_values.size())
+Table Database::Update(string table_name, vector<string> old_attributes, vector<string> new_values, string attribute_name, Token_Type comparison, string value){
+	if (old_attributes.size() != new_values.size()) {
 		cerr << "cant update, attribute list size does not match # of new values" << endl;
+		return Table();
+	}
 	else{
 		Table my_table = Get_table(table_name);
 		Attribute comparison_attribute = my_table[attribute_name];
@@ -421,17 +423,19 @@ void Database::Update(string table_name, vector<string> old_attributes, vector<s
 			for ( unsigned int j = 0; j < old_attributes.size(); ++j)
 				my_table[old_attributes[j]][row_indicies[i]]=new_values[j]; //old_attibutes[j] is attribute name, row_indicies[i] is the index of data to replace
 		Set_table(my_table);//updates Tables vec
+		return my_table;
 	}
 }
 
 //having trouble with the logice in the for loop
-void Database::Update(Table &table_name, Comparison_tree *comparison, vector<pair<string, string>> new_values){
+Table Database::Update(Table &table_name, Comparison_tree *comparison, vector<pair<string, string>> new_values){
 	vector<int> row_indicies = comparison->Eval_tree(table_name);
 	for (unsigned int i = 0; i < row_indicies.size(); i++){
 		table_name[new_values[i].first].Set_value(i, new_values[i].second);
-																	
+																		
 	}
 	Set_table(table_name);//updates Tables vec
+	return table_name;
 }
 
 Table Database::Insert(string table_name, vector<string> tuple){

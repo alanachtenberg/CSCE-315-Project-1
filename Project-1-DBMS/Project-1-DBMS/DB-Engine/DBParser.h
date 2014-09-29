@@ -36,8 +36,8 @@ private:
 	//queries
 	Parser_Table query(); 
 
-	Parser_Table selection(); 
-	Parser_Table projection();
+	Parser_Table selection(); //doesnt crash, but doesn't actually calculate as it needs to
+	Parser_Table projection(); //doesnt crash, but doesn't actually calculate as it needs to
 	Parser_Table rename(); //working, but crashes with incorrect input list size
 
 	Comparison_tree* condition(); 

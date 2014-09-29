@@ -1,13 +1,12 @@
-CREATE TABLE friends (name VARCHAR(10), kind VARCHAR(5), years INTEGER) PRIMARY KEY (name, kind);
+CREATE TABLE friends (name VARCHAR(10), kind VARCHAR(5), years INTEGER) PRIMARY KEY (name);
 INSERT INTO friends VALUES FROM ("Joey", "boy", 1);
 INSERT INTO friends VALUES FROM ("Ross", "boy", 1);
 INSERT INTO friends VALUES FROM ("Chandler", "boy", 1);
 INSERT INTO friends VALUES FROM ("Rachel", "girl", 1);
 INSERT INTO friends VALUES FROM ("Monica", "girl", 1);
 INSERT INTO friends VALUES FROM ("Phoebe", "girl", 1);
-SHOW friends;
 
-CREATE TABLE himym (name VARCHAR(10), kind VARCHAR(5), years INTEGER) PRIMARY KEY (name, kind);
+CREATE TABLE himym (name VARCHAR(10), kind VARCHAR(5), years INTEGER) PRIMARY KEY (name);
 INSERT INTO himym VALUES FROM ("Ted", "boy", 1);
 INSERT INTO himym VALUES FROM ("Marshall", "boy", 1);
 INSERT INTO himym VALUES FROM ("Barney", "boy", 1);
@@ -15,6 +14,17 @@ INSERT INTO himym VALUES FROM ("Robin", "girl", 1);
 INSERT INTO himym VALUES FROM ("Lily", "girl", 1);
 
 himym <- rename (aname, akind, ayears) (himym);
+
+CREATE TABLE add (name VARCHAR(10), kind VARCHAR(5), years INTEGER) PRIMARY KEY (name);
+INSERT INTO add VALUES FROM RELATION friends;
+INSERT INTO add VALUES FROM RELATION himym;
+
+himym <- rename (aname, akind, ayears) friends;
+
+friends <- friends + himym;
+SHOW friends;
+
+himym <- select(aname == "Ted") himym;
 SHOW himym;
 
-himym <- select (kind == "Ted") himym;
+SHOW friends;

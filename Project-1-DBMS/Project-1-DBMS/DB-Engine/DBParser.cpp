@@ -182,7 +182,7 @@ Parser_Table DBParser::projection() {
 				if (ts->get().get_type() == _rpar) {
 					Parser_Table pt = atomic_expr();
 					if (pt.valid){
-						pt.table = db.Project("", pt.table, attrs);
+						pt.table = db.Project(pt.table.Get_name(), pt.table, attrs);
 						pt.valid = true;
 						return pt;
 					}
@@ -306,15 +306,15 @@ Comparison_tree* DBParser::comparison() {
 	return new Comparison_tree();
 }
 
-//op ::= == | != | < | > | <= | >=
+//op ::= == | != | < | <= | > | >=
 Token DBParser::op() {
 	Token op_token = ts->get();
 	switch (op_token.get_type()) {
 	case _equals:
 	case _not_eq:
 	case _less:
-	case _greater:
 	case _less_eq:
+	case _greater:
 	case _greater_eq:
 		return op_token;
 	default:
@@ -527,7 +527,7 @@ Parser_Table DBParser::update_cmd() {
 									
 									if (ts->get().get_type() == _where) {
 										Comparison_tree *ct = condition();
-										db.Update(pt.table, ct, new_values);
+										pt.table = db.Update(pt.table, ct, new_values);
 										return pt;
 									}
 									else break;
@@ -682,7 +682,7 @@ Parser_Table DBParser::expr() {
 			Parser_Table pt2 = atomic_expr();
 			if (pt2.valid) {
 				Parser_Table result;
-				result.table = db.Set_union("", pt.table, pt2.table);
+				result.table = db.Set_union(pt.table.Get_name(), pt.table, pt2.table);
 				result.valid = true;
 				return result;
 			}
@@ -695,7 +695,7 @@ Parser_Table DBParser::expr() {
 			Parser_Table pt2 = atomic_expr();
 			if (pt2.valid) {
 				Parser_Table result;
-				result.table = db.Set_difference("", pt.table, pt2.table);
+				result.table = db.Set_difference(pt.table.Get_name(), pt.table, pt2.table);
 				result.valid = true;
 				return result;
 			}
@@ -708,7 +708,7 @@ Parser_Table DBParser::expr() {
 			Parser_Table pt2 = atomic_expr();
 			if (pt2.valid) {
 				Parser_Table result;
-				result.table = db.Cross_product("", pt.table, pt2.table);
+				result.table = db.Cross_product(pt.table.Get_name(), pt.table, pt2.table);
 				result.valid = true;
 				return result;
 			}
@@ -719,7 +719,6 @@ Parser_Table DBParser::expr() {
 		}
 		else {
 			ts->unget(expr_token);
-			pt.valid = true;
 			return pt;
 		}
 	}
