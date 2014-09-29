@@ -30,7 +30,6 @@ Table Database::Select(string view_name, string in_table_name, Comparison_tree *
 		new_table.Insert_row(my_table.Get_row(row_indicies[i]));
 	}
 	new_table.Set_name(view_name);
-	Tables.push_back(new_table);
 	return new_table;
 }
 
@@ -60,7 +59,7 @@ Table Database::Project(string view_name, string in_table_name, vector<string> a
 	Table new_table;
 	new_table.Set_name(view_name);
 	new_table.Set_attributes(projected);
-	Tables.push_back(new_table);
+	
 	return new_table;
 }
 
@@ -74,7 +73,6 @@ Table Database::Project(string view_name, Table in_table_name, vector<string> at
 	Table new_table;
 	new_table.Set_name(view_name);
 	new_table.Set_attributes(projected);
-	Tables.push_back(new_table);
 	return new_table;
 }
 
@@ -96,7 +94,6 @@ Table Database::Rename(string new_name, string old_name, string in_table){
 		cerr << "Error during Rename (could not find existing name)" << endl;
 	}
 	Set_table(table);//updates table vector, not sure if this is correct implementation of grammar
-	
 	return table;
 }
 
@@ -116,7 +113,7 @@ Table Database::Rename(string view_name, Table in_table_name, vector<string> new
 
 Table Database::Set_union(string view_name, string table1_name, string table2_name){
 
-	Table new_table = Get_table(table1_name);//new table includes table 1 values
+	Table new_table = Get_table(table1_name);				// new table includes table 1 values
 	Table table2 = Get_table(table2_name);
 
 	// Check to see if each relation has same number of attributes
@@ -132,23 +129,22 @@ Table Database::Set_union(string view_name, string table1_name, string table2_na
 			cerr << " Error during set union (attributes do not match)" << endl;
 	}
 
-	for ( unsigned int i = 0; i < table2.Get_max_height(); ++i){
+	for ( unsigned int i = 0; i < table2.Get_max_height(); ++i){	
 		bool found = false;
-		vector<string> row = table2.Get_row(i);
+		vector<string> row = table2.Get_row(i);								// Get row of table2 at index i
 		for ( unsigned int j = 0; j < new_table.Get_max_height(); ++j)
-			if (row == new_table.Get_row(j))
-				found = true;
+			if (row == new_table.Get_row(j))								// Compare row of table2 at index i to each row in new_table
+				found = true;												// If there are two rows that are the same set found = true
 		if (!found)
-			new_table.Insert_row(row);
+			new_table.Insert_row(row);										// If row of table2 at index i is unique (found = false), add to new_table
 	}
-	new_table.Set_name(view_name);//names new table
-	Tables.push_back(new_table);
+	new_table.Set_name(view_name);											//names new table
 	return new_table;
 }
 
 Table Database::Set_union(string view_name, Table table1_name, Table table2_name){
 
-	Table new_table = Table(table1_name);//new table includes table 1 values
+	Table new_table = Table(table1_name);					// new table includes table 1 values
 	Table table2 = Table(table2_name);
 
 	// Check to see if each relation has same number of attributes
@@ -166,15 +162,14 @@ Table Database::Set_union(string view_name, Table table1_name, Table table2_name
 
 	for ( unsigned int i = 0; i < table2.Get_max_height(); ++i){
 		bool found = false;
-		vector<string> row = table2.Get_row(i);
+		vector<string> row = table2.Get_row(i);								// Get row of table2 at index i
 		for ( unsigned int j = 0; j < new_table.Get_max_height(); ++j)
-			if (row == new_table.Get_row(j))
-				found = true;
+			if (row == new_table.Get_row(j))								// Compare row of table2 at index i to each row in new_table
+				found = true;												// If there are two rows that are the same set found = true
 		if (!found)
-			new_table.Insert_row(row);
+			new_table.Insert_row(row);										// If row of table2 at index i is unique (found = false), add to new_table
 	}
 	new_table.Set_name(view_name);//names new table
-	Tables.push_back(new_table);
 	return new_table;
 }
 
@@ -218,7 +213,6 @@ Table Database::Set_difference(string view_name, string table1_name, string tabl
 			new_table.Insert_row(row);
 	}
 	new_table.Set_name(view_name);//names new table
-	Tables.push_back(new_table);
 	return new_table;
 }
 
@@ -262,7 +256,6 @@ Table Database::Set_difference(string view_name, Table table1_name, Table table2
 			new_table.Insert_row(row);
 	}
 	new_table.Set_name(view_name);//names new table
-	Tables.push_back(new_table);
 	return new_table;
 }
 
@@ -302,7 +295,6 @@ Table Database::Cross_product(string view_name, string table1_name, string table
 			new_table.Insert_row(new_row);
 		}
 	}
-	Tables.push_back(new_table);
 	return new_table;
 }
 
@@ -342,7 +334,6 @@ Table Database::Cross_product(string view_name, Table table1_name, Table table2_
 			new_table.Insert_row(new_row);
 		}
 	}
-	Tables.push_back(new_table);
 	return new_table;
 }
 

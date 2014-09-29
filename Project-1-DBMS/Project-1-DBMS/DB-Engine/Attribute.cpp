@@ -79,32 +79,32 @@ int Attribute::Get_size() const{
 }
 
 //Read and Write
-istream& Attribute::Read(istream& is){
+istream& Attribute::Read(istream& is){ //Reading in the attrbute from string stream
 	string temp;
-	getline(is, Name, '\n');
-	getline(is, VarType, '\n');
+	getline(is, Name, '\n'); //first line is the name
+	getline(is, VarType, '\n'); //second is the variable type
 	Data = vector<string>();
 	while (1){
 		getline(is, temp, ';');//assumer there is always at least one value stored
 		if (temp == ENDLIST)
 			break;
-		Data.push_back(temp);
+		Data.push_back(temp); //pushing read data to data vector
 	}
 	return is;
 }
-ostream& Attribute::Write(ostream& os){
+ostream& Attribute::Write(ostream& os){ //outputting our attributes to a stream
 	os << Name << endl;
 	os << VarType << endl;
-	for ( unsigned int i = 0; i < Data.size(); ++i)
+	for ( unsigned int i = 0; i < Data.size(); ++i) //running through the vector of data to output
 		os << Data[i]<< ";";
 	os << ENDLIST << ";\n";
 	return os;
 }
 
-string& Attribute::operator[](unsigned int i){
+string& Attribute::operator[](unsigned int i){ //overloading the [] operator in order to access the data point from the attribute directly
 	if (i<0 || i>=Data.size()){
 		cerr << "Out of range access of data\n";
-		return string("Default");
+		return string("Default"); //error checking
 	}
 	else{
 		return Data[i];
