@@ -25,7 +25,7 @@ using namespace std;
 		Value = node.Value;
 	}
 	Node::~Node(){
-		if (Left != NULL) delete Left;
+		if (Left != NULL) delete Left; //delete children
 		if (Right != NULL) delete Right;
 	}
 
@@ -33,13 +33,13 @@ using namespace std;
 	Node* Node::Get_left(){
 		if (Left == NULL)
 			cerr << "cant Get, left pointer null" << endl;
-		return Left;
+		return Left; // return pointer to left node
 	}
 
 	Node* Node::Get_right(){
 		if (Right == NULL)
 			cerr << "cant Get, right pointer null" << endl;
-		return Right;
+		return Right; // return pointer to right node
 	}
 
 	void Node::Set_left(Node n){
@@ -49,9 +49,9 @@ using namespace std;
 		Right = new Node(n);
 	}
 	bool Node::Is_literal() const {
-		return (Type == _int_num || Type == _varchar);
+		return (Type == _int_num || Type == _varchar); //check if node is a number or varchar, else its not a literal
 	}
 	ostream& Node::Print_node(ostream& os){
-		os << "value: " << Value << " type: " << Type<<endl;
+		os << "value: " << Value << " type: " << Type<<endl; // simple print
 		return os;
 	}
