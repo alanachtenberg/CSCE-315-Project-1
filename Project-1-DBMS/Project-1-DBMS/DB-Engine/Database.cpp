@@ -30,7 +30,6 @@ Table Database::Select(string view_name, string in_table_name, Comparison_tree *
 		new_table.Insert_row(my_table.Get_row(row_indicies[i]));
 	}
 	new_table.Set_name(view_name);
-	Tables.push_back(new_table);
 	return new_table;
 }
 
