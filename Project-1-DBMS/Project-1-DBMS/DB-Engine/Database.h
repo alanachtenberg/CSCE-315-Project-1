@@ -23,17 +23,11 @@ public:
 	std::vector<Table> get_Tables();
 
 	// Query Functions
-	//Table Select(std::string view_name, std::string in_table_name, Comparison_tree *comparison);
 	Table Select(Table& table, Comparison_tree *comparison);
-	//Table Project(std::string view_name, std::string in_table_name, std::vector<std::string> attributes);
 	Table Project(Table& table, std::vector<std::string> attributes);
-	//Table Rename(std::string new_name, std::string old_name, std::string in_table);
 	Table Rename(Table& table, std::vector<std::string> new_names);
-	//Table Set_union(std::string view_name, std::string table1_name, std::string table2_name);
 	Table Set_union(std::string view_name, Table table1_name, Table table2_name);
-	//Table Set_difference(std::string view_name, std::string table1_name, std::string table2_name);
 	Table Set_difference(Table& table1, Table& table2);
-	//Table Cross_product(std::string view_name, std::string table1_name, std::string table2_name);
 	Table Cross_product(Table& table1_name, Table& table2_name);
 
 	// Command Functions
@@ -45,14 +39,9 @@ public:
 	void Show(std::string table_name);
 	void Show(Table& table);
 	Table Create(std::string table_name,std::vector<std::string> attribute_names, std::vector<std::string> attribute_types, std::vector<std::string> keys);
-	//Table Update(std::string table_name, std::vector<std::string> old_attributes, std::vector<std::string> new_values, std::string attribute_name, Token_Type comparison, std::string value);
 	Table Update(Table &table_name, Comparison_tree *comparison, std::vector<pair<std::string, std::string>> new_values);
-	//Table Insert(std::string table_name, std::vector<std::string> tuple);
-	//Table Insert(std::string dest_table, Table source);//Insert FROM source_table INTO dest_table
 	Table Insert(Table &dest_table, Table source);
 	Table Insert(Table &dest_table, std::vector<std::string> new_tuple);
-	//void Delete(std::string table_name, std::string attribute_name, Token_Type comparison, std::string value);//renamed remove to delete to match project requirements
-	//void Delete(Table table_name, Attribute attribute_name, Token_Type comparison, std::string value);
 	Table Delete(Table &table_name, Comparison_tree *comparison);
 	// Utility Functions
 	
