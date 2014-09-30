@@ -11,7 +11,7 @@ private:
 	Node* Left;
 	Node* Right;
 public:
-	Token_Type Type;
+	Token_Type Type; //type of value, can be operator(less or greater equals etc) or literal (number varchar)
 	std::string Value;
 
 	Node();

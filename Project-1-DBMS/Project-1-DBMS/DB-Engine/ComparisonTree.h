@@ -9,12 +9,10 @@ class Comparison_tree
 
 private:
 	Node * Root;
-	Table Data_table;
+	Table Data_table; //data table is the table that all the comparisons will be performed on
 	//returns vector of ints corresponding to rows that evaluate to true;
-	std::vector<int> Eval_node(Node* n);
-	std::vector<int> Compare(Node* left, const Token_Type& type, Node* right);
-	
-
+	std::vector<int> Eval_node(Node* n); //evalutates individual nodes
+	std::vector<int> Compare(Node* left, const Token_Type& type, Node* right); //compares literals
 
 public:
 

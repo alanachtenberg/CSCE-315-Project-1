@@ -74,11 +74,13 @@ unsigned int Table::Get_max_height() const{
 	return max_height;
 }
 
+//checks to see 
 bool Table::Is_default() {
 	if (Name == "DefaultTableName") return true;
 	else return false;
 }
 
+//returns a tuple in the form of a vector string of the data
 vector<string> Table::Get_row(unsigned int index){
 	if (index<0 || index>Get_max_height()){
 		cerr << "cannot get row, index out of range"<<endl;
@@ -87,12 +89,13 @@ vector<string> Table::Get_row(unsigned int index){
 	else
 	{
 		vector<string> new_vector = vector<string>();
-		for ( unsigned int i = 0; i < Get_width(); ++i)
+		for ( unsigned int i = 0; i < Get_width(); ++i) //loop through for each attribute in the table
 			new_vector.push_back(Attributes[i][index]);
 		return new_vector;
 	}
 }
 
+//update a specific index with an updated tuple passed
 void Table::Set_row(unsigned int row_index, vector<string> values){
 	if (row_index<0 || row_index>Get_max_height())
 		cerr << "cannot set row, index out of range" << endl;
@@ -108,22 +111,24 @@ void Table::Set_row(unsigned int row_index, vector<string> values){
 	}
 }
 
+//insert a new tuple into a table
 void Table::Insert_row(vector<string> values){
 	if (values.size() != Attributes.size())
 		cerr << "cannot insert row, values vector does not match size of attributes vector" << endl;
 	else
 	{
-		for ( unsigned int i = 0; i < values.size(); ++i)
-			Attributes[i].Insert_value(values[i]);
+		for ( unsigned int i = 0; i < values.size(); ++i) // loop for size of the row you're passing in
+			Attributes[i].Insert_value(values[i]);// add the value of the particuler index of attribute to the new tuple
 	}
 }
 
+//delete a new tuple from a table
 void Table::Delete_row(unsigned int row_index){
 	if (row_index<0 || row_index>Get_max_height())
 		cerr << "cannot delete row, index out of range" << endl;
 	else
 	{
-		for ( unsigned int i = 0; i < Get_width(); ++i){
+		for ( unsigned int i = 0; i < Get_width(); ++i){// delete each item in the data vector of the same index, essentially deleting the tuple
 			vector<string> values=Attributes[i].Get_data();
 			values.erase(values.begin() + row_index);//deletes data at row_index in vector
 			Attributes[i].Set_data(values); //writes back new vector
@@ -131,7 +136,9 @@ void Table::Delete_row(unsigned int row_index){
 	}
 }
 
-vector<string> Table::Get_column(unsigned int index){
+
+//return a vector of data for a particular attribute
+vector<string> Table::Get_column(unsigned int index){ //return a data vector of one particular attribute
 	if (index<0 || index>Get_width()){
 		cerr << "cannot get column, index out of range" << endl;
 		return vector<string>();
@@ -142,12 +149,13 @@ vector<string> Table::Get_column(unsigned int index){
 	}
 }
 
+//read in a table from as a string stream
 istream& Table::Read(istream& is){
 	string temp_string;
 	Attribute temp;
 	getline(is, Name,'\n');
 	Attributes = vector<Attribute>();
-	while (1){
+	while (1){ //allows to read in until there is no more values in the table, covering the entire table
 		temp.Read(is);// assume there is always at least one attribute to read
 		Attributes.push_back(temp);
 		is >> temp_string;
@@ -169,6 +177,7 @@ ostream& Table::Write(ostream& os){
 	return os;
 }
 
+//Print out in nice readable format
 ostream& Table::Pretty_print(ostream& os){
 	os << "------------------";
 	os << Name << "------------------" << endl << endl;
@@ -176,9 +185,9 @@ ostream& Table::Pretty_print(ostream& os){
 		os << Attributes[i].Get_name() << right << setw(20);
 	}
 	os << endl<<endl;
-	for ( unsigned int j = 0; j < Get_max_height(); ++j){
-		vector<string> values = Get_row(j);
-		for ( unsigned int k = 0; k < Get_width(); ++k){
+	for ( unsigned int j = 0; j < Get_max_height(); ++j){//loop through with the tables height
+		vector<string> values = Get_row(j); // set the vector of strings equal to the tuple you're printing out
+		for ( unsigned int k = 0; k < Get_width(); ++k){ //iterate through and print out each tuple on the line
 			os << values[k]<< right<<setw(20);
 		}
 		os << endl;

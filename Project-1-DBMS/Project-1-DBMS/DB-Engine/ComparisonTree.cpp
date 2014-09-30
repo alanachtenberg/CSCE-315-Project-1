@@ -5,10 +5,9 @@
 		Root = NULL;
 		Data_table = Table();
 	}
-	//table is a default parameter
 	Comparison_tree::Comparison_tree(Node *root, Table table){
 		Root = root;
-		Data_table = table;
+		Data_table = table;//table is default parameter
 	}
 	//constructor that makes a new tree from 2 existing trees
 	Comparison_tree::Comparison_tree(string new_root_value, Token_Type new_root_type, Comparison_tree *left_tree, Comparison_tree *right_tree){
@@ -32,7 +31,7 @@
 	vector<int> Comparison_tree::Eval_node(Node* n){
 		vector<int> valid_rows, left_rows, right_rows;
 		switch(n->Type){
-		case _varchar:
+		case _varchar://expected type in the middle is an operator or && or |||
 		case _int_num:
 			cerr << "Can not evaluate a comparison with a literal as the root, literal must be lhs or rhs" << endl;
 			break;
@@ -41,10 +40,10 @@
 		case _greater:
 		case _greater_eq:
 		case _equals:
-		case _not_eq :
+		case _not_eq ://simple comparison cases
 			return Compare(n->Get_left(), n->Type, n->Get_right());
 			break;
-		case _and :
+		case _and ://and case
 			left_rows = Eval_node(n->Get_left());//evaluate left
 			right_rows = Eval_node(n->Get_right());//evaluate right
 			for ( unsigned int i = 0; i < left_rows.size(); ++i)
@@ -53,18 +52,18 @@
 						valid_rows.push_back(left_rows[i]);
 			return valid_rows;
 			break;
-		case _or :
+		case _or : //or case
 			left_rows = Eval_node(n->Get_left());//evaluate left
 			right_rows = Eval_node(n->Get_right());//evaluate right
 
 			valid_rows = left_rows;//get all left side
 			for ( unsigned int i = 0; i < right_rows.size(); ++i){
 				bool found = false;
-				for ( unsigned int j = 0; j < left_rows.size(); ++j)
+				for ( unsigned int j = 0; j < left_rows.size(); ++j) //search for a match of rightrow in all left rows
 					if (right_rows[i] == left_rows[j])
 						found = true;
 				if (!found)
-					valid_rows.push_back(right_rows[i]);
+					valid_rows.push_back(right_rows[i]); //when a match is not found push it back, we do this because we do not want duplicates
 			}
 			return valid_rows;
 			break;
@@ -76,16 +75,16 @@
 
 	vector<int>	Comparison_tree::Compare(Node* left,const Token_Type& type, Node* right ){
 		vector<int> valid_rows;
-		if (left->Is_literal() && right->Is_literal()){
+		if (left->Is_literal() && right->Is_literal()){//check to make sure we have the correct left and right argument types
 			switch (type){
 			case(Token_Type::_less):
 				for (unsigned int i = 0; i < Data_table.Get_max_height(); ++i)
-					if (Data_table[left->Value].Get_name() != "DefaultName")
-						if (Data_table[left->Value][i] < right->Value)
-							valid_rows.push_back(i);
+					if (Data_table[left->Value].Get_name() != "DefaultName") //perform check because if attribute does not exist it will return a defualt table
+						if (Data_table[left->Value][i] < right->Value) //dont want to try to access data from a default table
+							valid_rows.push_back(i); //store row index if comparison evaluates to true
 				return valid_rows;
 				break;
-			case(Token_Type::_less_eq) :
+			case(Token_Type::_less_eq) : //rinse and repeat
 				for (unsigned int j = 0; j< Data_table.Get_max_height(); ++j) //used different letter for debugging purposes
 					if (Data_table[left->Value].Get_name() != "DefaultName")
 						if (Data_table[left->Value][j] <= right->Value)
