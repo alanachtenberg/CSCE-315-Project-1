@@ -38,7 +38,7 @@ private:
 
 	Parser_Table selection(); //working
 	Parser_Table projection(); //working
-	Parser_Table rename(); //working, but crashes with incorrect input list size
+	Parser_Table rename(); //working
 
 	Comparison_tree* condition(); //working
 	Comparison_tree* conjunction(); //working
@@ -49,10 +49,10 @@ private:
 	//commands
 	Parser_Table command(); //working
 
-	Parser_Table open_cmd(); //working, I think
-	Parser_Table close_cmd(); //working, I think
-	Parser_Table write_cmd(); //working, I think
-	Parser_Table exit_cmd();  //working, I think
+	Parser_Table open_cmd(); //working
+	Parser_Table close_cmd(); //working
+	Parser_Table write_cmd(); //working
+	Parser_Table exit_cmd();  //working
 	Parser_Table show_cmd();  //working
 	Parser_Table create_cmd(); //working
 	Parser_Table update_cmd(); //working

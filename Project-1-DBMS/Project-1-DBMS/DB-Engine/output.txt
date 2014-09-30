@@ -1,0 +1,73 @@
+EXECUTING FILE final_test.txt:Can not insert tuple to dest table, table width does not match
+Can not insert tuple to dest table, table width does not match
+Can not insert tuple to dest table, table width does not match
+Can not insert tuple to dest table, table width does not match
+Can not insert tuple to dest table, table width does not match
+Can not insert tuple to dest table, table width does not match
+Width: 0 Height: 0
+Can not insert tuple to dest table, table width does not match
+Can not insert tuple to dest table, table width does not match
+Can not insert tuple to dest table, table width does not match
+Can not insert tuple to dest table, table width does not match
+Can not insert tuple to dest table, table width does not match
+EXECUTING FILE final_test.txt:Can not insert tuple to dest table, table width does not match
+Can not insert tuple to dest table, table width does not match
+Can not insert tuple to dest table, table width does not match
+Can not insert tuple to dest table, table width does not match
+Can not insert tuple to dest table, table width does not match
+Can not insert tuple to dest table, table width does not match
+Width: 0 Height: 0
+Can not insert tuple to dest table, table width does not match
+Can not insert tuple to dest table, table width does not match
+Can not insert tuple to dest table, table width does not match
+Can not insert tuple to dest table, table width does not match
+Can not insert tuple to dest table, table width does not match
+EXECUTING FILE final_test.txt:Can not insert tuple to dest table, table width does not match
+Can not insert tuple to dest table, table width does not match
+Can not insert tuple to dest table, table width does not match
+Can not insert tuple to dest table, table width does not match
+Can not insert tuple to dest table, table width does not match
+Can not insert tuple to dest table, table width does not match
+Width: 0 Height: 0
+------------------friends------------------
+
+
+
+------------------------------------
+Can not insert tuple to dest table, table width does not match
+Can not insert tuple to dest table, table width does not match
+Can not insert tuple to dest table, table width does not match
+Can not insert tuple to dest table, table width does not match
+Can not insert tuple to dest table, table width does not match
+Width: 0 Height: 0
+------------------himym------------------
+
+
+
+------------------------------------
+Width: 0 Height: 0
+------------------himym------------------
+
+
+
+------------------------------------
+Width: 0 Height: 0
+------------------friends------------------
+
+
+
+------------------------------------
+error access unsuccessful, [name]
+syntax error
+Width: 0 Height: 0
+------------------selected------------------
+
+
+
+------------------------------------
+Width: 0 Height: 0
+------------------selected------------------
+
+
+
+------------------------------------

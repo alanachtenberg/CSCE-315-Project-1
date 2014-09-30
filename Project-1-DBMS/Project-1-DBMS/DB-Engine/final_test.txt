@@ -27,13 +27,13 @@ SHOW himym;
 DELETE FROM friends WHERE ((ayears != 3));
 SHOW friends;
 
-add <- select (years == 1) (more_himym + more_friends);
-SHOW add;
-add <- project (name, kind) more_friends;
-SHOW add;
+selected <- select (years == 1) (project (name, years) (more_himym + more_friends));
+SHOW selected;
 
-WRITE add;
-CLOSE add;
-SHOW add;
-OPEN add;
-SHOW add;
+WRITE selected;
+CLOSE selected;
+SHOW selected;
+OPEN selected;
+SHOW selected;
+
+EXIT;

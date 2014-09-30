@@ -2,6 +2,7 @@
 #define TOKEN_H
 
 #include <string>
+#include <fstream>
 
 enum Token_Type {
 	_lpar, _rpar, _plus, _minus, _multiply, _divide, _mod, _assign, _semicolon,

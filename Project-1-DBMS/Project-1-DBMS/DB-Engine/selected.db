@@ -1,0 +1,8 @@
+selected
+name
+VARCHAR(10)
+ted;marshall;barney;robin;lily;joey;ENDLIST;
+years
+INTEGER
+1;1;1;1;1;1;ENDLIST;
+ENDTABLE

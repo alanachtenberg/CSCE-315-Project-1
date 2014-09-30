@@ -2,12 +2,6 @@
 
 using namespace std;
 
-/*
-//terrible hack to redirect console output to file
-ofstream ofs("output.txt");
-#define cout ofs
-*/
-
 Table DBParser::execute_query(string query) {
 	ts = new Token_stream(query); //initialize tokenstream with query
 
@@ -26,7 +20,7 @@ void DBParser::execute_file(string filename) {
 	string line;
 	int valid = 0, invalid = 0, line_no = 0;
 
-	cout << "EXECUTING FILE " << filename << ":";
+	cout << "EXECUTING FILE " << filename << ":\n";
 	while (getline(ifs, line)) {
 		line_no++;
 		if (line.size() > 0) {

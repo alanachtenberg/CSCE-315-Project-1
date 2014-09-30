@@ -175,8 +175,8 @@ void Database::Close(string table_name){
 		}
 }
 void Database::Exit(){
-	cout << "Closing DBMS" << endl;
-	std::exit(0); 
+	cout << "Closing DBMS: " << endl;
+	system("pause");
 }
 Table Database::Write(string table_name){
 	Table my_table=Get_table(table_name);
@@ -308,8 +308,7 @@ Table Database::Get_table(string table_name) const{
 			return Tables[i];
 		}
 	}
-	//cerr << "Table get, NOT FOUND\n";
-	Table table;//IF Table not found return default
+	Table table;//IF Table not found return default table with given name
 	table.Set_name(table_name);
 	return table;
 }
