@@ -3,7 +3,7 @@
 
 
 
-int check_input(int input, int low, int high);
+char check_input(char input, char low, char high);
 void main_menu();
 void Address_Book();
 void Calendar();

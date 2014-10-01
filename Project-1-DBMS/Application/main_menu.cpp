@@ -7,9 +7,9 @@
 using namespace std;
 
 
-int check_input(int input, int low, int high){			// Used to check if input is within range of desired inputs
+char check_input(char input, char low, char high){			// Used to check if input is within range of desired inputs
 	bool check = false;
-	int in;
+	char in;
 	if ((input <= high) && (input >= low)){
 		check = true;
 	}
@@ -26,7 +26,7 @@ int check_input(int input, int low, int high){			// Used to check if input is wi
 
 void main_menu(){
 
-	int input, temp;
+	char input, temp;
 
 	cout << endl << "[MAIN MENU]" << endl << endl;
 	cout << "1. Address Book" << endl;
@@ -35,19 +35,19 @@ void main_menu(){
 	cout << "4. Todo List" << endl << endl;
 	cout << "* Enter app to use: ";
 	cin >> input;
-	temp = check_input(input, 1, 4);
+	temp = check_input(input, '1', '4');
 
 	switch (temp){
-	case 1:
+	case '1':
 		Address_Book();
 		break;
-	case 2:
+	case '2':
 		cout << "Calender CHECK" << endl;
 		break;
-	case 3:
+	case '3':
 		cout << "Memo Pad CHECK" << endl;
 		break;
-	case 4:
+	case '4':
 		cout << "Todo List CHECK" << endl;
 		break;
 	default:
@@ -56,7 +56,7 @@ void main_menu(){
 }
 
 void Address_Book(){
-	int input, temp;
+	char input, temp;
 	cout << endl << "[Address Book Menu]" << endl << endl;
 	cout << "1. Display list" << endl;
 	cout << "2. Search" << endl;
@@ -66,25 +66,25 @@ void Address_Book(){
 	cout << "6. Return to main menu" << endl << endl;
 	cout << "* Enter command: ";
 	cin >> input;
-	temp = check_input(input, 1, 6);
+	temp = check_input(input, '1', '6');
 
 	switch (temp){
-	case 1:
+		case '1':
 		cout << "Display list CHECK" << endl;
 		break;
-	case 2:
+	case '2':
 		cout << "Search CHECK" << endl;
 		break;
-	case 3:
+	case '3':
 		cout << "Edit CHECK" << endl;
 		break;
-	case 4:
+	case '4':
 		cout << "Create CHECK" << endl;
 		break;
-	case 5:
+	case '5':
 		cout << "Delete CHECK" << endl;
 		break;
-	case 6:
+	case '6':
 		main_menu();
 		break;
 	default:
@@ -93,7 +93,7 @@ void Address_Book(){
 }
 
 void Calendar(){
-	int input, temp;
+	char input, temp;
 	cout << endl << "[Calendar Menu]" << endl << endl;
 	cout << "1. Display list" << endl;
 	cout << "2. Search" << endl;
@@ -101,19 +101,19 @@ void Calendar(){
 	cout << "4. Return to main menu" << endl << endl;
 	cout << "* Enter command: ";
 	cin >> input;
-	temp = check_input(input, 1, 4);
+	temp = check_input(input, '1', '4');
 
 	switch (temp){
-	case 1:
+	case '1':
 		cout << "Display list CHECK" << endl;
 		break;
-	case 2:
+	case '2':
 		cout << "Search CHECK" << endl;
 		break;
-	case 3:
+	case '3':
 		cout << "Edit CHECK" << endl;
 		break;
-	case 4:
+	case '4':
 		main_menu();
 		break;
 	default:
@@ -122,7 +122,7 @@ void Calendar(){
 }
 
 void Memo_Pad(){
-	int input, temp;
+	char input, temp;
 	cout << endl << "[Memo Pad Menu]" << endl << endl;
 	cout << "1. Display list" << endl;
 	cout << "2. Search" << endl;
@@ -132,25 +132,25 @@ void Memo_Pad(){
 	cout << "6. Return to main menu" << endl << endl;
 	cout << "* Enter command: ";
 	cin >> input;
-	temp = check_input(input, 1, 6);
+	temp = check_input(input, '1', '6');
 
 	switch (temp){
-	case 1:
+	case '1':
 		cout << "Display list CHECK" << endl;
 		break;
-	case 2:
+	case '2':
 		cout << "Search CHECK" << endl;
 		break;
-	case 3:
+	case '3':
 		cout << "Edit CHECK" << endl;
 		break;
-	case 4:
+	case '4':
 		cout << "Create CHECK" << endl;
 		break;
-	case 5:
+	case '5':
 		cout << "Delete CHECK" << endl;
 		break;
-	case 6:
+	case '6':
 		main_menu();
 		break;
 	default:
@@ -159,7 +159,7 @@ void Memo_Pad(){
 }
 
 void Todo_List(){
-	int input, temp;
+	char input, temp;
 	cout << endl << "[Todo List Menu]" << endl << endl;
 	cout << "1. Display list" << endl;
 	cout << "2. Search" << endl;
@@ -169,24 +169,24 @@ void Todo_List(){
 	cout << "6. Return to main menu" << endl << endl;
 	cout << "* Enter command: ";
 	cin >> input;
-	temp = check_input(input, 1, 6);
+	temp = check_input(input, '1', '6');
 
 	switch (temp){
-	case 1:
+	case '1':
 		cout << "Display list CHECK" << endl;
 		break;
-	case 2:
+	case '2':
 		cout << "Search CHECK" << endl;
 		break;
-	case 3:
+	case '3':
 		cout << "Edit CHECK" << endl;
 		break;
-	case 4:
+	case '4':
 		cout << "Create CHECK" << endl;
 		break;
-	case 5:
+	case '5':
 		cout << "Delete CHECK" << endl;
-	case 6:
+	case '6':
 		main_menu();
 		break;
 	default:

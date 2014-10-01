@@ -8,7 +8,7 @@
 using namespace std;
 
 
-
+//Global  DBparser, interfaces queries to internal database
 DBParser dbparser;
 
 void Initialize_db(){
@@ -63,9 +63,6 @@ void Close_db(){
 int main(){
 	Initialize_db();
 	main_menu();
-	string block;
-	cout << "test" << endl;
-	cin >> block;
 	Close_db();
 	return 0;
 }
