@@ -51,6 +51,9 @@
     <ClCompile Include="Database\Token_Stream.cpp">
       <Filter>Source Files\Database</Filter>
     </ClCompile>
+    <ClCompile Include="main_menu.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Database\Attribute.h">
@@ -76,6 +79,9 @@
     </ClInclude>
     <ClInclude Include="Database\Token_Stream.h">
       <Filter>Header Files\Database</Filter>
+    </ClInclude>
+    <ClInclude Include="main_menu.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

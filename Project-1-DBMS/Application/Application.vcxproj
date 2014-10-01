@@ -74,6 +74,7 @@
     <ClCompile Include="Database\Token.cpp" />
     <ClCompile Include="Database\Token_Stream.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="main_menu.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Project-1-DBMS\DB-Engine\DB-Engine.vcxproj">
@@ -94,6 +95,7 @@
     <ClInclude Include="Database\Table.h" />
     <ClInclude Include="Database\Token.h" />
     <ClInclude Include="Database\Token_Stream.h" />
+    <ClInclude Include="main_menu.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
