@@ -202,7 +202,7 @@ Table Database::Write(Table& table){
 Table Database::Open(string table_name){
 	ifstream in = ifstream((table_name + ".db").c_str());
 	if (!in.is_open())
-		cerr << "could not open file" << table_name + ".db"<<endl;
+		cerr << "could not open file " << table_name + ".db"<<endl;
 	else{
 		Table new_table = Table();
 		new_table.Read(in);

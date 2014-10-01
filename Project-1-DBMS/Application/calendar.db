@@ -1,0 +1,5 @@
+calendar
+date
+VARCHAR(8)
+ENDLIST;
+ENDTABLE

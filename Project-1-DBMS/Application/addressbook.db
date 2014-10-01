@@ -1,0 +1,14 @@
+addressbook
+name
+VARCHAR(30)
+ENDLIST;
+phone
+VARCHAR(10)
+ENDLIST;
+email
+VARCHAR(50)
+ENDLIST;
+address
+VARCHAR(100)
+ENDLIST;
+ENDTABLE

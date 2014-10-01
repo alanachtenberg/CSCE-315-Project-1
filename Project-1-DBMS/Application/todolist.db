@@ -1,0 +1,8 @@
+todolist
+todo
+VARCHAR(1000)
+ENDLIST;
+date
+VARCHAR(8)
+ENDLIST;
+ENDTABLE
