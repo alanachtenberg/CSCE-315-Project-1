@@ -2,6 +2,7 @@
 #include <fstream>
 #include <string>
 #include <iostream>
+#include "Database\DBParser.h"
 
 using namespace std;
 

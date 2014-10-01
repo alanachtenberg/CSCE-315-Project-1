@@ -64,7 +64,36 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Database\Attribute.cpp" />
+    <ClCompile Include="Database\ComparisonTree.cpp" />
+    <ClCompile Include="Database\Database.cpp" />
+    <ClCompile Include="Database\DBParser.cpp" />
+    <ClCompile Include="Database\Node.cpp" />
+    <ClCompile Include="Database\Source.cpp" />
+    <ClCompile Include="Database\Table.cpp" />
+    <ClCompile Include="Database\Token.cpp" />
+    <ClCompile Include="Database\Token_Stream.cpp" />
     <ClCompile Include="main.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Project-1-DBMS\DB-Engine\DB-Engine.vcxproj">
+      <Project>{efd1690e-64a6-4e93-a67d-60a8eb10f673}</Project>
+      <Private>true</Private>
+      <ReferenceOutputAssembly>true</ReferenceOutputAssembly>
+      <CopyLocalSatelliteAssemblies>false</CopyLocalSatelliteAssemblies>
+      <LinkLibraryDependencies>true</LinkLibraryDependencies>
+      <UseLibraryDependencyInputs>false</UseLibraryDependencyInputs>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Database\Attribute.h" />
+    <ClInclude Include="Database\ComparisonTree.h" />
+    <ClInclude Include="Database\Database.h" />
+    <ClInclude Include="Database\DBParser.h" />
+    <ClInclude Include="Database\Node.h" />
+    <ClInclude Include="Database\Table.h" />
+    <ClInclude Include="Database\Token.h" />
+    <ClInclude Include="Database\Token_Stream.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
