@@ -6,9 +6,8 @@
 
 using namespace std;
 
-void address_book();
 
-int check_input(int input, int low, int high){
+int check_input(int input, int low, int high){			// Used to check if input is within range of desired inputs
 	bool check = false;
 	int in;
 	if ((input <= high) && (input >= low)){
@@ -32,39 +31,43 @@ void main_menu(){
 	cout << endl << "[MAIN MENU]" << endl << endl;
 	cout << "1. Address Book" << endl;
 	cout << "2. Calendar" << endl;
-	cout << "3. Memo" << endl;
-	cout << "4. Todo" << endl << endl;
+	cout << "3. Memo Pad" << endl;
+	cout << "4. Todo List" << endl << endl;
 	cout << "* Enter app to use: ";
 	cin >> input;
 	temp = check_input(input, 1, 4);
+
 	switch (temp){
 	case 1:
-		address_book();
+		Address_Book();
 		break;
 	case 2:
 		cout << "Calender CHECK" << endl;
 		break;
 	case 3:
-		cout << "Memo CHECK" << endl;
+		cout << "Memo Pad CHECK" << endl;
 		break;
 	case 4:
-		cout << "Todo CHECK" << endl;
+		cout << "Todo List CHECK" << endl;
 		break;
 	default:
 		cerr << "Input Error!" << endl;
 	}
 }
 
-void address_book(){
+void Address_Book(){
 	int input, temp;
 	cout << endl << "[Address Book Menu]" << endl << endl;
 	cout << "1. Display list" << endl;
 	cout << "2. Search" << endl;
 	cout << "3. Edit" << endl;
-	cout << "4. Return to main menu" << endl << endl;
+	cout << "4. Create" << endl;
+	cout << "5. Delete" << endl;
+	cout << "6. Return to main menu" << endl << endl;
 	cout << "* Enter command: ";
 	cin >> input;
-	temp = check_input(input, 1, 4);
+	temp = check_input(input, 1, 6);
+
 	switch (temp){
 	case 1:
 		cout << "Display list CHECK" << endl;
@@ -76,6 +79,12 @@ void address_book(){
 		cout << "Edit CHECK" << endl;
 		break;
 	case 4:
+		cout << "Create CHECK" << endl;
+		break;
+	case 5:
+		cout << "Delete CHECK" << endl;
+		break;
+	case 6:
 		main_menu();
 		break;
 	default:
@@ -83,7 +92,7 @@ void address_book(){
 	}
 }
 
-void calendar(){
+void Calendar(){
 	int input, temp;
 	cout << endl << "[Calendar Menu]" << endl << endl;
 	cout << "1. Display list" << endl;
@@ -112,16 +121,18 @@ void calendar(){
 	}
 }
 
-void Memo(){
+void Memo_Pad(){
 	int input, temp;
-	cout << endl << "[Memo Menu]" << endl << endl;
+	cout << endl << "[Memo Pad Menu]" << endl << endl;
 	cout << "1. Display list" << endl;
 	cout << "2. Search" << endl;
 	cout << "3. Edit" << endl;
-	cout << "4. Return to main menu" << endl << endl;
+	cout << "4. Create" << endl;
+	cout << "5. Delete" << endl;
+	cout << "6. Return to main menu" << endl << endl;
 	cout << "* Enter command: ";
 	cin >> input;
-	temp = check_input(input, 1, 4);
+	temp = check_input(input, 1, 6);
 
 	switch (temp){
 	case 1:
@@ -134,6 +145,12 @@ void Memo(){
 		cout << "Edit CHECK" << endl;
 		break;
 	case 4:
+		cout << "Create CHECK" << endl;
+		break;
+	case 5:
+		cout << "Delete CHECK" << endl;
+		break;
+	case 6:
 		main_menu();
 		break;
 	default:
@@ -141,16 +158,18 @@ void Memo(){
 	}
 }
 
-void Todo(){
+void Todo_List(){
 	int input, temp;
-	cout << endl << "[Todo Menu]" << endl << endl;
+	cout << endl << "[Todo List Menu]" << endl << endl;
 	cout << "1. Display list" << endl;
 	cout << "2. Search" << endl;
 	cout << "3. Edit" << endl;
-	cout << "4. Return to main menu" << endl << endl;
+	cout << "4. Create" << endl;
+	cout << "5. Delete" << endl;
+	cout << "6. Return to main menu" << endl << endl;
 	cout << "* Enter command: ";
 	cin >> input;
-	temp = check_input(input, 1, 4);
+	temp = check_input(input, 1, 6);
 
 	switch (temp){
 	case 1:
@@ -163,6 +182,11 @@ void Todo(){
 		cout << "Edit CHECK" << endl;
 		break;
 	case 4:
+		cout << "Create CHECK" << endl;
+		break;
+	case 5:
+		cout << "Delete CHECK" << endl;
+	case 6:
 		main_menu();
 		break;
 	default:
