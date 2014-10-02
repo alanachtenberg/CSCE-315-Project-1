@@ -152,12 +152,12 @@ Table Database::Cross_product(Table& table1, Table& table2){
 
 	//go through each row of my_table1, concatenate them with each row of my_table2
 	for ( unsigned int i = 0; i < table1_height; i++){
-		vector<string>	row1 = table1.Get_row(i);
+		vector<string>	row1 = table1.Get_row(i); //retrieve rows from table
 		for ( unsigned int j = 0; j < table2_height; ++j){
-			vector<string> row2 = table2.Get_row(j);
+			vector<string> row2 = table2.Get_row(j); //create tuples and cross them with the columns
 			vector<string> new_row = row1;
 			for ( unsigned int k = 0; k < row2.size(); ++k)
-				new_row.push_back(row2[k]);
+				new_row.push_back(row2[k]); //insert newly created tuple into tuple vector
 			new_table.Insert_row(new_row);
 		}
 	}
