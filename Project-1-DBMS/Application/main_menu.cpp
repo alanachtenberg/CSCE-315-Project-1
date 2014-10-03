@@ -3,6 +3,7 @@
 #include <string>
 #include <iostream>
 #include "main_menu.h"
+//#include "Database\DBParser.h"
 
 using namespace std;
 
@@ -24,7 +25,7 @@ char check_input(char input, char low, char high){			// Used to check if input i
 	return input;
 }
 
-void main_menu(){
+void main_menu(DBParser dbparser){
 
 	char input, temp;
 
@@ -39,7 +40,7 @@ void main_menu(){
 
 	switch (temp){
 	case '1':
-		Address_Book();
+		Address_Book(dbparser);
 		break;
 	case '2':
 		cout << "Calender CHECK" << endl;
@@ -55,7 +56,7 @@ void main_menu(){
 	}
 }
 
-void Address_Book(){
+void Address_Book(DBParser dbparser){
 	char input, temp;
 	cout << endl << "[Address Book Menu]" << endl << endl;
 	cout << "1. Display list" << endl;
@@ -71,6 +72,7 @@ void Address_Book(){
 	switch (temp){
 		case '1':
 		cout << "Display list CHECK" << endl;
+		dbparser.execute_query("SHOW addressbook");
 		break;
 	case '2':
 		cout << "Search CHECK" << endl;
@@ -79,20 +81,21 @@ void Address_Book(){
 		cout << "Edit CHECK" << endl;
 		break;
 	case '4':
-		cout << "Create CHECK" << endl;
+		cout << "Create CHECK" << endl; 
+	//		dbparser.execute_query("INSERT INTO addressbook VALUES FROM('Jacob Stone', '512-466-4467', 'jacob.stone56@tamu.edu', '1713 Laura');");
 		break;
 	case '5':
 		cout << "Delete CHECK" << endl;
 		break;
 	case '6':
-		main_menu();
+		main_menu(dbparser);
 		break;
 	default:
 		cerr << "Input Error in Address book!" << endl;
 	}
 }
 
-void Calendar(){
+void Calendar(DBParser dbparser){
 	char input, temp;
 	cout << endl << "[Calendar Menu]" << endl << endl;
 	cout << "1. Display list" << endl;
@@ -114,14 +117,14 @@ void Calendar(){
 		cout << "Edit CHECK" << endl;
 		break;
 	case '4':
-		main_menu();
+		main_menu(dbparser);
 		break;
 	default:
 		cerr << "Input Error in Calendar!" << endl;
 	}
 }
 
-void Memo_Pad(){
+void Memo_Pad(DBParser dbparser){
 	char input, temp;
 	cout << endl << "[Memo Pad Menu]" << endl << endl;
 	cout << "1. Display list" << endl;
@@ -151,14 +154,14 @@ void Memo_Pad(){
 		cout << "Delete CHECK" << endl;
 		break;
 	case '6':
-		main_menu();
+		main_menu(dbparser);
 		break;
 	default:
 		cerr << "Input Error in Memo!" << endl;
 	}
 }
 
-void Todo_List(){
+void Todo_List(DBParser dbparser){
 	char input, temp;
 	cout << endl << "[Todo List Menu]" << endl << endl;
 	cout << "1. Display list" << endl;
@@ -187,7 +190,7 @@ void Todo_List(){
 	case '5':
 		cout << "Delete CHECK" << endl;
 	case '6':
-		main_menu();
+		main_menu(dbparser);
 		break;
 	default:
 		cerr << "Input Error in Todo!" << endl;

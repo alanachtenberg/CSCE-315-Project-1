@@ -2,7 +2,7 @@
 #include <fstream>
 #include <string>
 #include <iostream>
-#include "Database\DBParser.h"
+//#include "Database\DBParser.h"
 #include "main_menu.h"
 
 using namespace std;
@@ -62,7 +62,7 @@ void Close_db(){
 
 int main(){
 	Initialize_db();
-	main_menu();
+	main_menu(dbparser);
 	Close_db();
 	return 0;
 }
