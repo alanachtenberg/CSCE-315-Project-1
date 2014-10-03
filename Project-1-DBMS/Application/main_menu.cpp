@@ -82,7 +82,7 @@ void Address_Book(DBParser dbparser){
 		break;
 	case '4':
 		cout << "Create CHECK" << endl; 
-	//		dbparser.execute_query("INSERT INTO addressbook VALUES FROM('Jacob Stone', '512-466-4467', 'jacob.stone56@tamu.edu', '1713 Laura');");
+		dbparser.execute_query("INSERT INTO addressbook VALUES FROM("Jacob Stone", "512-466-4467", "jacob.stone56@tamu.edu", "1713 Laura");");
 		break;
 	case '5':
 		cout << "Delete CHECK" << endl;
