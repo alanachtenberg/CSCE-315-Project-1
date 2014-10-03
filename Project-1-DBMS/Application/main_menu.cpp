@@ -25,7 +25,7 @@ char check_input(char input, char low, char high){			// Used to check if input i
 	return input;
 }
 
-void main_menu(DBParser dbparser){
+void main_menu(DBParser& dbparser){
 
 	char input, temp;
 
@@ -56,7 +56,7 @@ void main_menu(DBParser dbparser){
 	}
 }
 
-void Address_Book(DBParser dbparser){
+void Address_Book(DBParser& dbparser){
 	char input, temp;
 	cout << endl << "[Address Book Menu]" << endl << endl;
 	cout << "1. Display list" << endl;
@@ -72,17 +72,20 @@ void Address_Book(DBParser dbparser){
 	switch (temp){
 		case '1':
 		cout << "Display list CHECK" << endl;
-		dbparser.execute_query("SHOW addressbook");
+		dbparser.execute_query("SHOW addressbook;");
 		break;
 	case '2':
 		cout << "Search CHECK" << endl;
+
 		break;
 	case '3':
 		cout << "Edit CHECK" << endl;
 		break;
 	case '4':
 		cout << "Create CHECK" << endl; 
-		dbparser.execute_query("INSERT INTO addressbook VALUES FROM("Jacob Stone", "512-466-4467", "jacob.stone56@tamu.edu", "1713 Laura");");
+		dbparser.execute_query(R"delim(INSERT INTO addressbook VALUES FROM("JacobStone", 5124664467, "jacob.stone56@tamu.edu", "1713Laura");")delim");
+		dbparser.execute_query("SHOW addressbook;");
+		main_menu(dbparser);
 		break;
 	case '5':
 		cout << "Delete CHECK" << endl;
