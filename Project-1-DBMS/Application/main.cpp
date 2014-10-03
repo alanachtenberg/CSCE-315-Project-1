@@ -11,6 +11,7 @@ using namespace std;
 //Global  DBparser, interfaces queries to internal database
 DBParser dbparser;
 
+
 void Initialize_db(){
 	cout << "Initializing Database\n\n";
 
@@ -22,21 +23,21 @@ void Initialize_db(){
 		cout << "addressbook.db opened\n";
 
 	if (dbparser.execute_query("OPEN calendar;").Get_name() == "Default"){ // if open not successful, create calendar
-		dbparser.execute_query("CREATE TABLE calendar (date VARCHAR(8)) PRIMARY KEY (date);");
+		dbparser.execute_query("CREATE TABLE calendar (date VARCHAR(8), month INTEGER , day INTEGER, year INTEGER, dateid INTEGER, memoid INTEGER, todoid INTEGER) PRIMARY KEY (dateid);");
 		cout << "calendar.db created\n";
 	}
 	else
 		cout << "calendar.db opened\n";
 
 	if (dbparser.execute_query("OPEN memopad;").Get_name() == "Default"){ // if open not successful, create memopad
-		dbparser.execute_query("CREATE TABLE memopad (memo VARCHAR(1000), date VARCHAR(8), name VARCHAR(30)) PRIMARY KEY (memo);");
+		dbparser.execute_query("CREATE TABLE memopad (memo VARCHAR(4000), memoid INTEGER, dateid INTEGER, name VARCHAR(30)) PRIMARY KEY (memoid);");
 		cout << "memopad.db created\n";
 	}
 	else
 		cout << "memopad.db opened\n";
 
 	if (dbparser.execute_query("OPEN todolist;").Get_name() == "Default"){ // if open not successful, create todolist
-		dbparser.execute_query("CREATE TABLE todolist (todo VARCHAR(1000), date VARCHAR(8)) PRIMARY KEY (todo);");
+		dbparser.execute_query("CREATE TABLE todolist (todo VARCHAR(1000), todoid INTEGER, dateid INTEGER, PRIMARY KEY (todoid);");
 		cout << "todolist.db created\n\n";
 	}
 	else
