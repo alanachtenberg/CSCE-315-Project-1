@@ -3,7 +3,6 @@
 #include <string>
 #include <iostream>
 #include "main_menu.h"
-//#include "Database\DBParser.h"
 
 using namespace std;
 
@@ -43,21 +42,63 @@ void main_menu(DBParser& dbparser){
 		Address_Book(dbparser);
 		break;
 	case '2':
-		cout << "Calender CHECK" << endl;
+		Calendar(dbparser);
 		break;
 	case '3':
-		cout << "Memo Pad CHECK" << endl;
+		Memo_Pad(dbparser);
 		break;
 	case '4':
-		cout << "Todo List CHECK" << endl;
+		Todo_List(dbparser);
 		break;
 	default:
 		cerr << "Input Error!" << endl;
 	}
 }
 
+
+// --------------------------------------------------------------
+//			Converting into correct Query Formats
+// --------------------------------------------------------------
+string query_for_addressbook_insert(string table, string name, string phone, string email, string address){
+	string temp = "INSERT INTO ";
+	temp = temp + table + " " + "VALUES FROM (";
+	temp = temp + R"delim(")delim" + name + R"delim(")delim" + ", ";				// The delim lets us use quotes in our string;
+	temp = temp + R"delim(")delim" + phone + R"delim(")delim" + ", ";
+	temp = temp + R"delim(")delim" + email + R"delim(")delim" + ", ";
+	temp = temp + R"delim(")delim" + address + R"delim(")delim" + ");";
+
+	// OUTPUT = INSERT INTO table VALUES FROM("name", "phone", "email", "address");
+	return temp;
+}
+
+// --------------------------------------------------------------
+//			Address Book Functions
+// --------------------------------------------------------------
+
+string create_contact(){
+	string query;
+	string name, phone, email, address;
+
+	cout << endl << "Creating New Contact" << endl;
+	cout << "* Enter Name: ";
+	cin >> name;										// CANT HANDLE SPACES RIGHT NOW!!!!!!!!!!!
+	cout << "* Enter Phone Number With No Spaces or Dashes (1234567890): ";
+	cin >> phone;
+	cout << "* Enter Email: ";
+	cin >> email;
+	cout << "* Enter Address: ";							// CANT HANDLE SPACES RIGHT NOW!!!!!!!!!!!
+	cin >> address;
+	
+	query = query_for_addressbook_insert("addressbook", name, phone, email, address);
+	return query;
+}
+
 void Address_Book(DBParser& dbparser){
-	char input, temp;
+	char input, temp; 
+	string query;
+	string name, phone, email, address;
+	string debug;
+
 	cout << endl << "[Address Book Menu]" << endl << endl;
 	cout << "1. Display list" << endl;
 	cout << "2. Search" << endl;
@@ -69,22 +110,23 @@ void Address_Book(DBParser& dbparser){
 	cin >> input;
 	temp = check_input(input, '1', '6');
 
-	switch (temp){
+	switch(temp){
 		case '1':
-		cout << "Display list CHECK" << endl;
+		cout << "Displaying Address Book list " << endl;
 		dbparser.execute_query("SHOW addressbook;");
 		break;
 	case '2':
-		cout << "Search CHECK" << endl;
-
+		cout << "Searching in Address Book" << endl;
+		cout << "* Enter Desired Name to Search For: ";
+		cin >> name;
 		break;
 	case '3':
 		cout << "Edit CHECK" << endl;
 		break;
 	case '4':
-		cout << "Create CHECK" << endl; 
-		dbparser.execute_query(R"delim(INSERT INTO addressbook VALUES FROM("JacobStone", 5124664467, "jacob.stone56@tamu.edu", "1713Laura");")delim");
-		dbparser.execute_query("SHOW addressbook;");
+		query = create_contact();
+		cout << endl << query << endl;
+		dbparser.execute_query(query);
 		main_menu(dbparser);
 		break;
 	case '5':
@@ -98,7 +140,7 @@ void Address_Book(DBParser& dbparser){
 	}
 }
 
-void Calendar(DBParser dbparser){
+void Calendar(DBParser& dbparser){
 	char input, temp;
 	cout << endl << "[Calendar Menu]" << endl << endl;
 	cout << "1. Display list" << endl;
@@ -127,7 +169,7 @@ void Calendar(DBParser dbparser){
 	}
 }
 
-void Memo_Pad(DBParser dbparser){
+void Memo_Pad(DBParser& dbparser){
 	char input, temp;
 	cout << endl << "[Memo Pad Menu]" << endl << endl;
 	cout << "1. Display list" << endl;
@@ -164,7 +206,7 @@ void Memo_Pad(DBParser dbparser){
 	}
 }
 
-void Todo_List(DBParser dbparser){
+void Todo_List(DBParser& dbparser){
 	char input, temp;
 	cout << endl << "[Todo List Menu]" << endl << endl;
 	cout << "1. Display list" << endl;
