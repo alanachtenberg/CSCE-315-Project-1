@@ -118,7 +118,7 @@ string edit_contact(){
 	
 }*/
 
-string delete_contact(){						// ERROR IN WHILE LOOP GOTTA FIX RAN OUT OF TIME
+string delete_contact(){						
 	bool check = false;
 	string name, answer;
 	string query = "";
@@ -128,7 +128,7 @@ string delete_contact(){						// ERROR IN WHILE LOOP GOTTA FIX RAN OUT OF TIME
 	while (!check){
 		cout << "Are you sure you want to delete this record <y/n>: ";
 		cin >> answer;
-		if (answer != "y" || answer != "n"){
+		if ((answer != "y") && (answer != "n")){
 			cout << "Incorrect Answer Please Try Again <y/n>: ";
 			cin >> answer;
 		}
