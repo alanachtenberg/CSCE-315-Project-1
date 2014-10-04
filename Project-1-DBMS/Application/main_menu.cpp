@@ -70,10 +70,25 @@ string query_for_addressbook_insert(string table, string name, string phone, str
 	// OUTPUT = INSERT INTO table VALUES FROM("name", "phone", "email", "address");
 	return temp;
 }
-
+string query_for_addressbook_delete(string table, string name){
+	string temp = "DELETE FROM ";
+	temp = temp + table + " " + "WHERE((name == ";
+	temp = temp + R"delim(")delim" + name + R"delim(")delim" + "));";				// The delim lets us use quotes in our string;
+	cout << temp << endl;
+	return temp;
+}
 // --------------------------------------------------------------
 //			Address Book Functions
 // --------------------------------------------------------------
+
+void retrieve_record(string _name){					// not finished need to actually retrieve record from Database!!
+	string name, phone, email, address;
+	cout << endl << "Retrieved Record" << endl;
+	cout << "1. Name: " << name << endl; 
+	cout << "2. Phone: " << phone << endl;
+	cout << "3. Email: " << email << endl; 
+	cout << "4. Address: " << address << endl;
+}
 
 string create_contact(){
 	string query;
@@ -90,6 +105,41 @@ string create_contact(){
 	cin >> address;
 	
 	query = query_for_addressbook_insert("addressbook", name, phone, email, address);
+	return query;
+}
+/*
+string edit_contact(){
+	string query;
+	string name;
+
+	cout << "*Enter name to edit: ";
+	cin >> name;
+	cout << endl << "Retrieved Record";
+	
+}*/
+
+string delete_contact(){						// ERROR IN WHILE LOOP GOTTA FIX RAN OUT OF TIME
+	bool check = false;
+	string name, answer;
+	string query = "";
+	cout << "* Enter Name to delete: ";
+	cin >> name;
+	retrieve_record(name);
+	while (!check){
+		cout << "Are you sure you want to delete this record <y/n>: ";
+		cin >> answer;
+		if (answer != "y" || answer != "n"){
+			cout << "Incorrect Answer Please Try Again <y/n>: ";
+			cin >> answer;
+		}
+		else if ((answer == "y") || (answer == "n"))
+			check = true;
+	}
+	if (answer == "y")
+		query = query_for_addressbook_delete("addressbook",name);
+	if (answer == "n"){
+		cout << "No record Deleted Returning to Main Menu" << endl;
+	}
 	return query;
 }
 
@@ -121,16 +171,21 @@ void Address_Book(DBParser& dbparser){
 		cin >> name;
 		break;
 	case '3':
-		cout << "Edit CHECK" << endl;
+		cout << endl << "[Address Book Edit]" << endl << endl;
 		break;
 	case '4':
+		cout << endl << "[Address Book Create]" << endl << endl;
 		query = create_contact();
 		cout << endl << query << endl;
 		dbparser.execute_query(query);
 		main_menu(dbparser);
 		break;
 	case '5':
-		cout << "Delete CHECK" << endl;
+		cout << endl << "[Address Book Delete]" << endl << endl;
+		query = delete_contact();
+		cout << endl << query << endl;
+		dbparser.execute_query(query);
+		main_menu(dbparser);
 		break;
 	case '6':
 		main_menu(dbparser);
