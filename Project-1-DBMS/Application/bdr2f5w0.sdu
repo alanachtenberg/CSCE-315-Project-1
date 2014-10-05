@@ -59,55 +59,7 @@ void main_menu(DBParser& dbparser){
 // --------------------------------------------------------------
 //			Converting into correct Query Formats
 // --------------------------------------------------------------
-string query_for_addressbook_edit(char field, string table, string name, string phone, string email, string address){
-	string new_value, temp;
-	switch (field){
-	case '1':
-		cout << "*Enter new value: ";
-		cin >> new_value;
-		temp = "UPDATE ";
-
-		temp = temp + table + " " + "SET name = ";
-		temp = temp + R"delim(")delim" + new_value + R"delim(")delim" + " ";				// The delim lets us use quotes in our string;
-		temp = temp + "WHERE(name == ";
-		temp = temp + R"delim(")delim" + name + R"delim(")delim" + ");";
-		// temp = UPDATE addressbook SET name = "new_value" WHERE(name == "name");
-	break;
-	case '2':
-		cout << "*Enter new value: ";
-		cin >> new_value;
-		temp = "UPDATE ";
-
-		temp = temp + table + " " + "SET phone = ";
-		temp = temp + R"delim(")delim" + new_value + R"delim(")delim" + " ";				// The delim lets us use quotes in our string;
-		temp = temp + "WHERE(name == ";
-		temp = temp + R"delim(")delim" + name + R"delim(")delim" + ");";
-		// temp = UPDATE addressbook SET phone = "new_value" WHERE(name == "name");
-	break;
-	case '3':
-		cout << "*Enter new value: ";
-		cin >> new_value;
-		temp = "UPDATE ";
-
-		temp = temp + table + " " + "SET email = ";
-		temp = temp + R"delim(")delim" + new_value + R"delim(")delim" + " ";				// The delim lets us use quotes in our string;
-		temp = temp + "WHERE(name == ";
-		temp = temp + R"delim(")delim" + name + R"delim(")delim" + ");";
-		// temp = UPDATE addressbook SET email = "new_value" WHERE(name == "name");
-	break;
-	case '4':
-		cout << "*Enter new value: ";
-		cin >> new_value;
-		temp = "UPDATE ";
-		temp = temp + table + " " + "SET address = ";
-		temp = temp + R"delim(")delim" + new_value + R"delim(")delim" + " ";				// The delim lets us use quotes in our string;
-		temp = temp + "WHERE(name == ";
-		temp = temp + R"delim(")delim" + name + R"delim(")delim" + ");";
-		// temp = UPDATE addressbook SET address = "new_value" WHERE(name == "name");
-	break;
-	}
-	return temp;
-}
+string query_for_addressbook_edit(string edit, string table, string name, string phone, string email, string address);
 string query_for_addressbook_insert(string table, string name, string phone, string email, string address){
 	string temp = "INSERT INTO ";
 	temp = temp + table + " " + "VALUES FROM (";
@@ -139,40 +91,6 @@ void retrieve_record(string _name){					// not finished need to actually retriev
 	cout << "4. Address: " << address << endl;
 }
 
-
-
-string edit_contact(){
-	string query;
-	string name, phone, email, address;	
-	char input, temp;
-	
-	cout << "*Enter name to edit: ";
-	cin >> name;
-	retrieve_record(name);
-
-	cout << endl << "* Enter field to edit: ";
-	cin >> input;
-	temp = check_input(input, '1', '4');
-
-	switch (temp){
-	case '1':
-		query = query_for_addressbook_edit('1', "addressbook", name, phone, email, address);
-		break;
-	case '2':
-		query = query_for_addressbook_edit('2', "addressbook", name, phone, email, address);
-		break;
-	case '3':
-		query = query_for_addressbook_edit('3', "addressbook", name, phone, email, address);
-		break;
-	case '4':
-		query = query_for_addressbook_edit('4', "addressbook", name, phone, email, address);
-		break;
-	default:
-		cerr << "Switch Error in edit_contact!" << endl;
-	}
-	return query;
-}
-
 string create_contact(){								// CANT HANDLE SPACES RIGHT NOW!!!!!!!!!!!!
 	string query;
 	string first_name, last_name, full_name;
@@ -195,6 +113,39 @@ string create_contact(){								// CANT HANDLE SPACES RIGHT NOW!!!!!!!!!!!!
 	return query;
 }
 
+string edit_contact(){
+	string query;
+	string name;
+
+	cout << "*Enter name to edit: ";
+	cin >> name;
+	string name, phone, email, address;
+	char input, temp;
+	
+	retrieve_record(name);
+
+	cout << endl << "* Enter field to edit: ";
+	cin >> input;
+	temp = check_input(input, '1', '4');
+	switch (temp){
+	case '1':
+		query = query_for_addressbook_edit("name", "addressbook", name, phone, email, address);
+		break;
+	case '2':
+		query = query_for_addressbook_edit("phone", "addressbook", name, phone, email, address);
+		break;
+	case '3':
+		query = query_for_addressbook_edit("email", "addressbook", name, phone, email, address);
+		break;
+	case '4':
+		query = query_for_addressbook_edit("address", "addressbook", name, phone, email, address);
+		break;
+	default:
+		cerr << "Input Error in Calendar!" << endl;
+	}
+	
+}
+
 string delete_contact(){						
 	bool check = false;
 	string name, answer;
@@ -215,13 +166,13 @@ string delete_contact(){
 	if (answer == "y")
 		query = query_for_addressbook_delete("addressbook",name);
 	if (answer == "n"){
-		cout << "No record Deleted" << endl;
+		cout << "No record Deleted Returning to Main Menu" << endl;
 	}
 	return query;
 }
 
-void Address_Book(DBParser& dbparser){								// FINISHED CASE 1, 3, 4, 5, 6 Still need 2
-	char input, temp;
+void Address_Book(DBParser& dbparser){
+	char input, temp; 
 	string query;
 	string name, phone, email, address;
 	string debug;
@@ -240,32 +191,28 @@ void Address_Book(DBParser& dbparser){								// FINISHED CASE 1, 3, 4, 5, 6 Sti
 	switch(temp){
 		case '1':
 		cout << "Displaying Address Book list " << endl;
-		dbparser.execute_query("SHOW addressbook;");				// SHOULD BE CORRECT CANT FULLY TEST YET
+		dbparser.execute_query("SHOW addressbook;");
 		break;
 	case '2':
 		cout << "Searching in Address Book" << endl;
-		cout << "* Enter Desired Name to Search For: ";				// NOT IMPLEMENTED!!!
+		cout << "* Enter Desired Name to Search For: ";
 		cin >> name;
 		break;
 	case '3':
 		cout << endl << "[Address Book Edit]" << endl << endl;
-		query = edit_contact();
-		cout << endl << query << endl;
-		dbparser.execute_query(query);								// SHOULD BE CORRECT CANT FULLY TEST YET
-		main_menu(dbparser);
 		break;
 	case '4':
 		cout << endl << "[Address Book Create]" << endl << endl;
 		query = create_contact();
 		cout << endl << query << endl;
-		dbparser.execute_query(query);								// SHOULD BE CORRECT CANT FULLY TEST YET
+		dbparser.execute_query(query);
 		main_menu(dbparser);
 		break;
 	case '5':
 		cout << endl << "[Address Book Delete]" << endl << endl;
 		query = delete_contact();
 		cout << endl << query << endl;
-		dbparser.execute_query(query);								// SHOULD BE CORRECT CANT FULLY TEST YET
+		dbparser.execute_query(query);
 		main_menu(dbparser);
 		break;
 	case '6':

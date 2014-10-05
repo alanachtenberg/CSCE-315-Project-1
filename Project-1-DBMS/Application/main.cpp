@@ -63,6 +63,7 @@ void Close_db(){
 
 int main(){
 	Initialize_db();
+	cout << "CHECK";
 	main_menu(dbparser);
 	Close_db();
 	return 0;
