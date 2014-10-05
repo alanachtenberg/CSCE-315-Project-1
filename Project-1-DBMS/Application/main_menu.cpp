@@ -59,6 +59,7 @@ void main_menu(DBParser& dbparser){
 // --------------------------------------------------------------
 //			Converting into correct Query Formats
 // --------------------------------------------------------------
+
 string query_for_addressbook_edit(char field, string table, string name, string phone, string email, string address){
 	string new_value, temp;
 	switch (field){
