@@ -37,7 +37,7 @@ void Initialize_db(){
 		cout << "memopad.db opened\n";
 
 	if (dbparser.execute_query("OPEN todolist;").Get_name() == "DefaultTableName"){ // if open not successful, create todolist
-		dbparser.execute_query("CREATE TABLE todolist (todo VARCHAR(1000), todoid INTEGER, dateid INTEGER, PRIMARY KEY (todoid);");
+		dbparser.execute_query("CREATE TABLE todolist (todo VARCHAR(1000), todoid INTEGER, dateid INTEGER ) PRIMARY KEY (todoid);");
 		cout << "todolist.db created\n\n";
 	}
 	else
