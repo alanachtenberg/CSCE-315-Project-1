@@ -97,12 +97,6 @@
     <ClInclude Include="Database\Token_Stream.h" />
     <ClInclude Include="main_menu.h" />
   </ItemGroup>
-  <ItemGroup>
-    <None Include="addressbook.db" />
-    <None Include="calendar.db" />
-    <None Include="memopad.db" />
-    <None Include="todolist.db" />
-  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

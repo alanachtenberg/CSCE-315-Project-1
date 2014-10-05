@@ -884,7 +884,7 @@ string DBParser::literal() {
 	Token literal_token = ts->get();
 	if (literal_token.get_type() == _quotation) {
 		Token string_token = ts->get();
-		if (string_token.get_type() == _identifier) {
+		if (string_token.get_type() == _identifier) { //TODO FIX ERRORS WITH NUMBER LITERALS
 			Token end_quote_token = ts->get();
 			if (end_quote_token.get_type() == _quotation) {
 				return string_token.get_name();
