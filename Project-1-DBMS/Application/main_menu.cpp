@@ -237,7 +237,7 @@ void Address_Book(DBParser& dbparser){								// FINISHED CASE 1, 3, 4, 5, 6 Sti
 	cout << "* Enter command: ";
 	cin >> input;
 	temp = check_input(input, '1', '6');
-
+	Table temp_table;
 	switch(temp){
 		case '1':
 		cout << "Displaying Address Book list " << endl;
