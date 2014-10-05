@@ -882,15 +882,8 @@ vector<string> DBParser::attribute_list() {
 //literal ::= "identifier" | integer | float
 string DBParser::literal() {
 	Token literal_token = ts->get();
-	if (literal_token.get_type() == _quotation) {
-		Token string_token = ts->get();
-		if (string_token.get_type() == _identifier) {
-			Token end_quote_token = ts->get();
-			if (end_quote_token.get_type() == _quotation) {
-				return string_token.get_name();
-			}
-		}
-		return "";
+	if (literal_token.get_type() == _literal) {
+		return literal_token.get_name();
 	}
 	else if (literal_token.get_type() == _int_num) {
 		stringstream ss;

@@ -23,13 +23,10 @@ public:
 		delete input_stream;
 	}
 
-	std::vector<Token> tokenize();
 	Token get();
 	void unget(Token t) { 
 		unget_tokens.push(t);
 	}
-
-	void ignore(Token_Type);
 };
 
 #endif
