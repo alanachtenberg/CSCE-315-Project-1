@@ -3,8 +3,8 @@ INSERT INTO friends VALUES FROM ("Joey", "boy", 1);
 INSERT INTO friends VALUES FROM ("Ross", "boy", 2);
 INSERT INTO friends VALUES FROM ("Chandler", "boy", 3);
 INSERT INTO friends VALUES FROM ("Rachel", "girl", 4);
-INSERT INTO friends VALUES FROM ("Monica", "girl", 5);
-INSERT INTO friends VALUES FROM ("Phoebe", "girl", 6);
+INSERT INTO friends VALUES FROM ("Monica", "girl", -5);
+INSERT INTO friends VALUES FROM ("Phoebe", "girl", -6);
 CREATE TABLE more_friends (name VARCHAR(10), kind VARCHAR(5), years INTEGER) PRIMARY KEY (name);
 INSERT INTO more_friends VALUES FROM RELATION friends;
 
@@ -12,9 +12,9 @@ INSERT INTO more_friends VALUES FROM RELATION friends;
 CREATE TABLE himym (name VARCHAR(10), kind VARCHAR(5), years INTEGER) PRIMARY KEY (name);
 INSERT INTO himym VALUES FROM ("Ted", "boy", 1);
 INSERT INTO himym VALUES FROM ("Marshall", "boy", 1);
-INSERT INTO himym VALUES FROM ("Barney", "boy", 1);
-INSERT INTO himym VALUES FROM ("Robin", "girl", 1);
-INSERT INTO himym VALUES FROM ("Lily", "girl", 1);
+INSERT INTO himym VALUES FROM ("Barney", "boy", -1);
+INSERT INTO himym VALUES FROM ("Robin", "girl", -1);
+INSERT INTO himym VALUES FROM ("Lily", "girl", -1);
 CREATE TABLE more_himym (name VARCHAR(10), kind VARCHAR(5), years INTEGER) PRIMARY KEY (name);
 INSERT INTO more_himym VALUES FROM RELATION himym;
 

@@ -1,8 +1,8 @@
 selected
 name
 VARCHAR(10)
-ted;marshall;barney;robin;lily;joey;ENDLIST;
+Ted;Marshall;Joey;ENDLIST;
 years
 INTEGER
-1;1;1;1;1;1;ENDLIST;
+1;1;1;ENDLIST;
 ENDTABLE
