@@ -8,7 +8,7 @@ Table DBParser::execute_query(string query) {
 	Parser_Table pt = program();//run program
 	delete ts;//get rid of old query
 	if (pt.valid) {
-		return pt.table;
+		return pt.table; 
 	}
 	else {
 		return Table(); //default table if parser table is not valid
