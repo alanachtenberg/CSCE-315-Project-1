@@ -16,7 +16,7 @@ void Initialize_db(){
 	cout << "Initializing Database\n\n";
 
 	if (dbparser.execute_query("OPEN addressbook;").Get_name() == "DefaultTableName"){ // if open not successful, create addressbook
-		dbparser.execute_query("CREATE TABLE addressbook (name VARCHAR(30), phone VARCHAR(10), email VARCHAR(50), address VARCHAR(100)) PRIMARY KEY (name);");
+		dbparser.execute_query("CREATE TABLE addressbook (name VARCHAR(30),first VARCHAR(15), last VARCHAR(15), phone VARCHAR(10), email VARCHAR(50), address VARCHAR(100)) PRIMARY KEY (name);");
 		cout << "addressbook.db created\n";
 	}
 	else
