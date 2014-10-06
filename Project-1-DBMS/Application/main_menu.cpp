@@ -626,7 +626,8 @@ string query_for_todolist_edit(char field, string table, string todo, string tod
 	string new_value, temp;
 	switch (field){
 	case '1':
-		cout << "*Enter new value: ";
+		cout << "*Enter new To Do: ";
+		cin.ignore();
 		getline(cin, new_value);
 		temp = "UPDATE ";
 
