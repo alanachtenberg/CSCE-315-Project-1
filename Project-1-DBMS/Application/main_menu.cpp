@@ -578,8 +578,10 @@ void create_memopad(DBParser& dbparser){
 	getline(cin, year);
 
 	query = query_for_memopad_insert("memopad", memo, memoid, dateid, name);
+	cout << query << endl;
 	dbparser.execute_query(query);
 	query = query_for_calendar_insert("calendar", day, month, year, dateid, memoid, "No To Do Item");
+	cout << query << endl;
 	dbparser.execute_query(query);
 }
 
@@ -887,7 +889,7 @@ void Memo_Pad(DBParser& dbparser){
 	string todo, todoid, dateid;
 	string debug;
 
-	cout << endl << "[To Do List Menu]" << endl << endl;
+	cout << endl << "[Memo Pad Menu]" << endl << endl;
 	cout << "1. Display list" << endl; //completed -need to test
 	cout << "2. Search" << endl; //completed - need to test
 	cout << "3. Edit" << endl; //completed - need to test
@@ -920,9 +922,8 @@ void Memo_Pad(DBParser& dbparser){
 		break;
 	case '4':
 		cout << endl << "[To Do List Create]" << endl << endl;
-		//query = create_memopad();
-		cout << endl << query << endl;
-		dbparser.execute_query(query);
+		create_memopad(dbparser);
+		
 		Todo_List(dbparser);
 		break;
 	case '5':
@@ -977,9 +978,7 @@ void Todo_List(DBParser& dbparser){
 		break;
 	case '4':
 		cout << endl << "[To Do List Create]" << endl << endl;
-		create_todolist(dbparser);
-//		cout << endl << query << endl;
-//		dbparser.execute_query(query);								
+		create_todolist(dbparser);								
 		Todo_List(dbparser);
 		break;
 	case '5':
