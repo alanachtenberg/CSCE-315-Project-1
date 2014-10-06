@@ -257,12 +257,15 @@ string delete_contact(DBParser& dbparser){
 		else if ((answer == "y") || (answer == "n"))
 			check = true;
 	}
-	if (answer == "y")
-		query = query_for_addressbook_delete("addressbook",name);
-	if (answer == "n"){
-		cout << "No record Deleted" << endl;
+	if (answer == "y"){
+		query = query_for_addressbook_delete("addressbook", name);
+		return query;
 	}
-	return query;
+	if (answer == "n"){ //throwing bad things to parser
+		cout << "No record Deleted" << endl;
+		return "No record Deleted";
+	}
+	
 }
 
 // --------------------------------------------------------------
@@ -559,12 +562,15 @@ string delete_memopad(DBParser& dbparser){
 		else if ((answer == "y") || (answer == "n"))
 			check = true;
 	}
-	if (answer == "y")
+	if (answer == "y"){
 		query = query_for_memopad_delete("memopad", memoid);
+		return query;
+	}
 	if (answer == "n"){
 		cout << "No Memo to be Deleted" << endl;
+		return "No Memo to be Deleted";
 	}
-	return query;
+	
 }
 // --------------------------------------------------------------
 //			To Do List Functions
@@ -705,12 +711,15 @@ string delete_todolist(DBParser& dbparser){
 		else if ((answer == "y") || (answer == "n"))
 			check = true;
 	}
-	if (answer == "y")
+	if (answer == "y"){
 		query = query_for_todolist_delete("todolist", todoID);
+		return query;
+	}
 	if (answer == "n"){
 		cout << "No To Do Item Deleted" << endl;
+		return "No To Do Item Deleted";
 	}
-	return query;
+	
 }
 
 // --------------------------------------------------------------
@@ -766,8 +775,10 @@ void Address_Book(DBParser& dbparser){								//FINISHED
 	case '5':
 		cout << endl << "[Address Book Delete]" << endl << endl;
 		query = delete_contact(dbparser);
-		cout << endl << query << endl;
-		dbparser.execute_query(query);								// SHOULD BE CORRECT CANT FULLY TEST YET
+		if (query != "No record Deleted"){
+			cout << endl << query << endl;
+			dbparser.execute_query(query);// SHOULD BE CORRECT CANT FULLY TEST YET
+		}
 		Address_Book(dbparser);
 		break;
 	case '6':
@@ -864,8 +875,10 @@ void Memo_Pad(DBParser& dbparser){
 	case '5':
 		cout << endl << "[To Do List Delete]" << endl << endl;
 		query = delete_todolist(dbparser);
-		cout << endl << query << endl;
-		dbparser.execute_query(query);
+		if (query != "No Memo to be Deleted"){
+			cout << endl << query << endl;
+			dbparser.execute_query(query);
+		}
 		Todo_List(dbparser);
 		break;
 	case '6':
@@ -923,8 +936,10 @@ void Todo_List(DBParser& dbparser){
 	case '5':
 		cout << endl << "[To Do List Delete]" << endl << endl;
 		query = delete_todolist(dbparser);
-		cout << endl << query << endl;
-		dbparser.execute_query(query);								
+		if (query != "No To Do Item Deleted"){
+			cout << endl << query << endl;
+			dbparser.execute_query(query);
+		}
 		Todo_List(dbparser);
 		break;
 	case '6':
