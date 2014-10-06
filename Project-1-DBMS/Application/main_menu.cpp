@@ -139,15 +139,17 @@ string query_for_addressbook_edit(char field, string table, string name,string f
 	}
 	return temp;
 }
-string query_for_addressbook_insert(string table, string name, string phone, string email, string address){
+string query_for_addressbook_insert(string table, string name, string first_name, string last_name, string phone, string email, string address){
 	string temp = "INSERT INTO ";
 	temp = temp + table + " " + "VALUES FROM (";
 	temp = temp + R"delim(")delim" + name + R"delim(")delim" + ", ";				// The delim lets us use quotes in our string;
+	temp = temp + R"delim(")delim" + first_name + R"delim(")delim" + ", ";
+	temp = temp + R"delim(")delim" + last_name + R"delim(")delim" + ", ";
 	temp = temp + R"delim(")delim" + phone + R"delim(")delim" + ", ";
 	temp = temp + R"delim(")delim" + email + R"delim(")delim" + ", ";
 	temp = temp + R"delim(")delim" + address + R"delim(")delim" + ");";
 
-	// OUTPUT = INSERT INTO table VALUES FROM("name", "phone", "email", "address");
+	// OUTPUT = INSERT INTO table VALUES FROM("name", "first_name", "last_name", "phone", "email", "address");
 	return temp;
 }
 string query_for_addressbook_delete(string table, string name){
@@ -175,8 +177,6 @@ void retrieve_contact(DBParser& dbparser, string _name) { // not finished need t
 		cout << "4. Address: " << row[5] << endl;
 	}
 }
-
-
 
 string edit_contact(DBParser& dbparser){
 	string query;
@@ -241,7 +241,7 @@ string create_contact(){								// CANT HANDLE SPACES RIGHT NOW!!!!!!!!!!!!
 	cout << "* Enter Address: ";							// CANT HANDLE SPACES RIGHT NOW!!!!!!!!!!!
 	cin >> address;
 	
-	query = query_for_addressbook_insert("addressbook", full_name, phone, email, address);
+	query = query_for_addressbook_insert("addressbook", full_name, first_name, last_name, phone, email, address);
 	return query;
 }
 
@@ -416,7 +416,7 @@ string edit_calendar_date(DBParser& dbparser){
 void Address_Book(DBParser& dbparser){								//FINISHED
 	char input, temp;
 	string query;
-	string name, phone, email, address;
+	string first, last, name, phone, email, address;
 	string debug;
 
 	cout << endl << "[Address Book Menu]" << endl << endl;
@@ -432,14 +432,17 @@ void Address_Book(DBParser& dbparser){								//FINISHED
 	Table temp_table;
 	switch(temp){
 		case '1':
-		cout << "Displaying Address Book list " << endl;
+		cout << endl << "[Address Book Display]" << endl << endl;
 		dbparser.execute_query("SHOW addressbook;");				// SHOULD BE CORRECT CANT FULLY TEST YET
 		Address_Book(dbparser);
 		break;
 	case '2':
-		cout << "Searching in Address Book" << endl;
-		cout << "* Enter Desired Name to Search For: ";				// Should be correct -robby 
-		cin >> name;
+		cout << endl << "[Address Book Search]" << endl << endl;
+		cout << "* Enter First Name: ";				// Should be correct -robby 
+		cin >> first;
+		cout << "* Enter Last Name: ";
+		cin >> last;
+		name = first + last;
 		retrieve_contact(dbparser, name);
 		Address_Book(dbparser);
 		break;
