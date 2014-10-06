@@ -524,6 +524,40 @@ string create_todolist(){ //if we create a todo, how do we also push it's date t
 	query = query_for_todolist_insert("todolist", todo, todoid, dateid);
 	return query;
 }
+
+string query_for_todolist_delete(string table, string todoid){
+	string temp = "DELETE FROM ";
+	temp = temp + table + " " + "WHERE((todoid == ";
+	temp = temp + R"delim(")delim" + todoid + R"delim(")delim" + "));";				// The delim lets us use quotes in our string;
+	cout << temp << endl;
+	return temp;
+}
+
+string delete_todolist(DBParser& dbparser){
+	bool check = false;
+	string todoID, answer;
+	string query = "";
+	cout << "* Enter To Do List ID to delete: ";
+	cin >> todoID;
+	retrieve_contact(dbparser, todoID);
+	while (!check){
+		cout << "Are you sure you want to delete this record <y/n>: ";
+		cin >> answer;
+		if ((answer != "y") && (answer != "n")){
+			cout << "Incorrect Answer Please Try Again <y/n>: ";
+			cin >> answer;
+		}
+		else if ((answer == "y") || (answer == "n"))
+			check = true;
+	}
+	if (answer == "y")
+		query = query_for_todolist_delete("todolist", todoID);
+	if (answer == "n"){
+		cout << "No To Do Item Deleted" << endl;
+	}
+	return query;
+}
+
 // --------------------------------------------------------------
 //			Main Menu Functions
 // --------------------------------------------------------------
@@ -711,7 +745,7 @@ void Todo_List(DBParser& dbparser){
 		break;
 	case '5':
 		cout << endl << "[To Do List Delete]" << endl << endl;
-		query = delete_contact(dbparser);
+		query = delete_todolist(dbparser);
 		cout << endl << query << endl;
 		dbparser.execute_query(query);								
 		Todo_List(dbparser);
