@@ -182,7 +182,7 @@ Token Token_stream::get() {
 				else if (s == "WRITE")		curr_token = Token(_write);
 				else if (s == "OPEN")		curr_token = Token(_open);
 				else if (s == "CLOSE")		curr_token = Token(_close);
-				else if (s == "DELTE")		curr_token = Token(_delete);
+				else if (s == "DELETE")		curr_token = Token(_delete);
 				else if (s == "UPDATE")		curr_token = Token(_update);
 				else if (s == "SET")		curr_token = Token(_set);
 				else if (s == "WHERE")		curr_token = Token(_where);

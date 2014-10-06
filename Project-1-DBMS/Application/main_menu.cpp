@@ -246,6 +246,7 @@ string delete_contact(DBParser& dbparser){
 	char answer;
 	string query = "";
 	cout << "* Enter Name to delete: ";
+	cin.ignore(); //to ignore \n char left in buffer by >> operator
 	getline(cin, name);
 	retrieve_contact(dbparser, name);
 	while (true){
@@ -788,10 +789,10 @@ void Address_Book(DBParser& dbparser){								//FINISHED
 	case '5':
 		cout << endl << "[Address Book Delete]" << endl << endl;
 		query = delete_contact(dbparser);
-		if (query != "No record Deleted"){
-			cout << endl << query << endl;
+//		if (query != "No record Deleted"){
+//			cout << endl << query << endl;
 			dbparser.execute_query(query);// SHOULD BE CORRECT CANT FULLY TEST YET
-		}
+//		}
 		Address_Book(dbparser);
 		break;
 	case '6':

@@ -11,6 +11,7 @@ private:
 	std::string Name;
 	std::vector<Attribute> Attributes;
 	std::vector<std::string> Keys;
+	long row_id;
 public:
 	//Constructors
 	Table();
