@@ -351,6 +351,23 @@ string query_for_calendar_edit(char field, string table, string date, string day
 	return temp;
 
 }
+
+string query_for_calendar_insert(string table, string, string day, string month, string year, string dateid, string memoid, string todoid){
+	string temp = "INSERT INTO ";
+	string date = day + "/" + month + "/" + year;
+	temp += table + " " + "VALUES FROM (";
+	temp += "\"" + date + "\"" + ", ";
+	temp += "\"" + day + "\"" + ", ";
+	temp += "\"" + month + "\"" + ", ";
+	temp += "\"" + year + "\"" + ", ";
+	temp += "\"" + dateid + "\"" + ", ";
+	temp += "\"" + memoid + "\"" + ", ";
+	temp += "\"" + todoid + "\"" + ");";
+
+	// OUTPUT = INSERT INTO table VALUES FROM("date", "day", "month", "year", "dateid", "memoid", "todoid");
+	return temp;
+}
+
 void retrieve_calendar_date(DBParser& dbparser, string date){
 	Table result = dbparser.execute_query("result <- select (date == \"" + date + "\") calendar"); // result <- select (name == "01/01/2014") calendar"
 	
