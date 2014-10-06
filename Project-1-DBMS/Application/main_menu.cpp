@@ -668,7 +668,7 @@ string query_for_todolist_insert(string table, string todo, string todoid, strin
 	return temp;
 }
 
-string create_todolist(){ //if we create a todo, how do we also push it's date to the calendar?
+void create_todolist(DBParser& dbparser){ //if we create a todo, how do we also push it's date to the calendar?
 	string query;
 	string todo, todoid, dateid;
 	cout << endl << "Creating New To Do Item" << endl;
@@ -681,7 +681,8 @@ string create_todolist(){ //if we create a todo, how do we also push it's date t
 	
 
 	query = query_for_todolist_insert("todolist", todo, todoid, dateid);
-	return query;
+	dbparser.execute_query(query);
+//	query = query_for_calendar_insert("call")
 }
 
 string query_for_todolist_delete(string table, string todoid){
@@ -923,9 +924,9 @@ void Todo_List(DBParser& dbparser){
 		break;
 	case '4':
 		cout << endl << "[To Do List Create]" << endl << endl;
-		query = create_todolist();
-		cout << endl << query << endl;
-		dbparser.execute_query(query);								
+		create_todolist(dbparser);
+//		cout << endl << query << endl;
+//		dbparser.execute_query(query);								
 		Todo_List(dbparser);
 		break;
 	case '5':
