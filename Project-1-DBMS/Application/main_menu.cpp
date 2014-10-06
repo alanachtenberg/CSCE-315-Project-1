@@ -565,6 +565,7 @@ void create_memopad(DBParser& dbparser){
 	cout << endl << "Creating New To Do Item" << endl;
 	cout << "* Enter Memo: ";
 	getline(cin, memo);
+	getline(cin, memo);
 	cout << "* Enter Memo ID: ";
 	getline(cin, memoid);
 	cout << "* Enter Date ID ";
@@ -725,6 +726,7 @@ void create_todolist(DBParser& dbparser){ //if we create a todo, how do we also 
 	string day, month, year;
 	cout << endl << "Creating New To Do Item" << endl;
 	cout << "* Enter To Do: ";
+	getline(cin, todo);
 	getline(cin, todo);
 	cout << "* Enter To Do ID: ";
 	getline(cin, todoid);
