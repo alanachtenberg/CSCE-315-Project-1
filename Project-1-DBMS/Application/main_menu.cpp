@@ -242,12 +242,15 @@ string create_contact(){								// CANT HANDLE SPACES RIGHT NOW!!!!!!!!!!!!
 
 string delete_contact(DBParser& dbparser){
 	bool check = false;
-	string name;
+	string first_name, last_name, name;
 	char answer;
 	string query = "";
-	cout << "* Enter Name to delete: ";
+	cout << "* Enter First Name to delete: ";
 	cin.ignore(); //to ignore \n char left in buffer by >> operator
-	getline(cin, name);
+	getline(cin, first_name);
+	cout << "* Enter Last Name to delete: ";
+	getline(cin, last_name);
+	name = first_name + last_name;
 	retrieve_contact(dbparser, name);
 	while (true){
 		cout << "Are you sure you want to delete this record <y/n>: ";
@@ -581,7 +584,7 @@ void create_memopad(DBParser& dbparser){
 	query = query_for_memopad_insert("memopad", memo, memoid, dateid, name);
 	cout << query << endl;
 	dbparser.execute_query(query);
-	query = query_for_calendar_insert("calendar", day, month, year, dateid, memoid, "No To Do Item");
+	query = query_for_calendar_insert("calendar", day, month, year, dateid, memoid, 0);
 	cout << query << endl;
 	dbparser.execute_query(query);
 }
@@ -740,8 +743,10 @@ void create_todolist(DBParser& dbparser){ //if we create a todo, how do we also 
 	getline(cin, year);
 
 	query = query_for_todolist_insert("todolist", todo, todoid, dateid);
+	cout << query << endl;
 	dbparser.execute_query(query);
-	query = query_for_calendar_insert("calendar", day, month, year, dateid, "No Memo", todoid);
+	query = query_for_calendar_insert("calendar", day, month, year, dateid, "0", todoid);
+	cout << query << endl;
 	dbparser.execute_query(query);
 }
 

@@ -23,7 +23,7 @@ void Initialize_db(){
 		cout << "addressbook.db opened\n";
 
 	if (dbparser.execute_query("OPEN calendar;").Get_name() == "DefaultTableName"){ // if open not successful, create calendar
-		dbparser.execute_query("CREATE TABLE calendar (date VARCHAR(8), month INTEGER , day INTEGER, year INTEGER, dateid INTEGER, memoid INTEGER, todoid INTEGER) PRIMARY KEY (dateid);");
+		dbparser.execute_query("CREATE TABLE calendar (date VARCHAR(15), month INTEGER , day INTEGER, year INTEGER, dateid INTEGER, memoid INTEGER, todoid INTEGER) PRIMARY KEY (dateid);");
 		cout << "calendar.db created\n";
 	}
 	else
