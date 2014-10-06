@@ -131,15 +131,17 @@ string query_for_addressbook_delete(string table, string name){
 //			Address Book Functions
 // --------------------------------------------------------------
 
-void retrieve_record(DBParser& dbparser, string _name) { // not finished need to actually retrieve record from Database!!
+void retrieve_contact(DBParser& dbparser, string _name) { // not finished need to actually retrieve record from Database!!
 	Table result = dbparser.execute_query("result <- select (name == \"" + _name + "\") addressbook"); // result <- select (name == "John doe") addressbook"
 	string name, phone, email, address;
+	cout << endl<< "Contacts matched: [" << result.Get_max_height() << "]" << endl;
 	for (int i = 0; i < result.Get_max_height(); i++) {
 		vector <string> row = result.Get_row(i);
-		cout << "1. Name: " << row[0] << endl;
-		cout << "2. Phone: " << row[1] << endl;
-		cout << "3. Email: " << row[2] << endl;
-		cout << "4. Address: " << row[3] << endl;
+		cout << endl<< "Contact[" << i+1 << "]:" << endl;
+		cout << "1. Name: " << row[1]<< " " <<row[2] << endl;
+		cout << "2. Phone: " << row[3] << endl;
+		cout << "3. Email: " << row[4] << endl;
+		cout << "4. Address: " << row[5] << endl;
 	}
 }
 
@@ -152,7 +154,7 @@ string edit_contact(DBParser& dbparser){
 	
 	cout << "*Enter name to edit: ";
 	cin >> name;
-	retrieve_record(dbparser, name);
+	retrieve_contact(dbparser, name);
 
 	cout << endl << "* Enter field to edit: ";
 	cin >> input;
@@ -205,7 +207,7 @@ string delete_contact(DBParser& dbparser){
 	string query = "";
 	cout << "* Enter Name to delete: ";
 	cin >> name;
-	retrieve_record(dbparser, name);
+	retrieve_contact(dbparser, name);
 	while (!check){
 		cout << "Are you sure you want to delete this record <y/n>: ";
 		cin >> answer;
@@ -245,12 +247,14 @@ void Address_Book(DBParser& dbparser){								// FINISHED CASE 1, 3, 4, 5, 6 Sti
 		case '1':
 		cout << "Displaying Address Book list " << endl;
 		dbparser.execute_query("SHOW addressbook;");				// SHOULD BE CORRECT CANT FULLY TEST YET
+		main_menu(dbparser);
 		break;
 	case '2':
 		cout << "Searching in Address Book" << endl;
 		cout << "* Enter Desired Name to Search For: ";				// Should be correct -robby 
 		cin >> name;
-		retrieve_record(dbparser, name);
+		retrieve_contact(dbparser, name);
+		main_menu(dbparser);
 		break;
 	case '3':
 		cout << endl << "[Address Book Edit]" << endl << endl;
@@ -283,6 +287,7 @@ void Address_Book(DBParser& dbparser){								// FINISHED CASE 1, 3, 4, 5, 6 Sti
 
 void Calendar(DBParser& dbparser){
 	char input, temp;
+	string name, query;
 	cout << endl << "[Calendar Menu]" << endl << endl;
 	cout << "1. Display list" << endl;
 	cout << "2. Search" << endl;
@@ -291,16 +296,25 @@ void Calendar(DBParser& dbparser){
 	cout << "* Enter command: ";
 	cin >> input;
 	temp = check_input(input, '1', '4');
-
 	switch (temp){
 	case '1':
-		cout << "Display list CHECK" << endl;
+		cout << "Displaying Calendar list " << endl;
+		dbparser.execute_query("SHOW Calendar;");
+		main_menu(dbparser);
 		break;
 	case '2':
-		cout << "Search CHECK" << endl;
+		cout << "Searching in Calendar" << endl;
+		cout << "* Enter Desired Name to Search For: ";				
+		cin >> name;
+		retrieve_contact(dbparser, name);
+		main_menu(dbparser);
 		break;
 	case '3':
-		cout << "Edit CHECK" << endl;
+		cout << endl << "[Calendar Edit]" << endl << endl;
+		query = edit_contact(dbparser);
+		cout << endl << query << endl;
+		dbparser.execute_query(query);								
+		main_menu(dbparser);
 		break;
 	case '4':
 		main_menu(dbparser);
