@@ -32,10 +32,11 @@ void main_menu(DBParser& dbparser){
 	cout << "1. Address Book" << endl;
 	cout << "2. Calendar" << endl;
 	cout << "3. Memo Pad" << endl;
-	cout << "4. Todo List" << endl << endl;
+	cout << "4. Todo List" << endl;
+	cout << "5. Exit" << endl;
 	cout << "* Enter app to use: ";
 	cin >> input;
-	temp = check_input(input, '1', '4');
+	temp = check_input(input, '1', '5');
 
 	switch (temp){
 	case '1':
@@ -50,6 +51,8 @@ void main_menu(DBParser& dbparser){
 	case '4':
 		Todo_List(dbparser);
 		break;
+	case '5':
+		break;
 	default:
 		cerr << "Input Error!" << endl;
 	}
@@ -60,51 +63,78 @@ void main_menu(DBParser& dbparser){
 //			Converting into correct Query Formats
 // --------------------------------------------------------------
 
-string query_for_addressbook_edit(char field, string table, string name, string phone, string email, string address){
-	string new_value, temp;
+string query_for_addressbook_edit(char field, string table, string name,string first_name, string last_name, string phone, string email, string address){
+	string new_value, first, last, full_name, temp;
 	switch (field){
 	case '1':
-		cout << "*Enter new value: ";
-		cin >> new_value;
-		temp = "UPDATE ";
+		cout << "* Enter new value for First name: ";
+		cin >> first;
+		cout << "* Enter new value for Last name: ";
+		cin >> last;
+		full_name = first + last;
 
+		temp = "UPDATE ";
 		temp = temp + table + " " + "SET name = ";
-		temp = temp + R"delim(")delim" + new_value + R"delim(")delim" + " ";				// The delim lets us use quotes in our string;
+		temp = temp + R"delim(")delim" + full_name + R"delim(")delim" + ", ";				// The delim lets us use quotes in our string;
+		temp = temp + "first = ";
+		temp = temp + R"delim(")delim" + first + R"delim(")delim" + ", ";
+		temp = temp + "last = ";
+		temp = temp + R"delim(")delim" + last + R"delim(")delim" + ", ";
 		temp = temp + "WHERE(name == ";
 		temp = temp + R"delim(")delim" + name + R"delim(")delim" + ");";
-		// temp = UPDATE addressbook SET name = "new_value" WHERE(name == "name");
+		// temp = UPDATE addressbook SET name = "full_name", first = "first", last = "last" WHERE(name == "name");
 	break;
 	case '2':
-		cout << "*Enter new value: ";
+		cout << "*Enter new value for phone: ";
 		cin >> new_value;
 		temp = "UPDATE ";
-
-		temp = temp + table + " " + "SET phone = ";
-		temp = temp + R"delim(")delim" + new_value + R"delim(")delim" + " ";				// The delim lets us use quotes in our string;
+		temp = temp + table + " " + "SET name = ";
+		temp = temp + R"delim(")delim" + name + R"delim(")delim" + ", ";				// The delim lets us use quotes in our string;
+		temp = temp + "first = ";
+		temp = temp + R"delim(")delim" + first_name + R"delim(")delim" + ", ";
+		temp = temp + "last = ";
+		temp = temp + R"delim(")delim" + last_name + R"delim(")delim" + ", ";
+		temp = temp + "phone = ";
+		temp = temp + R"delim(")delim" + new_value + R"delim(")delim" + ", ";
 		temp = temp + "WHERE(name == ";
 		temp = temp + R"delim(")delim" + name + R"delim(")delim" + ");";
-		// temp = UPDATE addressbook SET phone = "new_value" WHERE(name == "name");
+
 	break;
 	case '3':
-		cout << "*Enter new value: ";
+		cout << "*Enter new value for email: ";
 		cin >> new_value;
 		temp = "UPDATE ";
-
-		temp = temp + table + " " + "SET email = ";
-		temp = temp + R"delim(")delim" + new_value + R"delim(")delim" + " ";				// The delim lets us use quotes in our string;
+		temp = temp + table + " " + "SET name = ";
+		temp = temp + R"delim(")delim" + name + R"delim(")delim" + ", ";				// The delim lets us use quotes in our string;
+		temp = temp + "first = ";
+		temp = temp + R"delim(")delim" + first_name + R"delim(")delim" + ", ";
+		temp = temp + "last = ";
+		temp = temp + R"delim(")delim" + last_name + R"delim(")delim" + ", ";
+		temp = temp + "phone = ";
+		temp = temp + R"delim(")delim" + phone + R"delim(")delim" + ", ";
+		temp = temp + "email = ";
+		temp = temp + R"delim(")delim" + new_value + R"delim(")delim" + ", ";
 		temp = temp + "WHERE(name == ";
 		temp = temp + R"delim(")delim" + name + R"delim(")delim" + ");";
-		// temp = UPDATE addressbook SET email = "new_value" WHERE(name == "name");
 	break;
 	case '4':
-		cout << "*Enter new value: ";
+		cout << "*Enter new value for address: ";
 		cin >> new_value;
 		temp = "UPDATE ";
-		temp = temp + table + " " + "SET address = ";
-		temp = temp + R"delim(")delim" + new_value + R"delim(")delim" + " ";				// The delim lets us use quotes in our string;
+		temp = temp + table + " " + "SET name = ";
+		temp = temp + R"delim(")delim" + name + R"delim(")delim" + ", ";				// The delim lets us use quotes in our string;
+		temp = temp + "first = ";
+		temp = temp + R"delim(")delim" + first_name + R"delim(")delim" + ", ";
+		temp = temp + "last = ";
+		temp = temp + R"delim(")delim" + last_name + R"delim(")delim" + ", ";
+		temp = temp + "phone = ";
+		temp = temp + R"delim(")delim" + phone + R"delim(")delim" + ", ";
+		temp = temp + "email = ";
+		temp = temp + R"delim(")delim" + email + R"delim(")delim" + ", ";
+		temp = temp + "address = ";
+		temp = temp + R"delim(")delim" + new_value + R"delim(")delim" + ", ";
 		temp = temp + "WHERE(name == ";
 		temp = temp + R"delim(")delim" + name + R"delim(")delim" + ");";
-		// temp = UPDATE addressbook SET address = "new_value" WHERE(name == "name");
 	break;
 	}
 	return temp;
@@ -150,29 +180,42 @@ void retrieve_contact(DBParser& dbparser, string _name) { // not finished need t
 
 string edit_contact(DBParser& dbparser){
 	string query;
-	string name, phone, email, address;	
+	string full_name, first_name, last_name, phone, email, address;	
 	char input, temp;
 	
-	cout << "*Enter name to edit: ";
-	cin >> name;
-	retrieve_contact(dbparser, name);
+	cout << "* Enter first name to edit: ";
+	cin >> first_name;
+	cout << "* Enter last name to edit: ";
+	cin >> last_name;
+	full_name = first_name + last_name;
+	retrieve_contact(dbparser, full_name);
 
+	Table result = dbparser.execute_query("result <- select (name == \"" + full_name + "\") addressbook"); // result <- select (name == "John doe") addressbook"
+	for (int i = 0; i < result.Get_max_height(); i++) {
+		vector <string> row = result.Get_row(i);
+		full_name = row[0];
+		first_name = row[1];
+		last_name = row[2];
+		phone = row[3];
+		email = row[4];
+		address = row[5];
+	}
 	cout << endl << "* Enter field to edit: ";
 	cin >> input;
-	temp = check_input(input, '1', '4');
+	temp = check_input(input, '1', '5');
 
 	switch (temp){
 	case '1':
-		query = query_for_addressbook_edit('1', "addressbook", name, phone, email, address);
+		query = query_for_addressbook_edit('1', "addressbook", full_name, first_name, last_name, phone, email, address);
 		break;
 	case '2':
-		query = query_for_addressbook_edit('2', "addressbook", name, phone, email, address);
+		query = query_for_addressbook_edit('2', "addressbook", full_name, first_name, last_name, phone, email, address);
 		break;
 	case '3':
-		query = query_for_addressbook_edit('3', "addressbook", name, phone, email, address);
+		query = query_for_addressbook_edit('3', "addressbook", full_name, first_name, last_name, phone, email, address);
 		break;
 	case '4':
-		query = query_for_addressbook_edit('4', "addressbook", name, phone, email, address);
+		query = query_for_addressbook_edit('4', "addressbook", full_name, first_name, last_name, phone, email, address);
 		break;
 	default:
 		cerr << "Switch Error in edit_contact!" << endl;
