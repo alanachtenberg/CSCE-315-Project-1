@@ -664,38 +664,60 @@ void Calendar(DBParser& dbparser){
 
 void Memo_Pad(DBParser& dbparser){
 	char input, temp;
-	cout << endl << "[Memo Pad Menu]" << endl << endl;
-	cout << "1. Display list" << endl;
-	cout << "2. Search" << endl;
-	cout << "3. Edit" << endl;
-	cout << "4. Create" << endl;
+	string query;
+	string todo, todoid, dateid;
+	string debug;
+
+	cout << endl << "[To Do List Menu]" << endl << endl;
+	cout << "1. Display list" << endl; //completed -need to test
+	cout << "2. Search" << endl; //completed - need to test
+	cout << "3. Edit" << endl; //completed - need to test
+	cout << "4. Create" << endl; //not finished, how do we push a new todo to the calendar?
 	cout << "5. Delete" << endl;
 	cout << "6. Return to main menu" << endl << endl;
 	cout << "* Enter command: ";
 	cin >> input;
 	temp = check_input(input, '1', '6');
-
+	Table temp_table;
 	switch (temp){
 	case '1':
-		cout << "Display list CHECK" << endl;
+		cout << "Displaying Memo Pad " << endl;
+		dbparser.execute_query("SHOW memopad;");
+		Todo_List(dbparser);
 		break;
 	case '2':
-		cout << "Search CHECK" << endl;
+		cout << "Searching in To Do List" << endl;
+		cout << "* Enter Desired To Do List ID: ";
+		cin >> todo;
+		retrieve_todolist(dbparser, todoid);
+		Todo_List(dbparser);
 		break;
 	case '3':
-		cout << "Edit CHECK" << endl;
+		cout << endl << "[To Do List Edit]" << endl << endl;
+		query = edit_todolist(dbparser);
+		cout << endl << query << endl;
+		dbparser.execute_query(query);
+		Todo_List(dbparser);
 		break;
 	case '4':
-		cout << "Create CHECK" << endl;
+		cout << endl << "[To Do List Create]" << endl << endl;
+		query = create_contact();
+		cout << endl << query << endl;
+		dbparser.execute_query(query);
+		Todo_List(dbparser);
 		break;
 	case '5':
-		cout << "Delete CHECK" << endl;
+		cout << endl << "[To Do List Delete]" << endl << endl;
+		query = delete_todolist(dbparser);
+		cout << endl << query << endl;
+		dbparser.execute_query(query);
+		Todo_List(dbparser);
 		break;
 	case '6':
 		main_menu(dbparser);
 		break;
 	default:
-		cerr << "Input Error in Memo!" << endl;
+		cerr << "Input Error in To Do List!" << endl;
 	}
 }
 
