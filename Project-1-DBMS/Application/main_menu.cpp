@@ -891,7 +891,7 @@ void Memo_Pad(DBParser& dbparser){
 	cout << "1. Display list" << endl; //completed -need to test
 	cout << "2. Search" << endl; //completed - need to test
 	cout << "3. Edit" << endl; //completed - need to test
-	cout << "4. Create" << endl; //not finished, how do we push a new todo to the calendar?
+	cout << "4. Create" << endl; //
 	cout << "5. Delete" << endl;
 	cout << "6. Return to main menu" << endl << endl;
 	cout << "* Enter command: ";
