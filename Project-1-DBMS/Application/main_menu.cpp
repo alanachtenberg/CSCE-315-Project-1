@@ -226,6 +226,27 @@ string delete_contact(DBParser& dbparser){
 	return query;
 }
 
+// --------------------------------------------------------------
+//			Calendar Functions
+// --------------------------------------------------------------
+void retrieve_calendar_date(DBParser& dbparser, string date){
+	Table result = dbparser.execute_query("result <- select (name == \"" + date + "\") addressbook"); // result <- select (name == "John doe") addressbook"
+	string name, phone, email, address;
+	cout << endl << "Contacts matched: [" << result.Get_max_height() << "]" << endl;
+	for (int i = 0; i < result.Get_max_height(); i++) {
+		vector <string> row = result.Get_row(i);
+		cout << endl << "Contact[" << i + 1 << "]:" << endl;
+		cout << "1. Name: " << row[1] << " " << row[2] << endl;
+		cout << "2. Phone: " << row[3] << endl;
+		cout << "3. Email: " << row[4] << endl;
+		cout << "4. Address: " << row[5] << endl;
+	}
+}
+
+
+// --------------------------------------------------------------
+//			Main Menu Functions
+// --------------------------------------------------------------
 void Address_Book(DBParser& dbparser){								// FINISHED CASE 1, 3, 4, 5, 6 Still need 2
 	char input, temp;
 	string query;
@@ -287,7 +308,7 @@ void Address_Book(DBParser& dbparser){								// FINISHED CASE 1, 3, 4, 5, 6 Sti
 
 void Calendar(DBParser& dbparser){
 	char input, temp;
-	string name, query;
+	string name, query, date;
 	cout << endl << "[Calendar Menu]" << endl << endl;
 	cout << "1. Display list" << endl;
 	cout << "2. Search" << endl;
@@ -304,8 +325,8 @@ void Calendar(DBParser& dbparser){
 		break;
 	case '2':
 		cout << "Searching in Calendar" << endl;
-		cout << "* Enter Desired Name to Search For: ";				
-		cin >> name;
+		cout << "* Enter Desired Date to Search For: ";				
+		cin >> date;
 		
 		main_menu(dbparser);
 		break;
