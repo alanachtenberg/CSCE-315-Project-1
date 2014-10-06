@@ -743,6 +743,7 @@ void Todo_List(DBParser& dbparser){
 		cout << "Displaying To Do List " << endl;
 		dbparser.execute_query("SHOW todolist;");				
 		Todo_List(dbparser);
+		main_menu(dbparser);
 		break;
 	case '2':
 		cout << "Searching in To Do List" << endl;
@@ -750,6 +751,7 @@ void Todo_List(DBParser& dbparser){
 		cin >> todo;
 		retrieve_todolist(dbparser, todoid);
 		Todo_List(dbparser);
+		main_menu(dbparser);
 		break;
 	case '3':
 		cout << endl << "[To Do List Edit]" << endl << endl;
@@ -757,6 +759,7 @@ void Todo_List(DBParser& dbparser){
 		cout << endl << query << endl;
 		dbparser.execute_query(query);								
 		Todo_List(dbparser);
+		main_menu(dbparser);
 		break;
 	case '4':
 		cout << endl << "[To Do List Create]" << endl << endl;
@@ -764,6 +767,7 @@ void Todo_List(DBParser& dbparser){
 		cout << endl << query << endl;
 		dbparser.execute_query(query);								
 		Todo_List(dbparser);
+		main_menu(dbparser);
 		break;
 	case '5':
 		cout << endl << "[To Do List Delete]" << endl << endl;
@@ -771,6 +775,7 @@ void Todo_List(DBParser& dbparser){
 		cout << endl << query << endl;
 		dbparser.execute_query(query);								
 		Todo_List(dbparser);
+		main_menu(dbparser);
 		break;
 	case '6':
 		main_menu(dbparser);
