@@ -267,7 +267,7 @@ void Address_Book(DBParser& dbparser){								// FINISHED CASE 1, 3, 4, 5, 6 Sti
 		cout << endl << "[Address Book Create]" << endl << endl;
 		query = create_contact();
 		cout << endl << query << endl;
-		dbparser.execute_query(query);								// SHOULD BE CORRECT CANT FULLY TEST YET
+		dbparser.execute_query(query);								//not adding any contact to the addressbook.db 
 		main_menu(dbparser);
 		break;
 	case '5':
@@ -306,7 +306,7 @@ void Calendar(DBParser& dbparser){
 		cout << "Searching in Calendar" << endl;
 		cout << "* Enter Desired Name to Search For: ";				
 		cin >> name;
-		retrieve_contact(dbparser, name);
+		
 		main_menu(dbparser);
 		break;
 	case '3':
