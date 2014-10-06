@@ -245,7 +245,7 @@ Table Database::Update(Table &table_name, Comparison_tree *comparison, vector<pa
 		int table_row = row_indicies[i];
 
 		for (unsigned int j = 0; j < new_values.size(); j++) {
-			table_name[j].Set_value(table_row, new_values[j].second);
+			table_name[new_values[j].first].Set_value(table_row, new_values[j].second);
 		}		
 
 	}
