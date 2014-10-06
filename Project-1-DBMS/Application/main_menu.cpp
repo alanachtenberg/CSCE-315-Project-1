@@ -128,86 +128,7 @@ string query_for_addressbook_delete(string table, string name){
 	return temp;
 }
 
-string query_for_calendar_edit(char field, string table, string date, string day, string month, string year, string dateid, string memoid, string todoid ){
-	string new_value, temp;
-	switch (field){
-	case '1':
-		cout << "*Enter new value: ";
-		cin >> new_value;
-		temp = "UPDATE ";
 
-		temp = temp + table + " " + "SET date = ";
-		temp = temp + R"delim(")delim" + new_value + R"delim(")delim" + " ";				// The delim lets us use quotes in our string;
-		temp = temp + "WHERE(name == ";
-		temp = temp + R"delim(")delim" + date + R"delim(")delim" + ");";
-		// temp = UPDATE addressbook SET name = "new_value" WHERE(name == "name");
-		break;
-	case '2':
-		cout << "*Enter new value: ";
-		cin >> new_value;
-		temp = "UPDATE ";
-
-		temp = temp + table + " " + "SET day = ";
-		temp = temp + R"delim(")delim" + new_value + R"delim(")delim" + " ";				// The delim lets us use quotes in our string;
-		temp = temp + "WHERE(name == ";
-		temp = temp + R"delim(")delim" + day + R"delim(")delim" + ");";
-		// temp = UPDATE addressbook SET phone = "new_value" WHERE(name == "name");
-		break;
-	case '3':
-		cout << "*Enter new value: ";
-		cin >> new_value;
-		temp = "UPDATE ";
-
-		temp = temp + table + " " + "SET month = ";
-		temp = temp + R"delim(")delim" + new_value + R"delim(")delim" + " ";				// The delim lets us use quotes in our string;
-		temp = temp + "WHERE(name == ";
-		temp = temp + R"delim(")delim" + month + R"delim(")delim" + ");";
-		// temp = UPDATE addressbook SET email = "new_value" WHERE(name == "name");
-		break;
-	case '4':
-		cout << "*Enter new value: ";
-		cin >> new_value;
-		temp = "UPDATE ";
-		temp = temp + table + " " + "SET year = ";
-		temp = temp + R"delim(")delim" + new_value + R"delim(")delim" + " ";				// The delim lets us use quotes in our string;
-		temp = temp + "WHERE(name == ";
-		temp = temp + R"delim(")delim" + year + R"delim(")delim" + ");";
-		// temp = UPDATE addressbook SET address = "new_value" WHERE(name == "name");
-		break;
-	case '5':
-		cout << "*Enter new value: ";
-		cin >> new_value;
-		temp = "UPDATE ";
-		temp = temp + table + " " + "SET dateid = ";
-		temp = temp + R"delim(")delim" + new_value + R"delim(")delim" + " ";				// The delim lets us use quotes in our string;
-		temp = temp + "WHERE(name == ";
-		temp = temp + R"delim(")delim" + memoid + R"delim(")delim" + ");";
-		// temp = UPDATE addressbook SET address = "new_value" WHERE(name == "name");
-		break;
-	case '6':
-		cout << "*Enter new value: ";
-		cin >> new_value;
-		temp = "UPDATE ";
-		temp = temp + table + " " + "SET memoid = ";
-		temp = temp + R"delim(")delim" + new_value + R"delim(")delim" + " ";				// The delim lets us use quotes in our string;
-		temp = temp + "WHERE(name == ";
-		temp = temp + R"delim(")delim" + dateid + R"delim(")delim" + ");";
-		// temp = UPDATE addressbook SET address = "new_value" WHERE(name == "name");
-		break;
-	case '7':
-		cout << "*Enter new value: ";
-		cin >> new_value;
-		temp = "UPDATE ";
-		temp = temp + table + " " + "SET todoid = ";
-		temp = temp + R"delim(")delim" + new_value + R"delim(")delim" + " ";				// The delim lets us use quotes in our string;
-		temp = temp + "WHERE(name == ";
-		temp = temp + R"delim(")delim" + todoid + R"delim(")delim" + ");";
-		// temp = UPDATE addressbook SET address = "new_value" WHERE(name == "name");
-		break;
-	}
-	return temp;
-
-}
 // --------------------------------------------------------------
 //			Address Book Functions
 // --------------------------------------------------------------
@@ -309,6 +230,86 @@ string delete_contact(DBParser& dbparser){
 // --------------------------------------------------------------
 //			Calendar Functions
 // --------------------------------------------------------------
+string query_for_calendar_edit(char field, string table, string date, string day, string month, string year, string dateid, string memoid, string todoid){
+	string new_value, temp;
+	switch (field){
+	case '1':
+		cout << "*Enter new value: ";
+		cin >> new_value;
+		temp = "UPDATE ";
+
+		temp = temp + table + " " + "SET date = ";
+		temp = temp + R"delim(")delim" + new_value + R"delim(")delim" + " ";				// The delim lets us use quotes in our string;
+		temp = temp + "WHERE(name == ";
+		temp = temp + R"delim(")delim" + date + R"delim(")delim" + ");";
+		// temp = UPDATE addressbook SET name = "new_value" WHERE(name == "name");
+		break;
+	case '2':
+		cout << "*Enter new value: ";
+		cin >> new_value;
+		temp = "UPDATE ";
+
+		temp = temp + table + " " + "SET day = ";
+		temp = temp + R"delim(")delim" + new_value + R"delim(")delim" + " ";				// The delim lets us use quotes in our string;
+		temp = temp + "WHERE(name == ";
+		temp = temp + R"delim(")delim" + day + R"delim(")delim" + ");";
+		// temp = UPDATE addressbook SET phone = "new_value" WHERE(name == "name");
+		break;
+	case '3':
+		cout << "*Enter new value: ";
+		cin >> new_value;
+		temp = "UPDATE ";
+
+		temp = temp + table + " " + "SET month = ";
+		temp = temp + R"delim(")delim" + new_value + R"delim(")delim" + " ";				// The delim lets us use quotes in our string;
+		temp = temp + "WHERE(name == ";
+		temp = temp + R"delim(")delim" + month + R"delim(")delim" + ");";
+		// temp = UPDATE addressbook SET email = "new_value" WHERE(name == "name");
+		break;
+	case '4':
+		cout << "*Enter new value: ";
+		cin >> new_value;
+		temp = "UPDATE ";
+		temp = temp + table + " " + "SET year = ";
+		temp = temp + R"delim(")delim" + new_value + R"delim(")delim" + " ";				// The delim lets us use quotes in our string;
+		temp = temp + "WHERE(name == ";
+		temp = temp + R"delim(")delim" + year + R"delim(")delim" + ");";
+		// temp = UPDATE addressbook SET address = "new_value" WHERE(name == "name");
+		break;
+	case '5':
+		cout << "*Enter new value: ";
+		cin >> new_value;
+		temp = "UPDATE ";
+		temp = temp + table + " " + "SET dateid = ";
+		temp = temp + R"delim(")delim" + new_value + R"delim(")delim" + " ";				// The delim lets us use quotes in our string;
+		temp = temp + "WHERE(name == ";
+		temp = temp + R"delim(")delim" + memoid + R"delim(")delim" + ");";
+		// temp = UPDATE addressbook SET address = "new_value" WHERE(name == "name");
+		break;
+	case '6':
+		cout << "*Enter new value: ";
+		cin >> new_value;
+		temp = "UPDATE ";
+		temp = temp + table + " " + "SET memoid = ";
+		temp = temp + R"delim(")delim" + new_value + R"delim(")delim" + " ";				// The delim lets us use quotes in our string;
+		temp = temp + "WHERE(name == ";
+		temp = temp + R"delim(")delim" + dateid + R"delim(")delim" + ");";
+		// temp = UPDATE addressbook SET address = "new_value" WHERE(name == "name");
+		break;
+	case '7':
+		cout << "*Enter new value: ";
+		cin >> new_value;
+		temp = "UPDATE ";
+		temp = temp + table + " " + "SET todoid = ";
+		temp = temp + R"delim(")delim" + new_value + R"delim(")delim" + " ";				// The delim lets us use quotes in our string;
+		temp = temp + "WHERE(name == ";
+		temp = temp + R"delim(")delim" + todoid + R"delim(")delim" + ");";
+		// temp = UPDATE addressbook SET address = "new_value" WHERE(name == "name");
+		break;
+	}
+	return temp;
+
+}
 void retrieve_calendar_date(DBParser& dbparser, string date){
 	Table result = dbparser.execute_query("result <- select (name == \"" + date + "\") calendar"); // result <- select (name == "01/01/2014") calendar"
 	
