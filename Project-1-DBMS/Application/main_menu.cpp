@@ -369,13 +369,23 @@ string query_for_calendar_insert(string table, string day, string month, string 
 	return temp;
 }
 
-void query_for_calendar_delete_memopad(string table, string memoid){
+string  query_for_calendar_delete_memopad(string table, string memoid){
+	
+	string temp = "DELETE FROM ";
+	temp += table + " " + "WHERE((memoid == ";
+	temp += "\"" + memoid + "\"" + "));";				// The delim lets us use quotes in our string;
+	cout << temp << endl;
+	return temp;
 
 
 }
 
-void query_for_calendar_delete_todolist(string table, string todoid){
-
+string query_for_calendar_delete_todolist(string table, string todoid){
+	string temp = "DELETE FROM ";
+	temp += table + " " + "WHERE((todoid == ";
+	temp += "\"" + todoid + "\"" + "));";				// The delim lets us use quotes in our string;
+	cout << temp << endl;
+	return temp;
 
 }
 
@@ -581,7 +591,7 @@ string query_for_memopad_delete(string table, string memoid){
 	return temp;
 }
 
-string delete_memopad(DBParser& dbparser){
+void delete_memopad(DBParser& dbparser){
 	bool check = false;
 	string memoid;
 	char answer;
@@ -594,11 +604,12 @@ string delete_memopad(DBParser& dbparser){
 		cin >> answer;
 		if (answer == 'y'){
 			query = query_for_memopad_delete("memopad", memoid);
-			return query;
+			dbparser.execute_query(query);
+			query = query_for_calendar_delete_memopad("memopad", memoid);
+			dbparser.execute_query(query);
 		}
 		else if (answer == 'n'){
 			cout << "No Memo to be Deleted" << endl;
-			return "No Memo to be Deleted";
 		}
 		else {
 			cout << "Incorrect Answer Please Try Again <y/n>: ";
@@ -737,7 +748,7 @@ string query_for_todolist_delete(string table, string todoid){
 	return temp;
 }
 
-string delete_todolist(DBParser& dbparser){
+void delete_todolist(DBParser& dbparser){
 	string todoID;
 	char answer;
 	string query = "";
@@ -749,11 +760,12 @@ string delete_todolist(DBParser& dbparser){
 
 		if (answer == 'y'){
 			query = query_for_todolist_delete("todolist", todoID);
-			return query;
+			dbparser.execute_query(query);
+			query = query_for_calendar_delete_todolist("todolist", todoID);
+			dbparser.execute_query(query);
 		}
 		else if (answer == 'n'){
 			cout << "No To Do Item Deleted" << endl;
-			return "No To Do Item Deleted";
 		}
 		else {
 			cout << "Incorrect Answer Please Try Again <y/n>: ";
@@ -914,11 +926,7 @@ void Memo_Pad(DBParser& dbparser){
 		break;
 	case '5':
 		cout << endl << "[To Do List Delete]" << endl << endl;
-		query = delete_memopad(dbparser);
-		if (query != "No Memo to be Deleted"){
-			cout << endl << query << endl;
-			dbparser.execute_query(query);
-		}
+		delete_memopad(dbparser);
 		Todo_List(dbparser);
 		break;
 	case '6':
@@ -975,11 +983,7 @@ void Todo_List(DBParser& dbparser){
 		break;
 	case '5':
 		cout << endl << "[To Do List Delete]" << endl << endl;
-		query = delete_todolist(dbparser);
-		if (query != "No To Do Item Deleted"){
-			cout << endl << query << endl;
-			dbparser.execute_query(query);
-		}
+		delete_todolist(dbparser);
 		Todo_List(dbparser);
 		break;
 	case '6':
