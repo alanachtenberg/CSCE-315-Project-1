@@ -139,6 +139,7 @@ string query_for_addressbook_edit(char field, string table, string name,string f
 	}
 	return temp;
 }
+
 string query_for_addressbook_insert(string table, string name, string first_name, string last_name, string phone, string email, string address){
 	string temp = "INSERT INTO ";
 	temp = temp + table + " " + "VALUES FROM (";
@@ -152,6 +153,7 @@ string query_for_addressbook_insert(string table, string name, string first_name
 	// OUTPUT = INSERT INTO table VALUES FROM("name", "first_name", "last_name", "phone", "email", "address");
 	return temp;
 }
+
 string query_for_addressbook_delete(string table, string name){
 	string temp = "DELETE FROM ";
 	temp = temp + table + " " + "WHERE((name == ";
@@ -159,7 +161,6 @@ string query_for_addressbook_delete(string table, string name){
 	cout << temp << endl;
 	return temp;
 }
-
 
 // --------------------------------------------------------------
 //			Address Book Functions
@@ -273,6 +274,7 @@ string delete_contact(DBParser& dbparser){
 // --------------------------------------------------------------
 //			Calendar Functions
 // --------------------------------------------------------------
+
 string query_for_calendar_edit(char field, string table, string date, string day, string month, string year, string dateid, string memoid, string todoid){
 	string new_value, temp;
 	switch (field){
@@ -353,6 +355,7 @@ string query_for_calendar_edit(char field, string table, string date, string day
 	return temp;
 
 }
+
 void retrieve_calendar_date(DBParser& dbparser, string date){
 	Table result = dbparser.execute_query("result <- select (date == \"" + date + "\") calendar"); // result <- select (name == "01/01/2014") calendar"
 	
@@ -413,6 +416,7 @@ string edit_calendar_date(DBParser& dbparser){
 // --------------------------------------------------------------
 //			To Do List Functions
 // --------------------------------------------------------------
+
 void retrieve_todolist(DBParser& dbparser, string todoid){
 	Table result = dbparser.execute_query("result <- select (todoid == \"" + todoid + "\") todolist"); // do we want to take in the todo or the ToDoID in order to search?
 	cout << endl << "Contacts matched: [" << result.Get_max_height() << "]" << endl;
@@ -422,10 +426,8 @@ void retrieve_todolist(DBParser& dbparser, string todoid){
 		cout << "1. To Do: " << row[0] << endl;
 		cout << "2. ToDoID: " << row[1] << endl;
 		cout << "3. DateID: " << row[2] << endl;
-
 	}
 }
-
 
 string query_for_todolist_edit(char field, string table, string todo, string todoid, string dateid){
 	string new_value, temp;
@@ -524,6 +526,40 @@ string create_todolist(){ //if we create a todo, how do we also push it's date t
 	query = query_for_todolist_insert("todolist", todo, todoid, dateid);
 	return query;
 }
+
+string query_for_todolist_delete(string table, string todoid){
+	string temp = "DELETE FROM ";
+	temp = temp + table + " " + "WHERE((todoid == ";
+	temp = temp + R"delim(")delim" + todoid + R"delim(")delim" + "));";				// The delim lets us use quotes in our string;
+	cout << temp << endl;
+	return temp;
+}
+
+string delete_todolist(DBParser& dbparser){
+	bool check = false;
+	string todoid, answer;
+	string query = "";
+	cout << "* Enter ToDoID to delete: ";
+	cin >> todoid;
+	retrieve_todolist(dbparser, todoid);
+	while (!check){
+		cout << "Are you sure you want to delete this record <y/n>: ";
+		cin >> answer;
+		if ((answer != "y") && (answer != "n")){
+			cout << "Incorrect Answer Please Try Again <y/n>: ";
+			cin >> answer;
+		}
+		else if ((answer == "y") || (answer == "n"))
+			check = true;
+	}
+	if (answer == "y")
+		query = query_for_todolist_delete("addressbook", todoid);
+	if (answer == "n"){
+		cout << "No record Deleted" << endl;
+	}
+	return query;
+}
+
 // --------------------------------------------------------------
 //			Main Menu Functions
 // --------------------------------------------------------------
@@ -687,6 +723,7 @@ void Todo_List(DBParser& dbparser){
 		cout << "Displaying To Do List " << endl;
 		dbparser.execute_query("SHOW todolist;");				
 		Todo_List(dbparser);
+		main_menu(dbparser);
 		break;
 	case '2':
 		cout << "Searching in To Do List" << endl;
@@ -694,6 +731,7 @@ void Todo_List(DBParser& dbparser){
 		cin >> todo;
 		retrieve_todolist(dbparser, todoid);
 		Todo_List(dbparser);
+		main_menu(dbparser);
 		break;
 	case '3':
 		cout << endl << "[To Do List Edit]" << endl << endl;
@@ -701,20 +739,23 @@ void Todo_List(DBParser& dbparser){
 		cout << endl << query << endl;
 		dbparser.execute_query(query);								
 		Todo_List(dbparser);
+		main_menu(dbparser);
 		break;
 	case '4':
 		cout << endl << "[To Do List Create]" << endl << endl;
-		query = create_contact();
+		query = create_todolist();
 		cout << endl << query << endl;
 		dbparser.execute_query(query);								
 		Todo_List(dbparser);
+		main_menu(dbparser);
 		break;
 	case '5':
 		cout << endl << "[To Do List Delete]" << endl << endl;
-		query = delete_contact(dbparser);
+		query = delete_todolist(dbparser);
 		cout << endl << query << endl;
 		dbparser.execute_query(query);								
 		Todo_List(dbparser);
+		main_menu(dbparser);
 		break;
 	case '6':
 		main_menu(dbparser);
