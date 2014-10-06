@@ -391,35 +391,35 @@ void Address_Book(DBParser& dbparser){								//FINISHED
 		case '1':
 		cout << "Displaying Address Book list " << endl;
 		dbparser.execute_query("SHOW addressbook;");				// SHOULD BE CORRECT CANT FULLY TEST YET
-		main_menu(dbparser);
+		Address_Book(dbparser);
 		break;
 	case '2':
 		cout << "Searching in Address Book" << endl;
 		cout << "* Enter Desired Name to Search For: ";				// Should be correct -robby 
 		cin >> name;
 		retrieve_contact(dbparser, name);
-		main_menu(dbparser);
+		Address_Book(dbparser);
 		break;
 	case '3':
 		cout << endl << "[Address Book Edit]" << endl << endl;
 		query = edit_contact(dbparser);
 		cout << endl << query << endl;
 		dbparser.execute_query(query);								// SHOULD BE CORRECT CANT FULLY TEST YET
-		main_menu(dbparser);
+		Address_Book(dbparser);
 		break;
 	case '4':
 		cout << endl << "[Address Book Create]" << endl << endl;
 		query = create_contact();
 		cout << endl << query << endl;
 		dbparser.execute_query(query);								//not adding any contact to the addressbook.db 
-		main_menu(dbparser);
+		Address_Book(dbparser);
 		break;
 	case '5':
 		cout << endl << "[Address Book Delete]" << endl << endl;
 		query = delete_contact(dbparser);
 		cout << endl << query << endl;
 		dbparser.execute_query(query);								// SHOULD BE CORRECT CANT FULLY TEST YET
-		main_menu(dbparser);
+		Address_Book(dbparser);
 		break;
 	case '6':
 		main_menu(dbparser);
@@ -444,21 +444,21 @@ void Calendar(DBParser& dbparser){
 	case '1':
 		cout << "Displaying Calendar list " << endl;
 		dbparser.execute_query("SHOW Calendar;");
-		main_menu(dbparser);
+		Calendar(dbparser);
 		break;
 	case '2':
 		cout << "Searching in Calendar" << endl;
-		cout << "* Enter Desired Date to Search For: ";				
+		cout << "* Enter Desired Date to Search For [DD/MM/YY]: ";				
 		cin >> date;
-		
-		main_menu(dbparser);
+		retrieve_calendar_date(dbparser, date);
+		Calendar(dbparser);
 		break;
 	case '3':
 		cout << endl << "[Calendar Edit]" << endl << endl;
 		query = edit_contact(dbparser);
 		cout << endl << query << endl;
 		dbparser.execute_query(query);								
-		main_menu(dbparser);
+		Calendar(dbparser);
 		break;
 	case '4':
 		main_menu(dbparser);
