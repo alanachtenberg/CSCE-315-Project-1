@@ -353,7 +353,7 @@ string query_for_calendar_edit(char field, string table, string date, string day
 
 }
 
-string query_for_calendar_insert(string table, string, string day, string month, string year, string dateid, string memoid, string todoid){
+string query_for_calendar_insert(string table, string day, string month, string year, string dateid, string memoid, string todoid){
 	string temp = "INSERT INTO ";
 	string date = day + "/" + month + "/" + year;
 	temp += table + " " + "VALUES FROM (";
@@ -538,9 +538,10 @@ string query_for_memopad_insert(string table, string memo, string memoid, string
 	return temp;
 }
 
-string create_memopad(){
+void create_memopad(DBParser& dbparser){
 	string query;
 	string memo, memoid, dateid, name;
+	string day, month, year;
 	cout << endl << "Creating New To Do Item" << endl;
 	cout << "* Enter Memo: ";
 	getline(cin, memo);
@@ -549,10 +550,17 @@ string create_memopad(){
 	cout << "* Enter Date ID ";
 	getline(cin, dateid);
 	cout << "*Enter the Name of recipient";
-
+	cout << "* Enter day of To Do Item [DD]:";
+	getline(cin, day);
+	cout << "* Enter month of To Do Item [MM]:";
+	getline(cin, month);
+	cout << "* Enter year of To Do Item [YYYY]:";
+	getline(cin, year);
 
 	query = query_for_memopad_insert("memopad", memo, memoid, dateid, name);
-	return query;
+	dbparser.execute_query(query);
+	query = query_for_calendar_insert("calendar", day, month, year, dateid, memoid, "No To Do Item");
+	dbparser.execute_query(query);
 }
 
 string query_for_memopad_delete(string table, string memoid){
@@ -640,6 +648,7 @@ string query_for_todolist_edit(char field, string table, string todo, string tod
 		temp += "\"" + todo + "\"" + ");";
 		// temp = UPDATE addressbook SET dateid = "new_value" WHERE(todo == "todo");
 		break;
+
 	
 	}
 	return temp;
@@ -689,6 +698,7 @@ string query_for_todolist_insert(string table, string todo, string todoid, strin
 void create_todolist(DBParser& dbparser){ //if we create a todo, how do we also push it's date to the calendar?
 	string query;
 	string todo, todoid, dateid;
+	string day, month, year;
 	cout << endl << "Creating New To Do Item" << endl;
 	cout << "* Enter To Do: ";
 	getline(cin, todo);
@@ -696,11 +706,17 @@ void create_todolist(DBParser& dbparser){ //if we create a todo, how do we also 
 	getline(cin, todoid);
 	cout << "* Enter Date ID: ";
 	getline(cin, dateid);
-	
+	cout << "* Enter day of To Do Item [DD]:";
+	getline(cin, day);
+	cout << "* Enter month of To Do Item [MM]:";
+	getline(cin, month);
+	cout << "* Enter year of To Do Item [YYYY]:";
+	getline(cin, year);
 
 	query = query_for_todolist_insert("todolist", todo, todoid, dateid);
 	dbparser.execute_query(query);
-//	query = query_for_calendar_insert("call")
+	query = query_for_calendar_insert("calendar", day, month, year, dateid, "No Memo", todoid);
+	dbparser.execute_query(query);
 }
 
 string query_for_todolist_delete(string table, string todoid){
