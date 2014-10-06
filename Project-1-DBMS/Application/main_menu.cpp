@@ -369,12 +369,12 @@ string query_for_calendar_insert(string table, string day, string month, string 
 	return temp;
 }
 
-string query_for_calendar_delete_memopad(string table, string memoid){
+void query_for_calendar_delete_memopad(string table, string memoid){
 
 
 }
 
-string query_for_calendar_delete_todolist(string table, string todoid){
+void query_for_calendar_delete_todolist(string table, string todoid){
 
 
 }
