@@ -165,7 +165,7 @@ string query_for_addressbook_delete(string table, string name){
 //			Address Book Functions
 // --------------------------------------------------------------
 
-void retrieve_contact(DBParser& dbparser, string _name) { // not finished need to actually retrieve record from Database!!
+void retrieve_contact(DBParser& dbparser, string _name) { 
 	Table result = dbparser.execute_query("result <- select (name == \"" + _name + "\") addressbook"); // result <- select (name == "John doe") addressbook"
 	cout << endl<< "Contacts matched: [" << result.Get_max_height() << "]" << endl;
 	for (int i = 0; i < result.Get_max_height(); i++) {
@@ -283,7 +283,7 @@ string query_for_calendar_edit(char field, string table, string date, string day
 
 		temp = temp + table + " " + "SET date = ";
 		temp = temp + R"delim(")delim" + new_value + R"delim(")delim" + " ";				// The delim lets us use quotes in our string;
-		temp = temp + "WHERE(name == ";
+		temp = temp + "WHERE(date == ";
 		temp = temp + R"delim(")delim" + date + R"delim(")delim" + ");";
 		// temp = UPDATE addressbook SET name = "new_value" WHERE(name == "name");
 		break;
@@ -294,8 +294,8 @@ string query_for_calendar_edit(char field, string table, string date, string day
 
 		temp = temp + table + " " + "SET day = ";
 		temp = temp + R"delim(")delim" + new_value + R"delim(")delim" + " ";				// The delim lets us use quotes in our string;
-		temp = temp + "WHERE(name == ";
-		temp = temp + R"delim(")delim" + day + R"delim(")delim" + ");";
+		temp = temp + "WHERE(date == ";
+		temp = temp + R"delim(")delim" + date + R"delim(")delim" + ");";
 		// temp = UPDATE addressbook SET phone = "new_value" WHERE(name == "name");
 		break;
 	case '3':
@@ -305,8 +305,8 @@ string query_for_calendar_edit(char field, string table, string date, string day
 
 		temp = temp + table + " " + "SET month = ";
 		temp = temp + R"delim(")delim" + new_value + R"delim(")delim" + " ";				// The delim lets us use quotes in our string;
-		temp = temp + "WHERE(name == ";
-		temp = temp + R"delim(")delim" + month + R"delim(")delim" + ");";
+		temp = temp + "WHERE(date == ";
+		temp = temp + R"delim(")delim" + date + R"delim(")delim" + ");";
 		// temp = UPDATE addressbook SET email = "new_value" WHERE(name == "name");
 		break;
 	case '4':
@@ -315,8 +315,8 @@ string query_for_calendar_edit(char field, string table, string date, string day
 		temp = "UPDATE ";
 		temp = temp + table + " " + "SET year = ";
 		temp = temp + R"delim(")delim" + new_value + R"delim(")delim" + " ";				// The delim lets us use quotes in our string;
-		temp = temp + "WHERE(name == ";
-		temp = temp + R"delim(")delim" + year + R"delim(")delim" + ");";
+		temp = temp + "WHERE(date == ";
+		temp = temp + R"delim(")delim" + date + R"delim(")delim" + ");";
 		// temp = UPDATE addressbook SET address = "new_value" WHERE(name == "name");
 		break;
 	case '5':
@@ -325,8 +325,8 @@ string query_for_calendar_edit(char field, string table, string date, string day
 		temp = "UPDATE ";
 		temp = temp + table + " " + "SET dateid = ";
 		temp = temp + R"delim(")delim" + new_value + R"delim(")delim" + " ";				// The delim lets us use quotes in our string;
-		temp = temp + "WHERE(name == ";
-		temp = temp + R"delim(")delim" + memoid + R"delim(")delim" + ");";
+		temp = temp + "WHERE(date == ";
+		temp = temp + R"delim(")delim" + date + R"delim(")delim" + ");";
 		// temp = UPDATE addressbook SET address = "new_value" WHERE(name == "name");
 		break;
 	case '6':
@@ -335,8 +335,8 @@ string query_for_calendar_edit(char field, string table, string date, string day
 		temp = "UPDATE ";
 		temp = temp + table + " " + "SET memoid = ";
 		temp = temp + R"delim(")delim" + new_value + R"delim(")delim" + " ";				// The delim lets us use quotes in our string;
-		temp = temp + "WHERE(name == ";
-		temp = temp + R"delim(")delim" + dateid + R"delim(")delim" + ");";
+		temp = temp + "WHERE(date == ";
+		temp = temp + R"delim(")delim" + date + R"delim(")delim" + ");";
 		// temp = UPDATE addressbook SET address = "new_value" WHERE(name == "name");
 		break;
 	case '7':
@@ -345,8 +345,8 @@ string query_for_calendar_edit(char field, string table, string date, string day
 		temp = "UPDATE ";
 		temp = temp + table + " " + "SET todoid = ";
 		temp = temp + R"delim(")delim" + new_value + R"delim(")delim" + " ";				// The delim lets us use quotes in our string;
-		temp = temp + "WHERE(name == ";
-		temp = temp + R"delim(")delim" + todoid + R"delim(")delim" + ");";
+		temp = temp + "WHERE(date == ";
+		temp = temp + R"delim(")delim" + date + R"delim(")delim" + ");";
 		// temp = UPDATE addressbook SET address = "new_value" WHERE(name == "name");
 		break;
 	}
@@ -354,13 +354,13 @@ string query_for_calendar_edit(char field, string table, string date, string day
 
 }
 void retrieve_calendar_date(DBParser& dbparser, string date){
-	Table result = dbparser.execute_query("result <- select (name == \"" + date + "\") calendar"); // result <- select (name == "01/01/2014") calendar"
+	Table result = dbparser.execute_query("result <- select (date == \"" + date + "\") calendar"); // result <- select (name == "01/01/2014") calendar"
 	
 	cout << endl << "Dates matched: [" << result.Get_max_height() << "]" << endl;
 	for (int i = 0; i < result.Get_max_height(); i++) {
 		vector <string> row = result.Get_row(i);
 		cout << endl << "Date[" << i + 1 << "]:" << endl;
-		cout << "1. Day: " << row[1] << " " << row[2] << endl;
+		cout << "1. Day: " << row[1] << endl;
 		cout << "2. Month: " << row[2] << endl;
 		cout << "3. Year: " << row[3] << endl;
 		cout << "4. DateID: " << row[4] << endl;
@@ -410,6 +410,120 @@ string edit_calendar_date(DBParser& dbparser){
 	return query;
 }
 
+// --------------------------------------------------------------
+//			To Do List Functions
+// --------------------------------------------------------------
+void retrieve_todolist(DBParser& dbparser, string todoid){
+	Table result = dbparser.execute_query("result <- select (todoid == \"" + todoid + "\") todolist"); // do we want to take in the todo or the ToDoID in order to search?
+	cout << endl << "Contacts matched: [" << result.Get_max_height() << "]" << endl;
+	for (int i = 0; i < result.Get_max_height(); i++) {
+		vector <string> row = result.Get_row(i);
+		cout << endl << "Contact[" << i + 1 << "]:" << endl;
+		cout << "1. To Do: " << row[0] << endl;
+		cout << "2. ToDoID: " << row[1] << endl;
+		cout << "3. DateID: " << row[2] << endl;
+
+	}
+}
+
+
+string query_for_todolist_edit(char field, string table, string todo, string todoid, string dateid){
+	string new_value, temp;
+	switch (field){
+	case '1':
+		cout << "*Enter new value: ";
+		cin >> new_value;
+		temp = "UPDATE ";
+
+		temp = temp + table + " " + "SET todo = ";
+		temp = temp + R"delim(")delim" + new_value + R"delim(")delim" + " ";				// The delim lets us use quotes in our string;
+		temp = temp + "WHERE(todo == ";
+		temp = temp + R"delim(")delim" + todo + R"delim(")delim" + ");";
+		// temp = UPDATE addressbook SET name = "new_value" WHERE(name == "name");
+		break;
+	case '2':
+		cout << "*Enter new value: ";
+		cin >> new_value;
+		temp = "UPDATE ";
+
+		temp = temp + table + " " + "SET todoid = ";
+		temp = temp + R"delim(")delim" + new_value + R"delim(")delim" + " ";				// The delim lets us use quotes in our string;
+		temp = temp + "WHERE(todo == ";
+		temp = temp + R"delim(")delim" + todo + R"delim(")delim" + ");";
+		// temp = UPDATE addressbook SET phone = "new_value" WHERE(name == "name");
+		break;
+	case '3':
+		cout << "*Enter new value: ";
+		cin >> new_value;
+		temp = "UPDATE ";
+
+		temp = temp + table + " " + "SET dateid = ";
+		temp = temp + R"delim(")delim" + new_value + R"delim(")delim" + " ";				// The delim lets us use quotes in our string;
+		temp = temp + "WHERE(todo == ";
+		temp = temp + R"delim(")delim" + todo + R"delim(")delim" + ");";
+		// temp = UPDATE addressbook SET email = "new_value" WHERE(name == "name");
+		break;
+	
+	}
+	return temp;
+
+}
+
+string edit_todolist(DBParser& dbparser){
+	string query;
+	string todo, todoid, dateid;
+	char input, temp;
+
+	cout << "*Enter To Do List ID: ";
+	cin >> todoid;
+	retrieve_todolist(dbparser, todoid);
+
+	cout << endl << "* Enter field to edit: ";
+	cin >> input;
+	temp = check_input(input, '1', '3');
+
+	switch (temp){
+	case '1':
+		query = query_for_todolist_edit('1', "todolist", todo, todoid, dateid);
+		break;
+	case '2':
+		query = query_for_todolist_edit('2', "todolist", todo, todoid, dateid);
+		break;
+	case '3':
+		query = query_for_todolist_edit('3', "todolist", todo, todoid, dateid);
+		break;
+	default:
+		cerr << "Switch Error in edit_todolist_date!" << endl;
+	}
+	return query;
+}
+
+string query_for_todolist_insert(string table, string todo, string todoid, string dateid){
+	string temp = "INSERT INTO ";
+	temp = temp + table + " " + "VALUES FROM (";
+	temp = temp + R"delim(")delim" + todo + R"delim(")delim" + ", ";				// The delim lets us use quotes in our string;
+	temp = temp + R"delim(")delim" + todoid + R"delim(")delim" + ", ";
+	temp = temp + R"delim(")delim" + dateid + R"delim(")delim" + ");";
+
+	// OUTPUT = INSERT INTO table VALUES FROM("todo", "todoid", "dateid");
+	return temp;
+}
+
+string create_todolist(){ //if we create a todo, how do we also push it's date to the calendar?
+	string query;
+	string todo, todoid, dateid;
+	cout << endl << "Creating New To Do Item" << endl;
+	cout << "* Enter To Do: ";
+	cin >> todo;										
+	cout << "* Enter To Do ID: ";
+	cin >> todoid;
+	cout << "* Enter Date ID ";
+	cin >> dateid;
+	
+
+	query = query_for_todolist_insert("todolist", todo, todoid, dateid);
+	return query;
+}
 // --------------------------------------------------------------
 //			Main Menu Functions
 // --------------------------------------------------------------
@@ -553,36 +667,59 @@ void Memo_Pad(DBParser& dbparser){
 
 void Todo_List(DBParser& dbparser){
 	char input, temp;
-	cout << endl << "[Todo List Menu]" << endl << endl;
-	cout << "1. Display list" << endl;
-	cout << "2. Search" << endl;
-	cout << "3. Edit" << endl;
-	cout << "4. Create" << endl;
+	string query;
+	string todo, todoid, dateid;
+	string debug;
+
+	cout << endl << "[To Do List Menu]" << endl << endl;
+	cout << "1. Display list" << endl; //completed -need to test
+	cout << "2. Search" << endl; //completed - need to test
+	cout << "3. Edit" << endl; //completed - need to test
+	cout << "4. Create" << endl; //not finished, how do we push a new todo to the calendar?
 	cout << "5. Delete" << endl;
 	cout << "6. Return to main menu" << endl << endl;
 	cout << "* Enter command: ";
 	cin >> input;
 	temp = check_input(input, '1', '6');
-
+	Table temp_table;
 	switch (temp){
 	case '1':
-		cout << "Display list CHECK" << endl;
+		cout << "Displaying To Do List " << endl;
+		dbparser.execute_query("SHOW todolist;");				
+		Todo_List(dbparser);
 		break;
 	case '2':
-		cout << "Search CHECK" << endl;
+		cout << "Searching in To Do List" << endl;
+		cout << "* Enter Desired To Do List ID: ";				
+		cin >> todo;
+		retrieve_todolist(dbparser, todoid);
+		Todo_List(dbparser);
 		break;
 	case '3':
-		cout << "Edit CHECK" << endl;
+		cout << endl << "[To Do List Edit]" << endl << endl;
+		query = edit_todolist(dbparser);
+		cout << endl << query << endl;
+		dbparser.execute_query(query);								
+		Todo_List(dbparser);
 		break;
 	case '4':
-		cout << "Create CHECK" << endl;
+		cout << endl << "[To Do List Create]" << endl << endl;
+		query = create_contact();
+		cout << endl << query << endl;
+		dbparser.execute_query(query);								
+		Todo_List(dbparser);
 		break;
 	case '5':
-		cout << "Delete CHECK" << endl;
+		cout << endl << "[To Do List Delete]" << endl << endl;
+		query = delete_contact(dbparser);
+		cout << endl << query << endl;
+		dbparser.execute_query(query);								
+		Todo_List(dbparser);
+		break;
 	case '6':
 		main_menu(dbparser);
 		break;
 	default:
-		cerr << "Input Error in Todo!" << endl;
+		cerr << "Input Error in To Do List!" << endl;
 	}
 }
