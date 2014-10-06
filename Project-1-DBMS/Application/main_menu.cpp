@@ -647,6 +647,7 @@ string query_for_todolist_edit(char field, string table, string todo, string tod
 		temp += "\"" + todo + "\"" + ");";
 		// temp = UPDATE addressbook SET dateid = "new_value" WHERE(todo == "todo");
 		break;
+
 	
 	}
 	return temp;
