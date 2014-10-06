@@ -368,6 +368,16 @@ string query_for_calendar_insert(string table, string day, string month, string 
 	return temp;
 }
 
+string query_for_calendar_delete_memopad(string table, string memoid){
+
+
+}
+
+string query_for_calendar_delete_todolist(string table, string todoid){
+
+
+}
+
 void retrieve_calendar_date(DBParser& dbparser, string date){
 	Table result = dbparser.execute_query("result <- select (date == \"" + date + "\") calendar"); // result <- select (name == "01/01/2014") calendar"
 	
@@ -884,26 +894,26 @@ void Memo_Pad(DBParser& dbparser){
 		cout << "Searching in To Do List" << endl;
 		cout << "* Enter Desired To Do List ID: ";
 		getline(cin, todo);
-		retrieve_todolist(dbparser, todoid);
+		retrieve_memopad(dbparser, todoid);
 		Todo_List(dbparser);
 		break;
 	case '3':
 		cout << endl << "[To Do List Edit]" << endl << endl;
-		query = edit_todolist(dbparser);
+		query = edit_memopad(dbparser);
 		cout << endl << query << endl;
 		dbparser.execute_query(query);
 		Todo_List(dbparser);
 		break;
 	case '4':
 		cout << endl << "[To Do List Create]" << endl << endl;
-		query = create_contact();
+		//query = create_memopad();
 		cout << endl << query << endl;
 		dbparser.execute_query(query);
 		Todo_List(dbparser);
 		break;
 	case '5':
 		cout << endl << "[To Do List Delete]" << endl << endl;
-		query = delete_todolist(dbparser);
+		query = delete_memopad(dbparser);
 		if (query != "No Memo to be Deleted"){
 			cout << endl << query << endl;
 			dbparser.execute_query(query);
