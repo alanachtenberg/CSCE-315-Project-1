@@ -179,9 +179,9 @@ string edit_contact(DBParser& dbparser){
 	char input, temp;
 	
 	cout << "* Enter first name to edit: ";
-	getline(cin, first_name);
+	cin >> first_name; //changed back from get line to fix \n buffer issue
 	cout << "* Enter last name to edit: ";
-	getline(cin, last_name);
+	cin >> last_name;
 	full_name = first_name + last_name;
 	retrieve_contact(dbparser, full_name);
 
@@ -637,7 +637,8 @@ string query_for_todolist_edit(char field, string table, string todo, string tod
 	string new_value, temp;
 	switch (field){
 	case '1':
-		cout << "*Enter new value: ";
+		cout << "*Enter new To Do: ";
+		cin.ignore();
 		getline(cin, new_value);
 		temp = "UPDATE ";
 
@@ -803,9 +804,9 @@ void Address_Book(DBParser& dbparser){								//FINISHED
 	case '2':
 		cout << endl << "[Address Book Search]" << endl << endl;
 		cout << "* Enter First Name: ";				// Should be correct -robby 
-		getline(cin, first);
+		cin >> first;
 		cout << "* Enter Last Name: ";
-		getline(cin, last);
+		cin >> last;
 		name = first + last;
 		retrieve_contact(dbparser, name);
 		Address_Book(dbparser);
