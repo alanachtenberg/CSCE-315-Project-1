@@ -131,25 +131,28 @@ string query_for_addressbook_delete(string table, string name){
 //			Address Book Functions
 // --------------------------------------------------------------
 
-void retrieve_record(string _name){					// not finished need to actually retrieve record from Database!!
+void retrieve_record(DBParser& dbparser, string _name) { // not finished need to actually retrieve record from Database!!
+	Table result = dbparser.execute_query("result <- select (name == \"" + _name + "\") addressbook"); // result <- select (name == "John doe") addressbook"
 	string name, phone, email, address;
-	cout << endl << "Retrieved Record" << endl;
-	cout << "1. Name: " << name << endl; 
-	cout << "2. Phone: " << phone << endl;
-	cout << "3. Email: " << email << endl; 
-	cout << "4. Address: " << address << endl;
+	for (int i = 0; i < result.Get_max_height(); i++) {
+		vector <string> row = result.Get_row(i);
+		cout << "1. Name: " << row[0] << endl;
+		cout << "2. Phone: " << row[1] << endl;
+		cout << "3. Email: " << row[2] << endl;
+		cout << "4. Address: " << row[3] << endl;
+	}
 }
 
 
 
-string edit_contact(){
+string edit_contact(DBParser& dbparser){
 	string query;
 	string name, phone, email, address;	
 	char input, temp;
 	
 	cout << "*Enter name to edit: ";
 	cin >> name;
-	retrieve_record(name);
+	retrieve_record(dbparser, name);
 
 	cout << endl << "* Enter field to edit: ";
 	cin >> input;
@@ -196,13 +199,13 @@ string create_contact(){								// CANT HANDLE SPACES RIGHT NOW!!!!!!!!!!!!
 	return query;
 }
 
-string delete_contact(){						
+string delete_contact(DBParser& dbparser){						
 	bool check = false;
 	string name, answer;
 	string query = "";
 	cout << "* Enter Name to delete: ";
 	cin >> name;
-	retrieve_record(name);
+	retrieve_record(dbparser, name);
 	while (!check){
 		cout << "Are you sure you want to delete this record <y/n>: ";
 		cin >> answer;
@@ -245,12 +248,13 @@ void Address_Book(DBParser& dbparser){								// FINISHED CASE 1, 3, 4, 5, 6 Sti
 		break;
 	case '2':
 		cout << "Searching in Address Book" << endl;
-		cout << "* Enter Desired Name to Search For: ";				// NOT IMPLEMENTED!!!
+		cout << "* Enter Desired Name to Search For: ";				// Should be correct -robby 
 		cin >> name;
+		retrieve_record(dbparser, name);
 		break;
 	case '3':
 		cout << endl << "[Address Book Edit]" << endl << endl;
-		query = edit_contact();
+		query = edit_contact(dbparser);
 		cout << endl << query << endl;
 		dbparser.execute_query(query);								// SHOULD BE CORRECT CANT FULLY TEST YET
 		main_menu(dbparser);
@@ -264,7 +268,7 @@ void Address_Book(DBParser& dbparser){								// FINISHED CASE 1, 3, 4, 5, 6 Sti
 		break;
 	case '5':
 		cout << endl << "[Address Book Delete]" << endl << endl;
-		query = delete_contact();
+		query = delete_contact(dbparser);
 		cout << endl << query << endl;
 		dbparser.execute_query(query);								// SHOULD BE CORRECT CANT FULLY TEST YET
 		main_menu(dbparser);
