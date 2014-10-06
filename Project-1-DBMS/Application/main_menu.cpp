@@ -127,13 +127,93 @@ string query_for_addressbook_delete(string table, string name){
 	cout << temp << endl;
 	return temp;
 }
+
+string query_for_calendar_edit(char field, string table, string date, string day, string month, string year, string dateid, string memoid, string todoid ){
+	string new_value, temp;
+	switch (field){
+	case '1':
+		cout << "*Enter new value: ";
+		cin >> new_value;
+		temp = "UPDATE ";
+
+		temp = temp + table + " " + "SET date = ";
+		temp = temp + R"delim(")delim" + new_value + R"delim(")delim" + " ";				// The delim lets us use quotes in our string;
+		temp = temp + "WHERE(name == ";
+		temp = temp + R"delim(")delim" + date + R"delim(")delim" + ");";
+		// temp = UPDATE addressbook SET name = "new_value" WHERE(name == "name");
+		break;
+	case '2':
+		cout << "*Enter new value: ";
+		cin >> new_value;
+		temp = "UPDATE ";
+
+		temp = temp + table + " " + "SET day = ";
+		temp = temp + R"delim(")delim" + new_value + R"delim(")delim" + " ";				// The delim lets us use quotes in our string;
+		temp = temp + "WHERE(name == ";
+		temp = temp + R"delim(")delim" + day + R"delim(")delim" + ");";
+		// temp = UPDATE addressbook SET phone = "new_value" WHERE(name == "name");
+		break;
+	case '3':
+		cout << "*Enter new value: ";
+		cin >> new_value;
+		temp = "UPDATE ";
+
+		temp = temp + table + " " + "SET month = ";
+		temp = temp + R"delim(")delim" + new_value + R"delim(")delim" + " ";				// The delim lets us use quotes in our string;
+		temp = temp + "WHERE(name == ";
+		temp = temp + R"delim(")delim" + month + R"delim(")delim" + ");";
+		// temp = UPDATE addressbook SET email = "new_value" WHERE(name == "name");
+		break;
+	case '4':
+		cout << "*Enter new value: ";
+		cin >> new_value;
+		temp = "UPDATE ";
+		temp = temp + table + " " + "SET year = ";
+		temp = temp + R"delim(")delim" + new_value + R"delim(")delim" + " ";				// The delim lets us use quotes in our string;
+		temp = temp + "WHERE(name == ";
+		temp = temp + R"delim(")delim" + year + R"delim(")delim" + ");";
+		// temp = UPDATE addressbook SET address = "new_value" WHERE(name == "name");
+		break;
+	case '5':
+		cout << "*Enter new value: ";
+		cin >> new_value;
+		temp = "UPDATE ";
+		temp = temp + table + " " + "SET dateid = ";
+		temp = temp + R"delim(")delim" + new_value + R"delim(")delim" + " ";				// The delim lets us use quotes in our string;
+		temp = temp + "WHERE(name == ";
+		temp = temp + R"delim(")delim" + memoid + R"delim(")delim" + ");";
+		// temp = UPDATE addressbook SET address = "new_value" WHERE(name == "name");
+		break;
+	case '6':
+		cout << "*Enter new value: ";
+		cin >> new_value;
+		temp = "UPDATE ";
+		temp = temp + table + " " + "SET memoid = ";
+		temp = temp + R"delim(")delim" + new_value + R"delim(")delim" + " ";				// The delim lets us use quotes in our string;
+		temp = temp + "WHERE(name == ";
+		temp = temp + R"delim(")delim" + dateid + R"delim(")delim" + ");";
+		// temp = UPDATE addressbook SET address = "new_value" WHERE(name == "name");
+		break;
+	case '7':
+		cout << "*Enter new value: ";
+		cin >> new_value;
+		temp = "UPDATE ";
+		temp = temp + table + " " + "SET todoid = ";
+		temp = temp + R"delim(")delim" + new_value + R"delim(")delim" + " ";				// The delim lets us use quotes in our string;
+		temp = temp + "WHERE(name == ";
+		temp = temp + R"delim(")delim" + todoid + R"delim(")delim" + ");";
+		// temp = UPDATE addressbook SET address = "new_value" WHERE(name == "name");
+		break;
+	}
+	return temp;
+
+}
 // --------------------------------------------------------------
 //			Address Book Functions
 // --------------------------------------------------------------
 
 void retrieve_contact(DBParser& dbparser, string _name) { // not finished need to actually retrieve record from Database!!
 	Table result = dbparser.execute_query("result <- select (name == \"" + _name + "\") addressbook"); // result <- select (name == "John doe") addressbook"
-	string name, phone, email, address;
 	cout << endl<< "Contacts matched: [" << result.Get_max_height() << "]" << endl;
 	for (int i = 0; i < result.Get_max_height(); i++) {
 		vector <string> row = result.Get_row(i);
@@ -230,24 +310,66 @@ string delete_contact(DBParser& dbparser){
 //			Calendar Functions
 // --------------------------------------------------------------
 void retrieve_calendar_date(DBParser& dbparser, string date){
-	Table result = dbparser.execute_query("result <- select (name == \"" + date + "\") addressbook"); // result <- select (name == "John doe") addressbook"
-	string name, phone, email, address;
-	cout << endl << "Contacts matched: [" << result.Get_max_height() << "]" << endl;
+	Table result = dbparser.execute_query("result <- select (name == \"" + date + "\") calendar"); // result <- select (name == "01/01/2014") calendar"
+	
+	cout << endl << "Dates matched: [" << result.Get_max_height() << "]" << endl;
 	for (int i = 0; i < result.Get_max_height(); i++) {
 		vector <string> row = result.Get_row(i);
-		cout << endl << "Contact[" << i + 1 << "]:" << endl;
-		cout << "1. Name: " << row[1] << " " << row[2] << endl;
-		cout << "2. Phone: " << row[3] << endl;
-		cout << "3. Email: " << row[4] << endl;
-		cout << "4. Address: " << row[5] << endl;
+		cout << endl << "Date[" << i + 1 << "]:" << endl;
+		cout << "1. Day: " << row[1] << " " << row[2] << endl;
+		cout << "2. Month: " << row[2] << endl;
+		cout << "3. Year: " << row[3] << endl;
+		cout << "4. DateID: " << row[4] << endl;
+		cout << "5. MemoID: " << row[5] << endl;
+		cout << "6. ToDoID: " << row[6] << endl;
 	}
 }
 
+string edit_calendar_date(DBParser& dbparser){
+	string query;
+	string date, day, month, year, dateid, memoid, todoid;
+	char input, temp;
+
+	cout << "*Enter date to edit [DD/MM/YYYY]: ";
+	cin >> date;
+	retrieve_contact(dbparser, date);
+
+	cout << endl << "* Enter field to edit: ";
+	cin >> input;
+	temp = check_input(input, '1', '7');
+
+	switch (temp){
+	case '1':
+		query = query_for_calendar_edit('1', "calendar", date, day, month, year, dateid, memoid, todoid);
+		break;
+	case '2':
+		query = query_for_calendar_edit('2', "calendar", date, day, month, year, dateid, memoid, todoid);
+		break;
+	case '3':
+		query = query_for_calendar_edit('3', "calendar", date, day, month, year, dateid, memoid, todoid);
+		break;
+	case '4':
+		query = query_for_calendar_edit('4', "calendar", date, day, month, year, dateid, memoid, todoid);
+		break;
+	case '5':
+		query = query_for_calendar_edit('5', "calendar", date, day, month, year, dateid, memoid, todoid);
+		break;
+	case '6':
+		query = query_for_calendar_edit('6', "calendar", date, day, month, year, dateid, memoid, todoid);
+		break;
+	case '7':
+		query = query_for_calendar_edit('7', "calendar", date, day, month, year, dateid, memoid, todoid);
+		break;
+	default:
+		cerr << "Switch Error in edit_calendar_date!" << endl;
+	}
+	return query;
+}
 
 // --------------------------------------------------------------
 //			Main Menu Functions
 // --------------------------------------------------------------
-void Address_Book(DBParser& dbparser){								// FINISHED CASE 1, 3, 4, 5, 6 Still need 2
+void Address_Book(DBParser& dbparser){								//FINISHED
 	char input, temp;
 	string query;
 	string name, phone, email, address;
