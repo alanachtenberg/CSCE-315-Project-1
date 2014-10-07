@@ -996,7 +996,7 @@ void Calendar(DBParser& dbparser){
 void Memo_Pad(DBParser& dbparser){
 	char input, temp;
 	string query;
-	string todo, todoid, dateid;
+	string memoid, dateid;
 	string debug;
 
 	cout << endl << "[Memo Pad Menu]" << endl << endl;
@@ -1019,8 +1019,9 @@ void Memo_Pad(DBParser& dbparser){
 	case '2':
 		cout << "Searching in Memo Pad" << endl;
 		cout << "* Enter Desired Memo ID: ";
-		getline(cin, todo);
-		retrieve_memopad(dbparser, todoid);
+		cin.ignore();
+		getline(cin, memoid);
+		retrieve_memopad(dbparser, memoid);
 		Memo_Pad(dbparser);
 		break;
 	case '3':
