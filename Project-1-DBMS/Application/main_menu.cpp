@@ -371,6 +371,9 @@ string query_for_calendar_delete_todolist(string table, string todoid){
 	return temp;
 
 }
+string query_for_calendar_edit_todolist(string table, string todoid){
+	return "";
+}
 
 void retrieve_calendar_date(DBParser& dbparser, string date){
 	Table result = dbparser.execute_query("result <- select (date == \"" + date + "\") calendar"); // result <- select (name == "01/01/2014") calendar"
@@ -627,7 +630,6 @@ string query_for_todolist_edit(char field, string table, string todo, string tod
 		cout << "*Enter new To Do: ";
 		cin.ignore();
 		getline(cin, new_value);
-		cout << new_value;
 		temp = "UPDATE ";
 		temp += table + " SET todo = ";
 		temp += "\"" + new_value + "\"";
@@ -666,7 +668,7 @@ string query_for_todolist_edit(char field, string table, string todo, string tod
 
 }
 
-string edit_todolist(DBParser& dbparser){
+void edit_todolist(DBParser& dbparser){
 	string query;
 	string todo, todoid, dateid;
 	char input, temp;
@@ -683,17 +685,23 @@ string edit_todolist(DBParser& dbparser){
 	switch (temp){
 	case '1':
 		query = query_for_todolist_edit('1', "todolist", todo, todoid, dateid);
+		cout << query << endl;
+		dbparser.execute_query(query);
 		break;
 	case '2':
 		query = query_for_todolist_edit('2', "todolist", todo, todoid, dateid);
+		cout << query << endl;
+		dbparser.execute_query(query);
 		break;
 	case '3':
 		query = query_for_todolist_edit('3', "todolist", todo, todoid, dateid);
+		cout << query << endl;
+		dbparser.execute_query(query);
 		break;
 	default:
 		cerr << "Switch Error in edit_todolist!" << endl;
 	}
-	return query;
+	//return query;
 }
 
 string query_for_todolist_insert(string table, string todo, string todoid, string dateid){
@@ -965,9 +973,9 @@ void Todo_List(DBParser& dbparser){
 		break;
 	case '3':
 		cout << endl << "[To Do List Edit]" << endl << endl;
-		query = edit_todolist(dbparser);
-		cout << endl << query << endl;
-		dbparser.execute_query(query);								
+		edit_todolist(dbparser);
+//		cout << endl << query << endl;
+//		dbparser.execute_query(query);								
 		Todo_List(dbparser);
 		break;
 	case '4':
