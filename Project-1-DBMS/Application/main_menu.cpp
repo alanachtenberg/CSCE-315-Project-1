@@ -898,38 +898,38 @@ void Memo_Pad(DBParser& dbparser){
 	case '1':
 		cout << "Displaying Memo Pad " << endl;
 		dbparser.execute_query("SHOW memopad;");
-		Todo_List(dbparser);
+		Memo_Pad(dbparser);
 		break;
 	case '2':
-		cout << "Searching in To Do List" << endl;
-		cout << "* Enter Desired To Do List ID: ";
+		cout << "Searching in Memo Pad" << endl;
+		cout << "* Enter Desired Memo ID: ";
 		getline(cin, todo);
 		retrieve_memopad(dbparser, todoid);
-		Todo_List(dbparser);
+		Memo_Pad(dbparser);
 		break;
 	case '3':
-		cout << endl << "[To Do List Edit]" << endl << endl;
+		cout << endl << "[Memo Pad Edit]" << endl << endl;
 		query = edit_memopad(dbparser);
 		cout << endl << query << endl;
 		dbparser.execute_query(query);
-		Todo_List(dbparser);
+		Memo_Pad(dbparser);
 		break;
 	case '4':
-		cout << endl << "[To Do List Create]" << endl << endl;
+		cout << endl << "[Memo Pad Create]" << endl << endl;
 		create_memopad(dbparser);
 		
-		Todo_List(dbparser);
+		Memo_Pad(dbparser);
 		break;
 	case '5':
-		cout << endl << "[To Do List Delete]" << endl << endl;
+		cout << endl << "[Memo Pad Delete]" << endl << endl;
 		delete_memopad(dbparser);
-		Todo_List(dbparser);
+		Memo_Pad(dbparser);
 		break;
 	case '6':
 		main_menu(dbparser);
 		break;
 	default:
-		cerr << "Input Error in To Do List!" << endl;
+		cerr << "Input Error in Memo Pad!" << endl;
 	}
 }
 
