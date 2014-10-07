@@ -568,7 +568,7 @@ void create_memopad(DBParser& dbparser){
 	query = query_for_memopad_insert("memopad", memo, memoid, dateid, name);
 	cout << query << endl;
 	dbparser.execute_query(query);
-	query = query_for_calendar_insert("calendar", day, month, year, dateid, memoid, 0);
+	query = query_for_calendar_insert("calendar", day, month, year, dateid, memoid, "0");
 	cout << query << endl;
 	dbparser.execute_query(query);
 }
