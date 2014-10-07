@@ -905,12 +905,12 @@ void Address_Book(DBParser& dbparser){								//FINISHED
 	cout << "6. Return to main menu" << endl << endl;
 	cout << "* Enter command: ";
 	cin >> input;
-	temp = check_input(input, '1', '6');
+	temp = check_input(input, '1', '6');							// check to make sure input is an option
 	Table temp_table;
 	switch(temp){
 		case '1':
 		cout << endl << "[Address Book Display]" << endl << endl;
-		dbparser.execute_query("SHOW addressbook;");				// SHOULD BE CORRECT CANT FULLY TEST YET
+		dbparser.execute_query("SHOW addressbook;");				// show addressbook
 		Address_Book(dbparser);
 		break;
 	case '2':
@@ -1052,52 +1052,49 @@ void Todo_List(DBParser& dbparser){
 	char input, temp;
 	string query;
 	string todo, todoid, dateid;
-	string debug;
 
 	cout << endl << "[To Do List Menu]" << endl << endl;
-	cout << "1. Display list" << endl; //completed -need to test
-	cout << "2. Search" << endl; //completed - need to test
-	cout << "3. Edit" << endl; //completed - need to test
-	cout << "4. Create" << endl; //completed
+	cout << "1. Display list" << endl; 
+	cout << "2. Search" << endl; 
+	cout << "3. Edit" << endl; 
+	cout << "4. Create" << endl; 
 	cout << "5. Delete" << endl;
 	cout << "6. Return to main menu" << endl << endl;
 	cout << "* Enter command: ";
 	cin >> input;
-	temp = check_input(input, '1', '6');
-	Table temp_table;
+	temp = check_input(input, '1', '6');						// check input to make sure input is an option
+	
 	switch (temp){
 	case '1':
 		cout << "Displaying To Do List " << endl;
-		dbparser.execute_query("SHOW todolist;");				
+		dbparser.execute_query("SHOW todolist;");				// show the todolist
 		Todo_List(dbparser);
 		break;
 	case '2':
 		cout << "Searching in To Do List" << endl;
 		cout << "* Enter Desired To Do List ID: ";
-		cin.ignore();
+		cin.ignore();											// ingore \n in cin buffer
 		getline(cin, todoid);
-		retrieve_todolist(dbparser, todoid);
-		Todo_List(dbparser);
+		retrieve_todolist(dbparser, todoid);					// retrieves the record at the todoid
+		Todo_List(dbparser);									// return to todo menu
 		break;
 	case '3':
 		cout << endl << "[To Do List Edit]" << endl << endl;
-		edit_todolist(dbparser);
-//		cout << endl << query << endl;
-//		dbparser.execute_query(query);								
+		edit_todolist(dbparser);								// function for editing
 		Todo_List(dbparser);
 		break;
 	case '4':
 		cout << endl << "[To Do List Create]" << endl << endl;
-		create_todolist(dbparser);								
+		create_todolist(dbparser);								// functin for creating
 		Todo_List(dbparser);
 		break;
 	case '5':
 		cout << endl << "[To Do List Delete]" << endl << endl;
-		delete_todolist(dbparser);
+		delete_todolist(dbparser);								// funciton for deleting
 		Todo_List(dbparser);
 		break;
 	case '6':
-		main_menu(dbparser);
+		main_menu(dbparser);									// return to main menu
 		break;
 	default:
 		cerr << "Input Error in To Do List!" << endl;
