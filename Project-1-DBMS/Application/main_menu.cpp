@@ -753,7 +753,7 @@ string query_for_todolist_edit(char field, string table, string todo, string tod
 
 }
 
-void edit_todolist(DBParser& dbparser){
+void edit_todolist(DBParser& dbparser){			// function for editing todolist
 	string query;
 	string todo, todoid, newtodoid, dateid;
 	string month, day, year;
@@ -773,9 +773,9 @@ void edit_todolist(DBParser& dbparser){
 		cout << "*Enter new To Do: ";
 		cin.ignore();
 		getline(cin, todo);
-		query = query_for_todolist_edit('1', "todolist", todo, todoid, newtodoid, dateid);
+		query = query_for_todolist_edit('1', "todolist", todo, todoid, newtodoid, dateid);		// query for edit
 		cout << query << endl;
-		dbparser.execute_query(query);
+		dbparser.execute_query(query);						// execute query
 		break;
 	case '2':
 		cout << "*Enter new To Do ID value: ";
@@ -808,9 +808,9 @@ void edit_todolist(DBParser& dbparser){
 		cerr << "Switch Error in edit_todolist!" << endl;
 	}
 	//return query;
-}
+}	  
 
-string query_for_todolist_insert(string table, string todo, string todoid, string dateid){
+string query_for_todolist_insert(string table, string todo, string todoid, string dateid){		// query for to do list insert
 	string temp = "INSERT INTO ";
 	temp += table + " " + "VALUES FROM (";
 	temp += "\"" + todo + "\"" + ", ";				// The delim lets us use quotes in our string;
@@ -821,7 +821,7 @@ string query_for_todolist_insert(string table, string todo, string todoid, strin
 	return temp;
 }
 
-void create_todolist(DBParser& dbparser){ //if we create a todo, how do we also push it's date to the calendar?
+void create_todolist(DBParser& dbparser){					// function for creating in to do list
 	string query;
 	string todo, todoid, dateid;
 	string day, month, year;
@@ -846,15 +846,15 @@ void create_todolist(DBParser& dbparser){ //if we create a todo, how do we also 
 	dbparser.execute_query(query);
 }
 
-string query_for_todolist_delete(string table, string todoid){
+string query_for_todolist_delete(string table, string todoid){			// query for deleint in to do list
 	string temp = "DELETE FROM ";
 	temp += table + " " + "WHERE((todoid == ";
-	temp += "\"" + todoid + "\"" + "));";				// The delim lets us use quotes in our string;
+	temp += "\"" + todoid + "\"" + "));";				
 	cout << temp << endl;
 	return temp;
 }
 
-void delete_todolist(DBParser& dbparser){
+void delete_todolist(DBParser& dbparser){				// function for deleint in to do list
 	string todoID;
 	char answer;
 	string query = "";
