@@ -417,8 +417,39 @@ string query_for_calendar_delete_todolist(string table, string todoid){
 	return temp;
 
 }
-string query_for_calendar_edit_todolist(string table, string todoid){
-	return "";
+string query_for_calendar_edit_todolist(char field, string table, string todo, string todoid, string newtodoid, string month, string day, string year, string dateid){
+	string new_value, temp;
+	switch (field){
+
+	case '2':
+		temp = "UPDATE ";
+		temp += table + " SET todoid = ";
+		temp += "\"" + newtodoid + "\"";
+		temp += " WHERE(todoid == ";
+		temp += "\"" + todoid + "\"" + ");";
+		// temp = UPDATE addressbook SET todoid = "new_value" WHERE(todo == "todo");
+		break;
+	case '3':
+		temp = "UPDATE ";
+		temp += table + " " + "SET date = ";
+		temp += "\"" + dateid + "\"" + ", ";
+		temp += "month = ";
+		temp += "\"" + month + "\"" + ", ";
+		temp += "day = ";
+		temp += "\"" + day + "\"" + ", ";
+		temp += "year = ";
+		temp += "\"" + year + "\"" + ", ";
+		temp += "dateid = ";
+		temp += "\"" + dateid + "\"" + " ";
+		//+dateid + " ";
+		temp += "WHERE(todoid == ";
+		temp += "\"" + todoid + "\"" + ");";
+		// temp = UPDATE addressbook SET dateid = "new_value" WHERE(todo == "todo");
+		break;
+
+
+	}
+	return temp;
 }
 
 void retrieve_calendar_date(DBParser& dbparser, string date){
@@ -692,43 +723,32 @@ void retrieve_todolist(DBParser& dbparser, string todoid){
 }
 
 
-string query_for_todolist_edit(char field, string table, string todo, string todoid, string dateid){
+string query_for_todolist_edit(char field, string table, string todo, string todoid, string newtodoid, string dateid){
 	string new_value, temp;
 	switch (field){
 	case '1':
-		cout << "*Enter new To Do: ";
-		cin.ignore();
-		getline(cin, new_value);
 		temp = "UPDATE ";
 		temp += table + " SET todo = ";
-		temp += "\"" + new_value + "\"";
+		temp += "\"" + todo + "\"";
 		temp += " WHERE(todoid == ";
 		temp += "\"" + todoid + "\"" + ");";
-		// temp = UPDATE addressbook SET todo = "new_value" WHERE(todo == "todo");
+		// temp = UPDATE addressbook SET todo = "tod0" WHERE(todoid == "todoid");
 		break;
 	case '2':
-		cout << "*Enter new value: ";
-		cin.ignore();
-		getline(cin, new_value);
 		temp = "UPDATE ";
-
 		temp += table + " SET todoid = ";
-		temp += "\"" + new_value + "\"";
+		temp += "\"" + newtodoid + "\"";
 		temp += " WHERE(todoid == ";
 		temp += "\"" + todoid + "\"" + ");";
-		// temp = UPDATE addressbook SET todoid = "new_value" WHERE(todo == "todo");
+		// temp = UPDATE addressbook SET todoid = "todoid" WHERE(todoid == "todoid");
 		break;
 	case '3':
-		cout << "*Enter new value: ";
-		cin.ignore();
-		getline(cin, new_value);
 		temp = "UPDATE ";
-
 		temp += table + " " + "SET dateid = ";
-		temp += "\"" + new_value + "\"" + " ";				// The delim lets us use quotes in our string;
+		temp += "\"" + dateid + "\"" + " ";				// The delim lets us use quotes in our string;
 		temp += "WHERE(todoid == ";
 		temp += "\"" + todoid + "\"" + ");";
-		// temp = UPDATE addressbook SET dateid = "new_value" WHERE(todo == "todo");
+		// temp = UPDATE addressbook SET dateid = "dateid" WHERE(todoid == "todoid");
 		break;
 
 	
@@ -739,7 +759,8 @@ string query_for_todolist_edit(char field, string table, string todo, string tod
 
 void edit_todolist(DBParser& dbparser){
 	string query;
-	string todo, todoid, dateid;
+	string todo, todoid, newtodoid, dateid;
+	string month, day, year;
 	char input, temp;
 
 	cout << "*Enter To Do List ID: ";
@@ -753,17 +774,37 @@ void edit_todolist(DBParser& dbparser){
 
 	switch (temp){
 	case '1':
-		query = query_for_todolist_edit('1', "todolist", todo, todoid, dateid);
+		cout << "*Enter new To Do: ";
+		cin.ignore();
+		getline(cin, todo);
+		query = query_for_todolist_edit('1', "todolist", todo, todoid, newtodoid, dateid);
 		cout << query << endl;
 		dbparser.execute_query(query);
 		break;
 	case '2':
-		query = query_for_todolist_edit('2', "todolist", todo, todoid, dateid);
+		cout << "*Enter new To Do ID value: ";
+		cin.ignore();
+		getline(cin, newtodoid);
+		query = query_for_todolist_edit('2', "todolist", todo, todoid, newtodoid, dateid);
+		cout << query << endl;
+		dbparser.execute_query(query);
+		query = query_for_calendar_edit_todolist('2', "calendar", todo, todoid, newtodoid, month, day, year, dateid);
 		cout << query << endl;
 		dbparser.execute_query(query);
 		break;
 	case '3':
-		query = query_for_todolist_edit('3', "todolist", todo, todoid, dateid);
+		cout << "* Enter new Month of To Do Item [MM]:";
+		cin.ignore();
+		getline(cin, month);
+		cout << "* Enter new Day of To Do Item [DD]:";
+		getline(cin, day);
+		cout << "* Enter new Year of To Do Item [YYYY]:";
+		getline(cin, year);
+		dateid = month + "/" + day + "/" + year;
+		query = query_for_todolist_edit('3', "todolist", todo, todoid, newtodoid, dateid);
+		cout << query << endl;
+		dbparser.execute_query(query);
+		query = query_for_calendar_edit_todolist('3', "calendar", todo, todoid, newtodoid, month, day, year, dateid);
 		cout << query << endl;
 		dbparser.execute_query(query);
 		break;
@@ -800,7 +841,7 @@ void create_todolist(DBParser& dbparser){ //if we create a todo, how do we also 
 	getline(cin, day);
 	cout << "* Enter year of To Do Item [YYYY]:";
 	getline(cin, year);
-	dateid = month + day + year;
+	dateid = month + "/" + day + "/" + year;
 	query = query_for_todolist_insert("todolist", todo, todoid, dateid);
 	cout << query << endl;
 	dbparser.execute_query(query);
