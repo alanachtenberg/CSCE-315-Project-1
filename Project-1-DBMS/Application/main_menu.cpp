@@ -545,7 +545,7 @@ void create_memopad(DBParser& dbparser){
 	string query;
 	string memo, memoid, dateid, name;
 	string day, month, year;
-	cout << endl << "Creating New To Do Item" << endl;
+	cout << endl << "Creating New Memo Item" << endl;
 	cout << "* Enter Memo: ";
 	getline(cin, memo);
 	getline(cin, memo);
@@ -554,11 +554,11 @@ void create_memopad(DBParser& dbparser){
 	cout << "* Enter Date ID ";
 	getline(cin, dateid);
 	cout << "*Enter the Name of recipient";
-	cout << "* Enter day of To Do Item [DD]:";
+	cout << "* Enter day of Memo Item [DD]:";
 	getline(cin, day);
-	cout << "* Enter month of To Do Item [MM]:";
+	cout << "* Enter month of Memo Item [MM]:";
 	getline(cin, month);
-	cout << "* Enter year of To Do Item [YYYY]:";
+	cout << "* Enter year of Memo Item [YYYY]:";
 	getline(cin, year);
 
 	query = query_for_memopad_insert("memopad", memo, memoid, dateid, name);
