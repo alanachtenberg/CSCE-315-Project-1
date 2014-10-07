@@ -376,7 +376,7 @@ string query_for_calendar_edit_memopad(char field, string table, string memo, st
 
 }
 
-string query_for_calendar_insert(string table, string day, string month, string year, string dateid, string memoid, string todoid){
+string query_for_calendar_insert(string table, string day, string month, string year, string dateid, string memoid, string todoid){ // creates a query string to send to parser to isnert a tuple to calender table
 	string temp = "INSERT INTO ";
 	string date = day + "/" + month + "/" + year;
 	temp += table + " " + "VALUES FROM (";
@@ -392,7 +392,7 @@ string query_for_calendar_insert(string table, string day, string month, string 
 	return temp;
 }
 
-string  query_for_calendar_delete_memopad(string table, string memoid){
+string  query_for_calendar_delete_memopad(string table, string memoid){ //creates a query string to send to parser for deleting a memopad calender tuple
 	
 	string temp = "DELETE FROM ";
 	temp += table + " " + "WHERE((memoid == ";
@@ -403,7 +403,7 @@ string  query_for_calendar_delete_memopad(string table, string memoid){
 
 }
 
-string query_for_calendar_delete_todolist(string table, string todoid){
+string query_for_calendar_delete_todolist(string table, string todoid){ // creates a query string to send to parser to delete a todolist from the calendar
 	string temp = "DELETE FROM ";
 	temp += table + " " + "WHERE((todoid == ";
 	temp += "\"" + todoid + "\"" + "));";				// The delim lets us use quotes in our string;
@@ -507,8 +507,8 @@ string edit_calendar_date(DBParser& dbparser){
 //			Memo Pad Functions
 // --------------------------------------------------------------
 
-void retrieve_memopad(DBParser& dbparser, string memoid){
-	Table result = dbparser.execute_query("result <- select (memoid == \"" + memoid + "\") memopad"); // do we want to take in the memo or the MemoID in order to search?
+void retrieve_memopad(DBParser& dbparser, string memoid){ //prints a memopad tuple and prints it out with indecies
+	Table result = dbparser.execute_query("result <- select (memoid == \"" + memoid + "\") memopad"); 
 	cout << endl << "Contacts matched: [" << result.Get_max_height() << "]" << endl;
 	for (int i = 0; i < result.Get_max_height(); i++) {
 		vector <string> row = result.Get_row(i);
@@ -573,7 +573,7 @@ void edit_memopad(DBParser& dbparser){
 	char input, temp;
 
 	cout << "*Enter Memo ID: ";
-	cin.ignore();
+	cin.ignore(); // allows us to remove \n for parser to skip
 	getline(cin, memoid);
 	retrieve_memopad(dbparser, memoid);
 
@@ -632,7 +632,7 @@ void edit_memopad(DBParser& dbparser){
 	
 }
 
-string query_for_memopad_insert(string table, string memo, string memoid, string dateid, string name){
+string query_for_memopad_insert(string table, string memo, string memoid, string dateid, string name){ //creates query for the insertion of memopad tuple to memopad table
 	string temp = "INSERT INTO ";
 	temp += table + " " + "VALUES FROM (";
 	temp += "\"" + memo + "\"" + ", ";
@@ -671,7 +671,7 @@ void create_memopad(DBParser& dbparser){
 	dbparser.execute_query(query);
 }
 
-string query_for_memopad_delete(string table, string memoid){
+string query_for_memopad_delete(string table, string memoid){ // creates query string to delete tuple from memopad
 	string temp = "DELETE FROM ";
 	temp += table + " " + "WHERE((memoid == ";
 	temp += "\"" + memoid + "\"" + "));";
@@ -679,7 +679,7 @@ string query_for_memopad_delete(string table, string memoid){
 	return temp;
 }
 
-void delete_memopad(DBParser& dbparser){
+void delete_memopad(DBParser& dbparser){ //removes a memopad from the memopad and calendar table
 	bool check = false;
 	string memoid;
 	char answer;
@@ -692,9 +692,9 @@ void delete_memopad(DBParser& dbparser){
 		cout << "Are you sure you want to delete this record <y/n>:\n";
 		cin >> answer;
 		if (answer == 'y'){
-			query = query_for_memopad_delete("memopad", memoid);
+			query = query_for_memopad_delete("memopad", memoid); // remove memopad tuple from memopad table
 			dbparser.execute_query(query);
-			query = query_for_calendar_delete_memopad("memopad", memoid);
+			query = query_for_calendar_delete_memopad("memopad", memoid); // remove memopad from calendar table 
 			dbparser.execute_query(query);
 		}
 		else if (answer == 'n'){
