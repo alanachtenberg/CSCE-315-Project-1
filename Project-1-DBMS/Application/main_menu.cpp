@@ -340,44 +340,39 @@ string query_for_calendar_edit_memopad(char field, string table, string memo, st
 	string new_value, temp;
 	switch (field){
 	case '1':
-		cout << "*Enter new value: ";
-		getline(cin, new_value);
+		
 		temp = "UPDATE ";
 
 		temp += table + " " + "SET memo = ";
-		temp += "\"" + new_value + "\"" + " ";				// The delim lets us use quotes in our string;
+		temp += "\"" + memo + "\"" + " ";				// The delim lets us use quotes in our string;
 		temp += "WHERE(memoid == ";
 		temp += "\"" + memoid + "\"" + ");";
 		// temp = UPDATE addressbook SET name = "new_value" WHERE(name == "name");
 		break;
 	case '2':
-		cout << "*Enter new value: ";
-		getline(cin, new_value);
+		
 		temp = "UPDATE ";
 
 		temp += table + " " + "SET memoid = ";
-		temp += "\"" + new_value + "\"" + " ";				// The delim lets us use quotes in our string;
+		temp += "\"" + memoid + "\"" + " ";				// The delim lets us use quotes in our string;
 		temp += "WHERE(memoid == ";
 		temp += "\"" + memoid + "\"" + ");";
 		// temp = UPDATE addressbook SET phone = "new_value" WHERE(name == "name");
 		break;
 	case '3':
-		cout << "*Enter new value: ";
-		getline(cin, new_value);
+		
 		temp = "UPDATE ";
 
 		temp += table + " " + "SET dateid = ";
-		temp += "\"" + new_value + "\"" + " ";				// The delim lets us use quotes in our string;
+		temp += "\"" + dateid + "\"" + " ";				// The delim lets us use quotes in our string;
 		temp += "WHERE(memoid == ";
 		temp += "\"" + memoid + "\"" + ");";
 		// temp = UPDATE addressbook SET email = "new_value" WHERE(name == "name");
 		break;
 	case '4':
-		cout << "*Enter new value: ";
-		getline(cin, new_value);
 		temp = "UPDATE ";
 		temp += table + " " + "SET name = ";
-		temp += "\"" + new_value + "\"" + " ";				// The delim lets us use quotes in our string;
+		temp += "\"" + name + "\"" + " ";				// The delim lets us use quotes in our string;
 		temp += "WHERE(memoid == ";
 		temp += "\"" + memoid + "\"" + ");";
 		// temp = UPDATE addressbook SET address = "new_value" WHERE(name == "name");
@@ -488,7 +483,7 @@ string edit_calendar_date(DBParser& dbparser){
 // --------------------------------------------------------------
 
 void retrieve_memopad(DBParser& dbparser, string memoid){
-	Table result = dbparser.execute_query("result <- select (memoid == \"" + memoid + "\") todolist"); // do we want to take in the memo or the MemoID in order to search?
+	Table result = dbparser.execute_query("result <- select (memoid == \"" + memoid + "\") memopad"); // do we want to take in the memo or the MemoID in order to search?
 	cout << endl << "Contacts matched: [" << result.Get_max_height() << "]" << endl;
 	for (int i = 0; i < result.Get_max_height(); i++) {
 		vector <string> row = result.Get_row(i);
@@ -500,49 +495,44 @@ void retrieve_memopad(DBParser& dbparser, string memoid){
 	}
 }
 
-string query_for_memopad_edit(char field, string table, string memo, string memoid, string dateid, string name){
+string query_for_memopad_edit(char field, string table, string memo, string new_memoid, string memoid, string dateid, string name){
 	string new_value, temp;
 	switch (field){
 	case '1':
-		cout << "*Enter new value: ";
-		getline(cin, new_value);
 		temp = "UPDATE ";
 
 		temp += table + " " + "SET memo = ";
-		temp += "\"" + new_value + "\"" + " ";				// The delim lets us use quotes in our string;
+		temp += "\"" + memo + "\"" + " ";				// The delim lets us use quotes in our string;
 		temp += "WHERE(memoid == ";
 		temp += "\"" + memoid + "\"" + ");";
 		// temp = UPDATE addressbook SET memo = "new_value" WHERE(memoid == "memoid");
 		break;
 	case '2':
-		cout << "*Enter new value: ";
-		getline(cin, new_value);
+
 		temp = "UPDATE ";
 
 		temp += table + " " + "SET memoid = ";
-		temp += "\"" + new_value + "\"" + " ";				// The delim lets us use quotes in our string;
-		temp += "WHERE(memoid == ";
+		temp += "\"" + new_memoid + "\"" + " ";				// The delim lets us use quotes in our string;
+		temp += "WHERE (memoid == ";
 		temp += "\"" + memoid + "\"" + ");";
 		// temp = UPDATE memopad SET memoid = "new_value" WHERE(memoid == "memoid");
 		break;
 	case '3':
-		cout << "*Enter new value: ";
-		getline(cin, new_value);
+
 		temp = "UPDATE ";
 
 		temp += table + " " + "SET dateid = ";
-		temp += "\"" + new_value + "\"" + " ";				// The delim lets us use quotes in our string;
+		temp += "\"" + dateid + "\"" + " ";				// The delim lets us use quotes in our string;
 		temp += "WHERE(memoid == ";
 		temp += "\"" + memoid + "\"" + ");";
 		// temp = UPDATE memopad SET dateid = "new_value" WHERE(memoid == "memoid");
 		break;
 	case '4':
-		cout << "*Enter new value: ";
-		getline(cin, new_value);
+
 		temp = "UPDATE ";
 
 		temp += table + " " + "SET name = ";
-		temp += "\"" + new_value + "\"" + " ";				// The delim lets us use quotes in our string;
+		temp += "\"" + name + "\"" + " ";				// The delim lets us use quotes in our string;
 		temp += "WHERE(memoid == ";
 		temp += "\"" + memoid + "\"" + ");";
 		// temp = UPDATE memopad SET name = "new_value" WHERE(memoid == "memoid");
@@ -553,10 +543,11 @@ string query_for_memopad_edit(char field, string table, string memo, string memo
 
 void edit_memopad(DBParser& dbparser){
 	string query;
-	string memo, memoid, dateid, name;
+	string memo, new_memoid, memoid, dateid, name;
 	char input, temp;
 
 	cout << "*Enter Memo ID: ";
+	cin.ignore();
 	getline(cin, memoid);
 	retrieve_memopad(dbparser, memoid);
 
@@ -566,28 +557,40 @@ void edit_memopad(DBParser& dbparser){
 
 	switch (temp){
 	case '1':
-		query = query_for_memopad_edit('1', "memopad", memo, memoid, dateid, name);
+		cout << "*Enter new Memo: ";
+		cin.ignore();
+		getline(cin, new_memoid);
+		query = query_for_memopad_edit('1', "memopad", memo, memoid, new_memoid, dateid, name);
 		cout << query << endl;
 		dbparser.execute_query(query);
 		break;
 	case '2':
-		query = query_for_memopad_edit('2', "memopad", memo, memoid, dateid, name);
+		cout << "*Enter new Memo ID: ";
+		cin.ignore();
+		getline(cin, memoid);
+		query = query_for_memopad_edit('2', "memopad", memo, memoid, new_memoid, dateid, name);
 		cout << query << endl;
 		dbparser.execute_query(query);
-		query = query_for_calendar_edit_memopad('6', "memopad", memo, memoid, dateid, name);
+		query = query_for_calendar_edit_memopad('2', "memopad", memo, new_memoid, dateid, name);
 		cout << query << endl;
 		dbparser.execute_query(query);
 		break;
 	case '3':
-		query = query_for_memopad_edit('3', "memopad", memo, memoid, dateid, name);
+		cout << "*Enter new Date ID: ";
+		cin.ignore();
+		getline(cin, dateid);
+		query = query_for_memopad_edit('3', "memopad", memo, memoid, new_memoid, dateid, name);
 		cout << query << endl;
 		dbparser.execute_query(query);
-		query = query_for_calendar_edit_memopad('5', "memopad", memo, memoid, dateid, name);
+		query = query_for_calendar_edit_memopad('3', "memopad", memo, new_memoid, dateid, name);
 		cout << query << endl;
 		dbparser.execute_query(query);
 		break;
 	case '4':
-		query = query_for_memopad_edit('4', "memopad", memo, memoid, dateid, name);
+		cout << "*Enter new name: ";
+		cin.ignore();
+		getline(cin, name);
+		query = query_for_memopad_edit('4', "memopad", memo, memoid, new_memoid, dateid, name);
 		cout << query << endl;
 		dbparser.execute_query(query);
 		break;
@@ -621,7 +624,7 @@ void create_memopad(DBParser& dbparser){
 	getline(cin, memoid);
 	cout << "* Enter Date ID ";
 	getline(cin, dateid);
-	cout << "*Enter the Name of recipient";
+	cout << "*Enter the Name of recipient: ";
 	getline(cin, name);
 	cout << "* Enter day of Memo Item [DD]:";
 	getline(cin, day);
@@ -652,6 +655,7 @@ void delete_memopad(DBParser& dbparser){
 	char answer;
 	string query = "";
 	cout << "* Enter Memo ID to delete: ";
+	cin.ignore();
 	getline(cin, memoid);
 	retrieve_memopad(dbparser, memoid);
 	while (true){
