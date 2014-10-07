@@ -717,15 +717,13 @@ void create_todolist(DBParser& dbparser){ //if we create a todo, how do we also 
 	getline(cin, todo);
 	cout << "* Enter an Integer To Do ID: ";
 	getline(cin, todoid);
-	cout << "* Enter Date ID: ";
-	getline(cin, dateid);
-	cout << "* Enter day of To Do Item [DD]:";
-	getline(cin, day);
 	cout << "* Enter month of To Do Item [MM]:";
 	getline(cin, month);
+	cout << "* Enter day of To Do Item [DD]:";
+	getline(cin, day);
 	cout << "* Enter year of To Do Item [YYYY]:";
 	getline(cin, year);
-
+	dateid = month + day + year;
 	query = query_for_todolist_insert("todolist", todo, todoid, dateid);
 	cout << query << endl;
 	dbparser.execute_query(query);
