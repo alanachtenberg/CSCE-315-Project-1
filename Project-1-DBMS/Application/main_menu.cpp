@@ -554,6 +554,7 @@ void create_memopad(DBParser& dbparser){
 	cout << "* Enter Date ID ";
 	getline(cin, dateid);
 	cout << "*Enter the Name of recipient";
+	getline(cin, name);
 	cout << "* Enter day of Memo Item [DD]:";
 	getline(cin, day);
 	cout << "* Enter month of Memo Item [MM]:";
