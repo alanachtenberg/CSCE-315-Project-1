@@ -911,43 +911,41 @@ void Address_Book(DBParser& dbparser){								//FINISHED
 		case '1':
 		cout << endl << "[Address Book Display]" << endl << endl;
 		dbparser.execute_query("SHOW addressbook;");				// show addressbook
-		Address_Book(dbparser);
+		Address_Book(dbparser);										// return to addressbook menu
 		break;
 	case '2':
 		cout << endl << "[Address Book Search]" << endl << endl;
-		cout << "* Enter First Name: ";				// Should be correct -robby 
+		cout << "* Enter First Name: ";		
 		cin >> first;
 		cout << "* Enter Last Name: ";
 		cin >> last;
 		name = first + last;
-		retrieve_contact(dbparser, name);
+		retrieve_contact(dbparser, name);							// retrieve recorded of person searching for
 		Address_Book(dbparser);
 		break;
 	case '3':
 		cout << endl << "[Address Book Edit]" << endl << endl;
-		query = edit_contact(dbparser);
+		query = edit_contact(dbparser);								// funciton for editing query, for editing contacts
 		cout << endl << query << endl;
-		dbparser.execute_query(query);								// SHOULD BE CORRECT CANT FULLY TEST YET
+		dbparser.execute_query(query);								// execute the query to edit contact
 		Address_Book(dbparser);
 		break;
 	case '4':
 		cout << endl << "[Address Book Create]" << endl << endl;
-		query = create_contact();
+		query = create_contact();									// function for create query, for creating contacts
 		cout << endl << query << endl;
-		dbparser.execute_query(query);								//not adding any contact to the addressbook.db 
+		dbparser.execute_query(query);								// execute the query for creating contact
 		Address_Book(dbparser);
 		break;
 	case '5':
 		cout << endl << "[Address Book Delete]" << endl << endl;
-		query = delete_contact(dbparser);
-//		if (query != "No record Deleted"){
-//			cout << endl << query << endl;
-			dbparser.execute_query(query);// SHOULD BE CORRECT CANT FULLY TEST YET
-//		}
+		query = delete_contact(dbparser);							// function for delete query, for delting contacts
+		cout << endl << query << endl;
+		dbparser.execute_query(query);								// execute the query for deleting contact
 		Address_Book(dbparser);
 		break;
 	case '6':
-		main_menu(dbparser);
+		main_menu(dbparser);										// return to main menu
 		break;
 	default:
 		cerr << "Input Error in Address book!" << endl;
