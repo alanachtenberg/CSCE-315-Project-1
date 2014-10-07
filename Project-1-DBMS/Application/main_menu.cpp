@@ -336,6 +336,57 @@ string query_for_calendar_edit(char field, string table, string date, string day
 
 }
 
+string query_for_calendar_edit_memopad(char field, string table, string memo, string memoid, string dateid,  string name){
+	string new_value, temp;
+	switch (field){
+	case '1':
+		cout << "*Enter new value: ";
+		getline(cin, new_value);
+		temp = "UPDATE ";
+
+		temp += table + " " + "SET memo = ";
+		temp += "\"" + new_value + "\"" + " ";				// The delim lets us use quotes in our string;
+		temp += "WHERE(memoid == ";
+		temp += "\"" + memoid + "\"" + ");";
+		// temp = UPDATE addressbook SET name = "new_value" WHERE(name == "name");
+		break;
+	case '2':
+		cout << "*Enter new value: ";
+		getline(cin, new_value);
+		temp = "UPDATE ";
+
+		temp += table + " " + "SET memoid = ";
+		temp += "\"" + new_value + "\"" + " ";				// The delim lets us use quotes in our string;
+		temp += "WHERE(memoid == ";
+		temp += "\"" + memoid + "\"" + ");";
+		// temp = UPDATE addressbook SET phone = "new_value" WHERE(name == "name");
+		break;
+	case '3':
+		cout << "*Enter new value: ";
+		getline(cin, new_value);
+		temp = "UPDATE ";
+
+		temp += table + " " + "SET dateid = ";
+		temp += "\"" + new_value + "\"" + " ";				// The delim lets us use quotes in our string;
+		temp += "WHERE(memoid == ";
+		temp += "\"" + memoid + "\"" + ");";
+		// temp = UPDATE addressbook SET email = "new_value" WHERE(name == "name");
+		break;
+	case '4':
+		cout << "*Enter new value: ";
+		getline(cin, new_value);
+		temp = "UPDATE ";
+		temp += table + " " + "SET name = ";
+		temp += "\"" + new_value + "\"" + " ";				// The delim lets us use quotes in our string;
+		temp += "WHERE(memoid == ";
+		temp += "\"" + memoid + "\"" + ");";
+		// temp = UPDATE addressbook SET address = "new_value" WHERE(name == "name");
+		break;
+	}
+	return temp;
+
+}
+
 string query_for_calendar_insert(string table, string day, string month, string year, string dateid, string memoid, string todoid){
 	string temp = "INSERT INTO ";
 	string date = day + "/" + month + "/" + year;
@@ -530,7 +581,7 @@ string query_for_memopad_edit(char field, string table, string memo, string memo
 	return temp;
 }
 
-string edit_memopad(DBParser& dbparser){
+void edit_memopad(DBParser& dbparser){
 	string query;
 	string memo, memoid, dateid, name;
 	char input, temp;
@@ -546,20 +597,34 @@ string edit_memopad(DBParser& dbparser){
 	switch (temp){
 	case '1':
 		query = query_for_memopad_edit('1', "memopad", memo, memoid, dateid, name);
+		cout << query << endl;
+		dbparser.execute_query(query);
 		break;
 	case '2':
 		query = query_for_memopad_edit('2', "memopad", memo, memoid, dateid, name);
+		cout << query << endl;
+		dbparser.execute_query(query);
+		query = query_for_calendar_edit_memopad('6', "memopad", memo, memoid, dateid, name);
+		cout << query << endl;
+		dbparser.execute_query(query);
 		break;
 	case '3':
 		query = query_for_memopad_edit('3', "memopad", memo, memoid, dateid, name);
+		cout << query << endl;
+		dbparser.execute_query(query);
+		query = query_for_calendar_edit_memopad('5', "memopad", memo, memoid, dateid, name);
+		cout << query << endl;
+		dbparser.execute_query(query);
 		break;
 	case '4':
 		query = query_for_memopad_edit('4', "memopad", memo, memoid, dateid, name);
+		cout << query << endl;
+		dbparser.execute_query(query);
 		break;
 	default:
 		cerr << "Switch Error in edit_memopad!" << endl;
 	}
-	return query;
+	
 }
 
 string query_for_memopad_insert(string table, string memo, string memoid, string dateid, string name){
@@ -903,7 +968,7 @@ void Calendar(DBParser& dbparser){
 		break;
 	case '3':
 		cout << endl << "[Calendar Edit]" << endl << endl;
-		query = edit_contact(dbparser);
+		query = edit_calendar_date(dbparser);
 		cout << endl << query << endl;
 		dbparser.execute_query(query);								
 		Calendar(dbparser);
@@ -948,9 +1013,7 @@ void Memo_Pad(DBParser& dbparser){
 		break;
 	case '3':
 		cout << endl << "[Memo Pad Edit]" << endl << endl;
-		query = edit_memopad(dbparser);
-		cout << endl << query << endl;
-		dbparser.execute_query(query);
+		edit_memopad(dbparser);
 		Memo_Pad(dbparser);
 		break;
 	case '4':
