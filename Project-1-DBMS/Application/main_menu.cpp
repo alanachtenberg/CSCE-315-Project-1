@@ -709,11 +709,11 @@ void delete_memopad(DBParser& dbparser){
 // --------------------------------------------------------------
 //			To Do List Functions
 // --------------------------------------------------------------
-void retrieve_todolist(DBParser& dbparser, string todoid){
-	Table result = dbparser.execute_query("result <- select (todoid == \"" + todoid + "\") todolist"); // do we want to take in the todo or the ToDoID in order to search?
+void retrieve_todolist(DBParser& dbparser, string todoid){				// function for retrieve todolist object
+	Table result = dbparser.execute_query("result <- select (todoid == \"" + todoid + "\") todolist");		// pull the todo with the desired todoid
 	cout << endl << "ToDos matched: [" << result.Get_max_height() << "]" << endl;
 	for (int i = 0; i < result.Get_max_height(); i++) {
-		vector <string> row = result.Get_row(i);
+		vector <string> row = result.Get_row(i);						// cout the information for the to do object that matches
 		cout << endl << "Todo[" << i + 1 << "]:" << endl;
 		cout << "1. To Do: " << row[0] << endl;
 		cout << "2. ToDoID: " << row[1] << endl;
@@ -721,8 +721,7 @@ void retrieve_todolist(DBParser& dbparser, string todoid){
 	}
 }
 
-
-string query_for_todolist_edit(char field, string table, string todo, string todoid, string newtodoid, string dateid){
+string query_for_todolist_edit(char field, string table, string todo, string todoid, string newtodoid, string dateid){	// functin for creating todolist edit query
 	string new_value, temp;
 	switch (field){
 	case '1':
@@ -731,7 +730,7 @@ string query_for_todolist_edit(char field, string table, string todo, string tod
 		temp += "\"" + todo + "\"";
 		temp += " WHERE(todoid == ";
 		temp += "\"" + todoid + "\"" + ");";
-		// temp = UPDATE addressbook SET todo = "tod0" WHERE(todoid == "todoid");
+		// temp = UPDATE todolist SET todo = "todo" WHERE(todoid == "todoid");
 		break;
 	case '2':
 		temp = "UPDATE ";
@@ -739,18 +738,16 @@ string query_for_todolist_edit(char field, string table, string todo, string tod
 		temp += "\"" + newtodoid + "\"";
 		temp += " WHERE(todoid == ";
 		temp += "\"" + todoid + "\"" + ");";
-		// temp = UPDATE addressbook SET todoid = "todoid" WHERE(todoid == "todoid");
+		// temp = UPDATE todolist SET todoid = "newtodoid" WHERE(todoid == "todoid");
 		break;
 	case '3':
 		temp = "UPDATE ";
 		temp += table + " " + "SET dateid = ";
-		temp += "\"" + dateid + "\"" + " ";				// The delim lets us use quotes in our string;
+		temp += "\"" + dateid + "\"" + " ";				
 		temp += "WHERE(todoid == ";
 		temp += "\"" + todoid + "\"" + ");";
-		// temp = UPDATE addressbook SET dateid = "dateid" WHERE(todoid == "todoid");
+		// temp = UPDATE todolist SET dateid = "dateid" WHERE(todoid == "todoid");
 		break;
-
-	
 	}
 	return temp;
 
