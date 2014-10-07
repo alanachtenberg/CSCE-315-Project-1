@@ -1,20 +1,20 @@
 addressbook
 name
 VARCHAR(30)
-robbyggrathwohl;robbygrathwohl;ENDLIST;
+robbygrathwohl;jacobstone;ENDLIST;
 first
 VARCHAR(15)
-robbyg;robby;ENDLIST;
+robby;jacob;ENDLIST;
 last
 VARCHAR(15)
-grathwohl;grathwohl;ENDLIST;
+grathwohl;stone;ENDLIST;
 phone
 VARCHAR(10)
-robbygphone;nonumbers;ENDLIST;
+nonumbers;5124664467;ENDLIST;
 email
 VARCHAR(50)
-robbyemail;nospecialcharacters;ENDLIST;
+nospecialcharacters;jacob.stone56@tamu.edu;ENDLIST;
 address
 VARCHAR(100)
-robbyaddress;no;ENDLIST;
+addre;1713 laura lane;ENDLIST;
 ENDTABLE
