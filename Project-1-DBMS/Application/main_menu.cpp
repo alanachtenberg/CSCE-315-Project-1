@@ -179,7 +179,7 @@ string edit_contact(DBParser& dbparser){
 	cin >> input;
 	temp = check_input(input, '1', '5');
 
-	switch (temp){
+	switch (temp){ //choosing which attribute in the Address Book table you want to edit
 	case '1':
 		query = query_for_addressbook_edit('1', "addressbook", full_name, first_name, last_name, phone, email, address);
 		break;
@@ -582,7 +582,7 @@ void edit_memopad(DBParser& dbparser){
 	temp = check_input(input, '1', '4');
 
 	switch (temp){
-	case '1':
+	case '1'://case to edit the memo in memopad
 		cout << "*Enter new Memo: ";
 		cin.ignore();
 		getline(cin, memo);
@@ -590,7 +590,7 @@ void edit_memopad(DBParser& dbparser){
 		cout << query << endl;
 		dbparser.execute_query(query);
 		break;
-	case '2':
+	case '2'://case to edit the memoid in memopad
 		cout << "*Enter new Memo ID: ";
 		cin.ignore();
 		getline(cin, new_memoid);
@@ -601,7 +601,7 @@ void edit_memopad(DBParser& dbparser){
 		cout << query << endl;
 		dbparser.execute_query(query);
 		break;
-	case '3':
+	case '3'://case to edit the dateid in memopad
 		cout << "* Enter new Month of Memo Item [MM]:";
 		cin.ignore();
 		getline(cin, month);
@@ -618,7 +618,7 @@ void edit_memopad(DBParser& dbparser){
 		cout << query << endl;
 		dbparser.execute_query(query);
 		break;
-	case '4':
+	case '4': //case to edit the name in memopad
 		cout << "*Enter new name: ";
 		cin.ignore();
 		getline(cin, name);
@@ -656,17 +656,17 @@ void create_memopad(DBParser& dbparser){
 	getline(cin, memoid);
 	cout << "*Enter the Name of recipient: ";
 	getline(cin, name);
-	cout << "* Enter month of Memo Item [MM]:";
+	cout << "* Enter month of Memo Item [MM]:";                  //Creates a new memo by reading in each line for each value
 	getline(cin, month);
 	cout << "* Enter day of Memo Item [DD]:";
 	getline(cin, day);
 	cout << "* Enter year of Memo Item [YYYY]:";
 	getline(cin, year);
 	dateid = month + "/" + day + "/" + year;
-	query = query_for_memopad_insert("memopad", memo, memoid, dateid, name);
+	query = query_for_memopad_insert("memopad", memo, memoid, dateid, name); //push memo to memopad table
 	cout << query << endl;
 	dbparser.execute_query(query);
-	query = query_for_calendar_insert("calendar", month, day, year, dateid, memoid, "0");
+	query = query_for_calendar_insert("calendar", month, day, year, dateid, memoid, "0"); //push memo to calendar table without a todoID ("0")
 	cout << query << endl;
 	dbparser.execute_query(query);
 }
@@ -841,10 +841,10 @@ void create_todolist(DBParser& dbparser){ //if we create a todo, how do we also 
 	cout << "* Enter year of To Do Item [YYYY]:";
 	getline(cin, year);
 	dateid = month + "/" + day + "/" + year;
-	query = query_for_todolist_insert("todolist", todo, todoid, dateid);
+	query = query_for_todolist_insert("todolist", todo, todoid, dateid);//push todo to todolist table by creating the correct query string to send to parser
 	cout << query << endl;
 	dbparser.execute_query(query);
-	query = query_for_calendar_insert("calendar", month, day, year, dateid, "0", todoid);
+	query = query_for_calendar_insert("calendar", month, day, year, dateid, "0", todoid); //push todo to calendar table without memoID ("0")
 	cout << query << endl;
 	dbparser.execute_query(query);
 }
