@@ -487,7 +487,7 @@ string query_for_memopad_edit(char field, string table, string memo, string memo
 
 		temp += table + " " + "SET memoid = ";
 		temp += "\"" + new_value + "\"" + " ";				// The delim lets us use quotes in our string;
-		temp += "WHERE(memoido == ";
+		temp += "WHERE(memoid == ";
 		temp += "\"" + memoid + "\"" + ");";
 		// temp = UPDATE memopad SET memoid = "new_value" WHERE(memoid == "memoid");
 		break;
@@ -498,7 +498,7 @@ string query_for_memopad_edit(char field, string table, string memo, string memo
 
 		temp += table + " " + "SET dateid = ";
 		temp += "\"" + new_value + "\"" + " ";				// The delim lets us use quotes in our string;
-		temp += "WHERE(todo == ";
+		temp += "WHERE(memoid == ";
 		temp += "\"" + memoid + "\"" + ");";
 		// temp = UPDATE memopad SET dateid = "new_value" WHERE(memoid == "memoid");
 		break;
@@ -509,7 +509,7 @@ string query_for_memopad_edit(char field, string table, string memo, string memo
 
 		temp += table + " " + "SET name = ";
 		temp += "\"" + new_value + "\"" + " ";				// The delim lets us use quotes in our string;
-		temp += "WHERE(todo == ";
+		temp += "WHERE(memoid == ";
 		temp += "\"" + memoid + "\"" + ");";
 		// temp = UPDATE memopad SET name = "new_value" WHERE(memoid == "memoid");
 		break;
@@ -650,8 +650,8 @@ string query_for_todolist_edit(char field, string table, string todo, string tod
 
 		temp += table + " SET todo = ";
 		temp += "\"" + new_value + "\"";
-		temp += " WHERE(todo == ";
-		temp += "\"" + todo + "\"" + ");";
+		temp += " WHERE(todoid == ";
+		temp += "\"" + todoid + "\"" + ");";
 		// temp = UPDATE addressbook SET todo = "new_value" WHERE(todo == "todo");
 		break;
 	case '2':
@@ -661,8 +661,8 @@ string query_for_todolist_edit(char field, string table, string todo, string tod
 
 		temp += table + " SET todoid = ";
 		temp += "\"" + new_value + "\"";
-		temp += " WHERE(todo == ";
-		temp += "\"" + todo + "\"" + ");";
+		temp += " WHERE(todoid == ";
+		temp += "\"" + todoid + "\"" + ");";
 		// temp = UPDATE addressbook SET todoid = "new_value" WHERE(todo == "todo");
 		break;
 	case '3':
@@ -672,8 +672,8 @@ string query_for_todolist_edit(char field, string table, string todo, string tod
 
 		temp += table + " " + "SET dateid = ";
 		temp += "\"" + new_value + "\"" + " ";				// The delim lets us use quotes in our string;
-		temp += "WHERE(todo == ";
-		temp += "\"" + todo + "\"" + ");";
+		temp += "WHERE(todoid == ";
+		temp += "\"" + todoid + "\"" + ");";
 		// temp = UPDATE addressbook SET dateid = "new_value" WHERE(todo == "todo");
 		break;
 
