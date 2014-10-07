@@ -863,7 +863,7 @@ void Calendar(DBParser& dbparser){
 		break;
 	case '3':
 		cout << endl << "[Calendar Edit]" << endl << endl;
-		query = edit_contact(dbparser);
+		query = edit_calendar_date(dbparser);
 		cout << endl << query << endl;
 		dbparser.execute_query(query);								
 		Calendar(dbparser);
