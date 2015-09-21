@@ -6,52 +6,52 @@
 using namespace std;
 
 	Node::Node(){
-		Left = NULL;
-		Right = NULL;
+		this.left = NULL;
+		this.right = NULL;
 		Type = Token_Type::_null;
 		Value = "";
 	}
 	Node::Node(string value, Token_Type type, Node* left, Node* right){
-		Value = value;
-		Type = type;
-		Left = left;//copy pointer
-		Right = right;
+		this.value = value;
+		this.type = type;
+		this.left = left;//copy of a pointer not object it points to
+		this.right = right;
 	}
 
 	Node::Node(const Node& node){
-		Left = node.Left;//copy of a pointer not object it points to
-		Right = node.Right;
-		Type = node.Type;
-		Value = node.Value;
+		this.left = node.left;//copy of a pointer not object it points to
+		this.right = node.right;
+		this.type = node.type;
+		this.value = node.value;
 	}
 	Node::~Node(){
-		if (Left != NULL) delete Left; //delete children
-		if (Right != NULL) delete Right;
+		if (this.left != NULL) delete this.left; //delete children
+		if (this.right != NULL) delete this.right;
 	}
 
 	//Get
 	Node* Node::Get_left(){
-		if (Left == NULL)
+		if (this.left == NULL)
 			cerr << "cant Get, left pointer null" << endl;
-		return Left; // return pointer to left node
+		return this.left; // return pointer to left node
 	}
 
 	Node* Node::Get_right(){
-		if (Right == NULL)
+		if (this.right == NULL)
 			cerr << "cant Get, right pointer null" << endl;
-		return Right; // return pointer to right node
+		return this.right; // return pointer to right node
 	}
 
 	void Node::Set_left(Node n){
-		Left = new Node(n);
+		this.left = new Node(n);
 	}
 	void Node::Set_right(Node n){
-		Right = new Node(n);
+		this.right = new Node(n);
 	}
 	bool Node::Is_literal() const {
-		return (Type == _int_num || Type == _varchar); //check if node is a number or varchar, else its not a literal
+		return (this.type == _int_num || this.type == _varchar); //check if node is a number or varchar, else its not a literal
 	}
 	ostream& Node::Print_node(ostream& os){
-		os << "value: " << Value << " type: " << Type<<endl; // simple print
+		os << "value: " << this.value << " type: " << this.type << endl; // simple print
 		return os;
 	}

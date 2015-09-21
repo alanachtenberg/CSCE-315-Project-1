@@ -8,11 +8,11 @@ using namespace std;
 class Node{
 
 private:
-	Node* Left;
-	Node* Right;
+	Node* left;
+	Node* right;
 public:
-	Token_Type Type; //type of value, can be operator(less or greater equals etc) or literal (number varchar)
-	std::string Value;
+	Token_Type type; //type of value, can be operator(less or greater equals etc) or literal (number varchar)
+	std::string value;
 
 	Node();
 	Node(std::string value, Token_Type type, Node *left=NULL, Node *right=NULL);
